@@ -23,3 +23,32 @@ nav {
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   }
   
+
+  .dropdown {
+    position: relative;
+  }
+  
+  .popup {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    display: block;
+    width: max-content;
+  }
+  
+  .popup a {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .popup button {
+    margin-top: 5px;
+  }
+  
+  .logout-btn {
+    border: none;
+    background-color: gray;
+  }

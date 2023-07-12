@@ -1,0 +1,2 @@
+giriş yaparken hata olduğu zaman kullanıcıya hata mesajı vermek lazım o duruma göre
+popup dropdown her zaman true mu başlıyo emin değilim onun kontrol edilmesi gerekli

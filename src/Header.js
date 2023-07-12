@@ -1,18 +1,45 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import '../src/styles/Header.css'
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import '../src/styles/Header.css';
+import { useNavigate } from 'react-router-dom';
+const Header = ({ isLoggedIn, onLogout }) => {
 
-const Header = () => {
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
-  const accessToken = localStorage.getItem('accessToken');
+  const navigate = useNavigate();
 
-  // localhosttan accesstoken diye mi yoksa token diye mi alınması gerektiğinden emin değilim
+  const handleMouseEnter = () => {
+    setIsPopupVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsPopupVisible(false);
+  };
+  const handleLogout = () => {
+    onLogout();
+    navigate("/");// Call the provided logout function from the prop
+  };
+
   return (
     <nav>
-      <NavLink to='/'>Anasayfa</NavLink>
-      {accessToken ? (<NavLink to="/profile"> Profilim </NavLink>) : (<NavLink to="/login"> Giriş Yap </NavLink>)}
+      <NavLink to="/">Anasayfa</NavLink>
+      {isLoggedIn ? (
+        <div className="dropdown" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <NavLink to="/profile">Profilim</NavLink>
+          {isPopupVisible && (
+            <div className="popup">
+              
+              <NavLink to="/profile/orders  ">Siparişlerim</NavLink>
+              <NavLink to="/profile/cart  ">Sepetim</NavLink>
+              <button className='logout-btn' onClick={handleLogout}>Çıkış Yap</button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <NavLink to="/login">Giriş Yap</NavLink>
+      )}
     </nav>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

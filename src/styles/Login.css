@@ -1,49 +1,105 @@
-.loginContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #fafafa;
+/* login.css */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: #f8f8f8;
+    
 }
 
-.loginForm {
-  width: 350px;
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
-  font-size: 16px; /* Adjust the font size here */
+.login-form {
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
 }
 
-.inputField {
-  width: 100%;
-  border: none;
-  margin-bottom: 10px;
-  border-bottom: 1px solid gray;
-  outline: none;
-  padding: 10px 0;
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
-.loginButton {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 20px;
-  background: linear-gradient(to right, #0a84ff 0%, #007aff 100%);
-  color: white;
-  font-weight: bold;
-  margin-top: 20px;
-  cursor: pointer;
+.login-form button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.errorMsg {
-  color: red;
-  margin-top: 10px;
+.login-form button:hover {
+    background-color: #0056b3;
 }
 
-.registerLink {
-  display: inline-block;
-  color: #007aff;
-  text-decoration: none;
-  margin-top: 10px;
+.login-form a {
+    color: #007BFF;
+    text-decoration: none;
+    margin: 10px;
+}
+
+
+
+.login-navlink-container p {
+    color: white;
+    padding-top: 10px;
+    
+}
+
+.login-navlink-container {
+    width: 170px;
+    height: 40px;
+    background-color: rgb(124, 32, 124);
+    border-radius: 10px;
+    vertical-align:middle;
+    text-align: center;
+    
+}
+
+
+
+.login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;padding: 0;
+    background-color: #f8f8f8;
+}
+
+.logo {
+    width: 330px;
+    height: 330px;
+    object-fit: contain;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    padding: 20px;
+    border-radius: 30px;
+    box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+
 }
