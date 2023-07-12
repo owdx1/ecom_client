@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../styles/Login.css'
+import '../../styles/Login.css'
 import { NavLink, useNavigate } from 'react-router-dom';
-import logo from '../images/aydinmedikal.jpg'
+import logo from '../../images/aydinmedikal.jpg'
 
 
 function Login({onLogin}) {
