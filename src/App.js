@@ -13,6 +13,7 @@ import PatchASingleProduct from './pages/admin/PatchASingleProduct';
 import { useState, useEffect } from 'react';
 import Profile from './pages/profile/Profile';
 import Cart from './pages/profile/Cart';
+import ASingleProduct from './pages/shop/ASingleProduct';
 
 
 function App() {
@@ -35,6 +36,8 @@ function App() {
       
       <Routes>
         <Route path='/' element={<Shop />}></Route>
+        
+        <Route path='/shop/products/:product_id' element={<ASingleProduct />}></Route>
 
 
         <Route path='/profile' element={<Profile />}></Route>
