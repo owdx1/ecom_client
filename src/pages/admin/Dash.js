@@ -87,7 +87,7 @@ const Dash = () => {
                     key={product.product_id}
                     to={`/admin/products/${product.product_id}`}
                   >
-                    Ürünü güncelle
+                    Fiyatı Güncelle
                   </Link>
                   <Link>Ürünü sil</Link>
                   <Link>Ürüne ekleme yap</Link>

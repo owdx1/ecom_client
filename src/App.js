@@ -15,11 +15,23 @@ import Profile from './pages/profile/Profile';
 import Cart from './pages/profile/Cart';
 import ASingleProduct from './pages/shop/ASingleProduct';
 import Error  from './utils/Error';
+import ImageSlider from './utils/ImagesSlider';
+
 
 
 function App() {
 
   const [isLoggedIn , setIsLoggedIn] = useState(false);
+  const slides = [
+
+    {url:'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg' , title:'lion'},
+    {url:'https://images.wallpaperscraft.com/image/single/laptop_keyboard_glow_170138_1600x900.jpg' , title:'laptop'},
+    {url:'https://images.wallpaperscraft.com/image/single/drone_camera_technology_171576_1600x900.jpg' , title:'drone'},
+    {url:'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg' , title:'coding'},
+    
+
+  ]
+
 
   useEffect(() =>{
     const accessToken = localStorage.getItem('accessToken');
@@ -30,10 +42,18 @@ function App() {
     setIsLoggedIn(false);
     localStorage.removeItem('accessToken');
   };
-
+  const containerStyles = {
+    width : "1900px",
+    height: "600px",
+    margin: "70px auto"
+  }
   return (
     <>
       <Header isLoggedIn= {isLoggedIn} onLogout={handleLogout}/>
+      <div style={containerStyles}>
+        <ImageSlider slides={slides}/>
+      </div>
+      
       
       <Routes>
         <Route path='/' element={<Shop />}></Route>

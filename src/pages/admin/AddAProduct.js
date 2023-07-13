@@ -20,12 +20,12 @@ const AddAProduct = () => {
   const adminToken = localStorage.getItem('adminToken');
 
   const categories = {
-    takim: 1,
+    'takim': 1,
     'tek-ust': 2,
     'tek-alt': 3,
-    tesettur: 4,
-    bone: 5,
-    terlik: 6,
+    'tesettur': 4,
+    'bone': 5,
+    'terlik': 6,
   };
   const colors = [
     'beyaz', 'acik_mavi', 'parlament_mavisi', 'turkuaz', 'duman_grisi', 'gri', 'lacivert',
@@ -58,7 +58,6 @@ const AddAProduct = () => {
           quantity,
           color,
           size,
-          size_i,
           pattern,
           description,
         }),
