@@ -46,6 +46,11 @@ const dotStyle = {
   fontSize: "20px",
 };
 
+const activeDotStyle = {
+  ...dotStyle,
+  color: "blue", // Add your desired active dot color here
+};
+
 const ImageSlider = ({ slides }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const goToPrevious = () => {
@@ -80,7 +85,7 @@ const ImageSlider = ({ slides }) => {
       <div style={dotsContainerStyles}>
         {slides.map((slide, slideIndex) => (
           <div
-            style={dotStyle}
+            style={currentIndex === slideIndex ? activeDotStyle : dotStyle}
             key={slideIndex}
             onClick={() => goToSlide(slideIndex)}
           >

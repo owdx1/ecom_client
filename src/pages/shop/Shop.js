@@ -196,7 +196,7 @@ function Shop() {
           Terlik
         </button>
       </div>
-
+      <div style={{alignItems:'center'}}> <h2 style={{fontWeight:"100", textAlign:"center"}}> Tüm ürünler </h2> </div>
       <div className="shop-container">
         {filteredProducts.map((product) => (
           <Link key={product.product_id} to={`/shop/products/${product.product_id}`} state={{product}}>
