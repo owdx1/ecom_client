@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import '../../styles/Shop.css';
 import dummyImage from '../../images/cat.jpg';
+
 
 function Shop() {
   const [originalProducts, setOriginalProducts] = useState([]);
@@ -9,6 +10,12 @@ function Shop() {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [activeButton, setActiveButton] = useState('');
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchBarPopupVisible, setSearchBarPopupVisible] = useState(false);
+
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -31,7 +38,7 @@ function Shop() {
 
     fetchProducts();
   }, []);
-
+  /************************************************************************************************************* */
   useEffect(() => {
     filterAndSortProducts(activeButton);
   }, [activeButton]);
@@ -52,9 +59,58 @@ function Shop() {
     } else if (option === 'terlik') {
       filteredProducts = filteredProducts.filter((product) => product.category_id === 2);
     }
-
-
+    
     setFilteredProducts(filteredProducts);
+
+
+  }; /************************************************************************************************************* */
+
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    console.log(searchTerm);
+  };
+  useEffect(() => {
+    searchResultChanger();
+  },[searchTerm])
+
+  const searchResultChanger = () => {
+    let results = [...originalProducts];
+    console.log("tüm ürünler" , originalProducts);
+    console.log("results objesi" , results);
+    console.log('searchTerm:' ,searchTerm);
+  
+    if (searchTerm !== '') {
+      results = results.filter(
+        (product) =>{
+          console.log("o anki product" , product);
+          return product.product_name && product.product_name.toLowerCase().includes(`${searchTerm.toLowerCase()}`);
+
+        
+        }
+      );
+      console.log("filtreleme islemi bittikten sonraki results" , results);
+      setSearchResults(results.slice(0, 5));
+      console.log('search results objesi' , searchResults);
+      setSearchBarPopupVisible(true);
+      console.log("popuup görünüyor mu?" , searchBarPopupVisible);  
+
+
+    } else{
+      setSearchBarPopupVisible(false)
+    }
+  
+    
+    
+  };
+  
+
+  const handleButtonClick = (option) => {
+    if (activeButton === option) {
+      setActiveButton('');
+    } else {
+      setActiveButton(option);
+    }
   };
 
   if (loading) {
@@ -65,16 +121,43 @@ function Shop() {
     return <p>{errorMessage}</p>;
   }
 
-  const handleButtonClick = (option) => {
-    if (activeButton === option) {
-      setActiveButton('');
-    } else {
-      setActiveButton(option);
-    }
-  };
+  
 
   return (
     <>
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+        {searchBarPopupVisible && (
+          <div className="search-results">
+            {searchResults.map((product) => (
+              <Link key={product.product_id} to={`/shop/products/${product.product_id}`}>
+                <div className="search-result-item">
+                  <img src={dummyImage} alt={product.product_id} />
+                  <div>
+                    <h3>{product.product_name}</h3>
+                    <p>{product.price} tl</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+            {searchResults.length === 5 && (
+              <NavLink to="/search" className="see-all-link">
+                See All Results
+              </NavLink>
+            )}
+            {searchResults.length === 0 && <p>Sonuç bulunamadı</p>}
+          </div>
+        )}
+      </div>
+
+
+
+
       <div className="filter-container">
         <button
           className={`filter-button ${activeButton === 'takim' ? 'active' : ''}`}

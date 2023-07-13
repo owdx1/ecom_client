@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import '../src/styles/Header.css';
 import { useNavigate } from 'react-router-dom';
-const Header = ({ isLoggedIn, onLogout }) => {
 
+const Header = ({ isLoggedIn, onLogout }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [isHomeDropdownVisible, setIsHomeDropdownVisible] = useState(false);
 
   const navigate = useNavigate();
 
@@ -15,23 +16,52 @@ const Header = ({ isLoggedIn, onLogout }) => {
   const handleMouseLeave = () => {
     setIsPopupVisible(false);
   };
+
+  const handleHomeDropdownEnter = () => {
+    setIsHomeDropdownVisible(true);
+  };
+
+  const handleHomeDropdownLeave = () => {
+    setIsHomeDropdownVisible(false);
+  };
+
   const handleLogout = () => {
     onLogout();
-    navigate("/");// Call the provided logout function from the prop
+    navigate("/");
   };
 
   return (
     <nav>
-      <NavLink to="/">Anasayfa</NavLink>
+      <div
+        className="dropdown"
+        onMouseEnter={handleHomeDropdownEnter}
+        onMouseLeave={handleHomeDropdownLeave}
+      >
+        <NavLink to="/">Anasayfa</NavLink>
+        {isHomeDropdownVisible && (
+          <div className="popup">
+            <NavLink to="/home/link1">Link 1</NavLink>
+            <NavLink to="/home/link2">Link 2</NavLink>
+            
+          </div>
+        )}
+      </div>
+
       {isLoggedIn ? (
-        <div className="dropdown" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div
+          className="dropdown"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          
+        >
           <NavLink to="/profile">Profilim</NavLink>
           {isPopupVisible && (
             <div className="popup">
-              
-              <NavLink to="/profile/orders  ">Siparişlerim</NavLink>
-              <NavLink to="/profile/cart  ">Sepetim</NavLink>
-              <button className='logout-btn' onClick={handleLogout}>Çıkış Yap</button>
+              <NavLink to="/profile/orders">Siparişlerim</NavLink>
+              <NavLink to="/profile/cart">Sepetim</NavLink>
+              <button className="logout-btn" onClick={handleLogout}>
+                Çıkış Yap
+              </button>
             </div>
           )}
         </div>
