@@ -1,5 +1,7 @@
 import React, {useEffect ,useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
+import dummyImage from '../../images/cat.jpg'
+import '../../styles/Dash.css'
 
 
 const Dash = () => {
@@ -48,45 +50,55 @@ const Dash = () => {
         navigate("/admin/add-a-product");
       };
 
-    return (
-        <div>
-          <h1>{admin}</h1>
-          <button onClick={navigateToAddAProduct}> Yeni ürün ekle</button>
-          {errorMessage && <p>{errorMessage}</p>}
+      return (
+        <div className="container">
+          <h1 className="heading">{admin}</h1>
+          <button className="button" onClick={navigateToAddAProduct}>
+            Yeni ürün ekle
+          </button>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
           <div>
             {products.map((product) => (
-              <Link key={product.product_id} to={`/admin/products/${product.product_id}`}>
-                <div>
+              <Link
+                key={product.product_id}
+                to={`/admin/products/${product.product_id}`}
+                className="product-container"
+              >
+                <div className="product-info">
+                  <img
+                    src={dummyImage}
+                    alt={product.product_id}
+                    className="product-image"
+                  />
                   <h3>{product.name}</h3>
                   <p>{product.description}</p>
                   <p>Fiyat: {product.price} TL</p>
-                  
-                  {
-                    product.category_id === 2 ?
-                    (<p>Beden: {product.size_i}</p>)
-                    :
-                    (<p>Beden: {product.size}</p>)
-                  }
+      
+                  {product.category_id === 2 ? (
+                    <p>Beden: {product.size_i}</p>
+                  ) : (
+                    <p>Beden: {product.size}</p>
+                  )}
                   <p>Renk: {product.color}</p>
                   <h5>Adet: {product.quantity}</h5>
-                  
                 </div>
-                <div>
-                    <Link
-                        key={product.product_id}
-                        to={
-                            `/admin/products/${product.product_id}`
-                        }
-                    > Ürünü güncelle </Link>
-                    <Link>Ürünü sil</Link>
-                    <Link>Ürüne ekleme yap</Link>
+                <div className="product-actions">
+                  <Link
+                    key={product.product_id}
+                    to={`/admin/products/${product.product_id}`}
+                  >
+                    Ürünü güncelle
+                  </Link>
+                  <Link>Ürünü sil</Link>
+                  <Link>Ürüne ekleme yap</Link>
                 </div>
-                <hr />
+                
               </Link>
             ))}
           </div>
         </div>
-    );
+      );
+      
 };
 
 

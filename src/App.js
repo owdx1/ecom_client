@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react';
 import Profile from './pages/profile/Profile';
 import Cart from './pages/profile/Cart';
 import ASingleProduct from './pages/shop/ASingleProduct';
+import Error  from './utils/Error';
 
 
 function App() {
@@ -61,6 +62,8 @@ function App() {
         <Route path='/admin/products/:product_id' element={<Contact />}></Route>
         <Route path='/admin/delete-a-product/:product_id' element={<Contact />}></Route>
         <Route path='/admin/patch-a-product/:product_id' element={<PatchASingleProduct />}></Route>
+
+        <Route path='/error' element={<Error />}></Route>
       </Routes>
 
     </>

@@ -135,7 +135,7 @@ function Shop() {
         {searchBarPopupVisible && (
           <div className="search-results">
             {searchResults.map((product) => (
-              <Link key={product.product_id} to={`/shop/products/${product.product_id}`}>
+              <Link key={product.product_id} to={`/shop/products/${product.product_id}`} state={{product}}>
                 <div className="search-result-item">
                   <img src={dummyImage} alt={product.product_id} />
                   <div>
@@ -199,7 +199,7 @@ function Shop() {
 
       <div className="shop-container">
         {filteredProducts.map((product) => (
-          <Link key={product.product_id} to={`/shop/products/${product.product_id}`}>
+          <Link key={product.product_id} to={`/shop/products/${product.product_id}`} state={{product}}>
             <div className="product-item">
               <div className="product-image">
                 <img src={dummyImage} alt={product.product_id} />
@@ -207,14 +207,13 @@ function Shop() {
               <div className="product-details-main">
                 <div className="product-details">
                   <div className="first-detail">
-                    <h3>{product.name}</h3>
-                    <p>{product.description}</p>
+                    <p>{product.product_name}</p>
                   </div>
                   <div className="product-price-div">
                     <p className="product-price"> {product.price} TL</p>
                   </div>
                 </div>
-                {product.quantity <= 4 ? <p>Son {product.quantity} ürün!</p> : null}
+                {product.quantity <= 4 && product.quantity !== 0 ? <p>Son {product.quantity} ürün!</p> : null}
                 {product.quantity > 0 ? <p>Stokta ✔️</p> : <p>Stokta değil ❌</p>}
               </div>
             </div>
