@@ -228,16 +228,17 @@
                   <img src={dummyImage} alt={product.product_id} />
                 </div>
                 <div className="product-details-main">
-                  <div className="product-details">
-                    <div className="first-detail">
-                      <p>{product.product_name}</p>
-                    </div>
-                    <div className="product-price-div">
-                      <p className="product-price"> {product.price} TL</p>
-                    </div>
+                  
+                  <div className="first-detail">
+                    <p>{product.product_name}</p>
                   </div>
-                  {product.quantity <= 4 && product.quantity !== 0 ? <p>Son {product.quantity} ürün!</p> : null}
-                  {product.quantity > 0 ? <p>Stokta ✔️</p> : <p>Stokta değil ❌</p>}
+                    
+                  
+                  {product.quantity <= 4 && product.quantity !== 0 ? <p className='p-quan'>Son {product.quantity} ürün!</p> : null}
+                  {product.quantity > 0 ? <p className='p-quan'>Stokta ✔️</p> : <p>Stokta değil ❌</p>}
+                  <div className="product-price-div">
+                      <p className="product-price"> {product.price} TL</p>
+                  </div>
                 </div>
               </div>
             </Link>
