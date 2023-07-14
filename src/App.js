@@ -9,7 +9,6 @@ import AddAProduct from './pages/admin/AddAProduct';
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register';
 import PatchASingleProduct from './pages/admin/PatchASingleProduct';
-
 import { useState, useEffect } from 'react';
 import Profile from './pages/profile/Profile';
 import Cart from './pages/profile/Cart';
@@ -36,7 +35,7 @@ function App() {
 
   useEffect(() =>{
     const accessToken = localStorage.getItem('accessToken');
-    if(accessToken) setIsLoggedIn(true);
+    if(accessToken && accessToken !== 'undefined') setIsLoggedIn(true);
   }, [])
 
   const handleLogout = () => {
