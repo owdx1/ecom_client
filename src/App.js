@@ -14,6 +14,9 @@ import Profile from './pages/profile/Profile';
 import Cart from './pages/profile/Cart';
 import ASingleProduct from './pages/shop/ASingleProduct';
 import Error  from './utils/Error';
+import Search from './pages/search/Search';
+
+
 
 
 
@@ -24,7 +27,15 @@ function App() {
 
   useEffect(() =>{
     const accessToken = localStorage.getItem('accessToken');
-    if(accessToken && accessToken !== 'undefined') setIsLoggedIn(true);
+    
+    if(accessToken === 'undefined' || !accessToken){
+      handleLogout();
+    }
+    else{
+      setIsLoggedIn(true);
+    }
+
+
   }, [])
 
   const handleLogout = () => {
@@ -40,8 +51,9 @@ function App() {
       
       <Routes>
         <Route path='/' element={<Shop />}></Route>
-        
         <Route path='/shop/products/:product_id' element={<ASingleProduct />}></Route>
+
+        <Route path='/search' element={<Search />}></Route>
 
 
         <Route path='/profile' element={<Profile />}></Route>

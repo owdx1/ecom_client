@@ -8,7 +8,7 @@ const Profile = () => {
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
     console.log('Suanki accessToken' , accessToken);
-    if (!accessToken) {
+    if (!accessToken || accessToken === 'undefined') {
       navigate('/error'); // Redirect to error page if no access token
     } else {
       fetchProfile(accessToken);
