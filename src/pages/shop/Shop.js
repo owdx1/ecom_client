@@ -2,6 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import '../../styles/Shop.css';
 import dummyImage from '../../images/cat.jpg';
+import ImageSlider from '../../utils/ImagesSlider';
+
+const slides = [
+  {url:'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg' , title:'lion'},
+  {url:'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg' , title:'boats'},
+  {url:'https://images.wallpaperscraft.com/image/single/laptop_keyboard_glow_170138_1600x900.jpg' , title:'laptop'},
+  {url:'https://images.wallpaperscraft.com/image/single/drone_camera_technology_171576_1600x900.jpg' , title:'drone'},
+  {url:'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg' , title:'coding'},
+]
+
+const containerStyles = {
+  width : "1900px",
+  height: "600px",
+  margin: "70px auto"
+}
 
 
 function Shop() {
@@ -111,6 +126,11 @@ function Shop() {
     } else {
       setActiveButton(option);
     }
+    
+    
+    
+    
+  
   };
 
   if (loading) {
@@ -125,6 +145,9 @@ function Shop() {
 
   return (
     <>
+      <div style={containerStyles}>
+        <ImageSlider slides={slides}/>
+      </div>
       <div className="search-container">
         <input
           type="text"
@@ -155,10 +178,7 @@ function Shop() {
         )}
       </div>
 
-
-
-
-      <div className="filter-container">
+     <div className="filter-container">
         <button
           className={`filter-button ${activeButton === 'takim' ? 'active' : ''}`}
           onClick={() => handleButtonClick('takim')}
@@ -196,6 +216,9 @@ function Shop() {
           Terlik
         </button>
       </div>
+
+      
+
       <div style={{alignItems:'center'}}> <h2 style={{fontWeight:"100", textAlign:"center"}}> Tüm ürünler </h2> </div>
       <div className="shop-container">
         {filteredProducts.map((product) => (

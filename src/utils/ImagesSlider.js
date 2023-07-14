@@ -48,7 +48,7 @@ const dotStyle = {
 
 const activeDotStyle = {
   ...dotStyle,
-  color: "blue", // Add your desired active dot color here
+  color: "blue", 
 };
 
 const ImageSlider = ({ slides }) => {
