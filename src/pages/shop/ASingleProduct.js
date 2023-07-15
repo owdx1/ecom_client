@@ -16,6 +16,7 @@ const ASingleProduct = () => {
   console.log(product);
 
   const [quantity, setQuantity] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(slides[0].url); // Initialize with the first image URL
 
   const increaseQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
@@ -31,11 +32,29 @@ const ASingleProduct = () => {
     console.log(`Added ${quantity} product(s) to the cart`);
   };
 
+  const handleThumbnailClick = (imageURL) => {
+    setSelectedImage(imageURL);
+  };
+
   return (
     <div className="container">
-      <div className="image-slider-container">
-        <ImageSlider slides={slides} />
+
+      <div className="thumbnail-gallery">
+        {slides.map((slide, index) => (
+          <img
+            key={index}
+            src={slide.url}
+            alt={slide.title}
+            className="thumbnail-image"
+            onClick={() => handleThumbnailClick(slide.url)}
+          />
+        ))}
       </div>
+      <div className="image-slider-container">
+        <ImageSlider slides={slides} selectedImage={selectedImage} />
+      </div>
+
+      
 
       <div className="product-details">
         <div className="product-name-container">

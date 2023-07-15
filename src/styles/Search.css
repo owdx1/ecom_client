@@ -114,7 +114,7 @@
   width: 100%;
   height: auto;
   max-height: 200px;
-  object-fit: cover;
+  object-fit: contain;
   margin-bottom: 10px;
 }
 
@@ -129,6 +129,7 @@
   justify-content: space-between;
   width: 100%;
   margin-bottom: 10px;
+  width: 588px;
 }
 
 .first-detail {
