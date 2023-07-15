@@ -16,7 +16,7 @@ const ASingleProduct = () => {
   console.log(product);
 
   const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(slides[0].url); // Initialize with the first image URL
+  const [selectedImage, setSelectedImage] = useState(slides[0].url);
 
   const increaseQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
@@ -38,14 +38,13 @@ const ASingleProduct = () => {
 
   return (
     <div className="container">
-
       <div className="thumbnail-gallery">
         {slides.map((slide, index) => (
           <img
             key={index}
             src={slide.url}
             alt={slide.title}
-            className="thumbnail-image"
+            className={`thumbnail-image ${slide.url === selectedImage ? 'active' : ''}`}
             onClick={() => handleThumbnailClick(slide.url)}
           />
         ))}
@@ -53,8 +52,6 @@ const ASingleProduct = () => {
       <div className="image-slider-container">
         <ImageSlider slides={slides} selectedImage={selectedImage} />
       </div>
-
-      
 
       <div className="product-details">
         <div className="product-name-container">

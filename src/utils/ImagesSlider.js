@@ -51,18 +51,13 @@ const activeDotStyle = {
   color: "blue",
 };
 
-const ImageSlider = ({ slides }) => {
+const ImageSlider = ({ slides, selectedImage }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      goToNext();
-    }, 7000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [currentIndex]); // Add currentIndex as a dependency
+    const selectedIndex = slides.findIndex((slide) => slide.url === selectedImage);
+    setCurrentIndex(selectedIndex >= 0 ? selectedIndex : 0);
+  }, [selectedImage, slides]);
 
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
