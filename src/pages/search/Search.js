@@ -103,11 +103,7 @@ const Search = () => {
 
   return (
     <div className="search-page">
-      {searchParam && (
-        <div className="search-param">
-          Aranılan ürün: <span>{searchParam}</span>
-        </div>
-      )}
+      
       <div className="search-container">
         <div className="search-options">
           <div className="search-buttons">
@@ -189,27 +185,41 @@ const Search = () => {
         </div>
       </div>
 
-      <div className="shop-container">
-        {filteredProducts.map((product) => (
-          <Link key={product.product_id} to={`/shop/products/${product.product_id}`} state={{ product }}>
-            <div className="product-item">
-              <div className="product-image">
-                <img src={dummyImage} alt={product.product_id} />
-              </div>
-              <div className="product-details-main">
-                <div className="first-detail">
-                  <p>{product.product_name}</p>
+      {searchParam && (
+        <div className="search-param">
+          Aranılan ürün: <span>{searchParam}</span>
+        </div>
+      )}
+      {
+        filteredProducts.length > 0 ? 
+        <div className="shop-container">
+          {filteredProducts.map((product) => (
+            <Link key={product.product_id} to={`/shop/products/${product.product_id}`} state={{ product }}>
+              <div className="product-item">
+                <div className="product-image">
+                  <img src={dummyImage} alt={product.product_id} />
                 </div>
-                {product.quantity <= 4 && product.quantity !== 0 ? <p>Son {product.quantity} ürün!</p> : null}
-                {product.quantity > 0 ? <p>Stokta ✔️</p> : <p>Stokta değil ❌</p>}
-                <div className="product-price-div">
-                  <p className="product-price">{product.price} TL</p>
+                <div className="product-details-main">
+                  <div className="first-detail">
+                    <p>{product.product_name}</p>
+                  </div>
+                  {product.quantity <= 4 && product.quantity !== 0 ? <p>Son {product.quantity} ürün!</p> : null}
+                  {product.quantity > 0 ? <p>Stokta ✔️</p> : <p>Stokta değil ❌</p>}
+                  <div className="product-price-div">
+                    <p className="product-price">{product.price} TL</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
+      :
+        <h1>ürün bulunamadi</h1>
+
+      }               
+      
+
+
     </div>
   );
 };

@@ -13,7 +13,7 @@
 .search-container {
   display: flex;
   justify-content: center;
-  position: sticky;
+  
   top: 0;
   background-color: #fff;
   padding: 10px;
