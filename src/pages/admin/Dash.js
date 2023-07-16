@@ -81,6 +81,7 @@ const Dash = () => {
                   )}
                   <p>Renk: {product.color}</p>
                   <h5>Adet: {product.quantity}</h5>
+                  <h5>Kategori: {product.category_name}</h5>
                 </div>
                 <div className="product-actions">
                   <Link

@@ -1,44 +1,15 @@
 nav {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px 0;
-    background-color: #f5f5f5;
-    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  nav a {
-    text-decoration: none;
-    color: #333;
-    font-size: 18px;
-    margin: 0 20px;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-  }
-  
-  nav a:hover {
-    color: #666;
-  }
-  
-  nav a.active {
-    color: #333;
-    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  }
-  
-
-  /* Header.css */
-
-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #f5f5f5;
-  padding: 1rem;
+  padding: 2rem;
 }
-
-
 
 .dropdown > a {
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
   color: #333;
   text-decoration: none;
   transition: color 0.3s;
@@ -49,18 +20,16 @@ nav {
 }
 
 .popup {
-  
-  top: calc(100% + 0.5rem);
+  top: calc(100% + 1rem);
   left: 0;
   display: none;
-  min-width: 10rem;
-  padding: 0.5rem;
+  min-width: 12rem;
+  padding: 1rem;
+  font-size: 1.2rem;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
-
-
 
 .dropdown:hover .popup {
   display: block;
@@ -68,7 +37,7 @@ nav {
 
 .popup a {
   display: block;
-  padding: 0.5rem;
+  padding: 1rem;
   color: #333;
   text-decoration: none;
   transition: background-color 0.3s;
@@ -81,7 +50,8 @@ nav {
 .logout-btn {
   display: block;
   width: 100%;
-  padding: 0.5rem;
+  padding: 1rem;
+  font-size: 1.2rem;
   color: #fff;
   background-color: #f44336;
   border: none;
@@ -95,7 +65,6 @@ nav {
 }
 
 /* Media Query for Responsive Design */
-
 @media (max-width: 768px) {
   nav {
     flex-direction: column;
@@ -115,10 +84,106 @@ nav {
   }
 
   .popup a {
-    padding: 0.3rem;
+    padding: 0.6rem;
+    font-size: 1.1rem;
   }
 }
 
-.popup{
-  transform: translate(100px , -780px);
+.basket-icon {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  font-size: 1.5rem;
+  color: #000;
+  text-decoration: none;
+}
+
+.hamburger-icon {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #000;
+  text-decoration: none;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.hamburger-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  min-width: 12rem;
+  padding: 1rem;
+  font-size: 1.2rem;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  height: 800px;
+  width: 1000px;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  display: none;
+  min-width: 12rem;
+  padding: 1rem;
+  font-size: 1.2rem;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown:hover .hamburger-dropdown {
+  display: block;
+}
+
+.dropdown:hover .profile-dropdown {
+  display: block;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+}
+
+.basket-dropdown:hover .popup {
+  display: none;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+}
+
+.profile-cart-container {
+  display: flex;
+  align-items: center;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.popup-profile,
+.popup-hamburger {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }

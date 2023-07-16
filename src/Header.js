@@ -1,73 +1,97 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { FaShoppingCart, FaUser } from 'react-icons/fa';
+import { AiOutlineMenu } from 'react-icons/ai';
 import '../src/styles/Header.css';
-import { useNavigate } from 'react-router-dom';
 
 const Header = ({ isLoggedIn, onLogout }) => {
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [isHomeDropdownVisible, setIsHomeDropdownVisible] = useState(false);
-
+  const [isHamburgerDropdownVisible, setHamburgerDropdownVisible] = useState(false);
+  const [isProfileDropdownVisible, setProfileDropdownVisible] = useState(false);
   const navigate = useNavigate();
 
-  const handleMouseEnter = () => {
-    setIsPopupVisible(true);
+  const handleHamburgerDropdownEnter = () => {
+    setHamburgerDropdownVisible(true);
   };
 
-  const handleMouseLeave = () => {
-    setIsPopupVisible(false);
+  const handleHamburgerDropdownLeave = () => {
+    setHamburgerDropdownVisible(false);
   };
 
-  const handleHomeDropdownEnter = () => {
-    setIsHomeDropdownVisible(true);
+  const handleProfileDropdownEnter = () => {
+    setProfileDropdownVisible(true);
   };
 
-  const handleHomeDropdownLeave = () => {
-    setIsHomeDropdownVisible(false);
+  const handleProfileDropdownLeave = () => {
+    setProfileDropdownVisible(false);
   };
 
   const handleLogout = () => {
     onLogout();
-    navigate("/");
+    navigate('/');
   };
 
   return (
     <nav>
-      <div
-        className="dropdown"
-        onMouseEnter={handleHomeDropdownEnter}
-        onMouseLeave={handleHomeDropdownLeave}
-      >
-        <NavLink to="/">Anasayfa</NavLink>
-        {isHomeDropdownVisible && (
-          <div className="popup">
-            <NavLink to="/home/link1">Link 1</NavLink>
-            <NavLink to="/home/link2">Link 2</NavLink>
-            
-          </div>
-        )}
-      </div>
-
-      {isLoggedIn ? (
+      <div className="header-left">
+        <div className="dropdown">
+          <NavLink to="/">Anasayfa</NavLink>
+        </div>
         <div
           className="dropdown"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          
+          onMouseEnter={handleHamburgerDropdownEnter}
+          onMouseLeave={handleHamburgerDropdownLeave}
         >
-          <NavLink to="/profile">Profilim</NavLink>
-          {isPopupVisible && (
-            <div className="popup">
-              <NavLink to="/profile/orders">Siparişlerim</NavLink>
-              <NavLink to="/profile/cart">Sepetim</NavLink>
-              <button className="logout-btn" onClick={handleLogout}>
-                Çıkış Yap
-              </button>
+          <AiOutlineMenu className="hamburger-icon" />
+          {isHamburgerDropdownVisible && (
+            <div className="hamburger-dropdown popup-hamburger">
+              <div className="popup-hamburger">
+                <NavLink to="/search?search_parameter=u-flex likrali takim">u-Flex Likralı Takımlar</NavLink>
+                <NavLink to="/search?search_parameter=coro-flex likrali takim">coro-Flex Likralı Takımlar</NavLink>
+                <NavLink to="/search?search_parameter=tek üst">Tek üst </NavLink>
+                <NavLink to="/search?search_parameter=desenli">Desenli Ürünler</NavLink>
+                <NavLink to="/search?search_parameter=tesettür">Likralı Tesettürler</NavLink>
+                <NavLink to="/search?search_parameter=bone">Boneler</NavLink>
+                <NavLink to="/search?search_parameter=terlik">Terlikler</NavLink>
+              </div>
             </div>
           )}
         </div>
-      ) : (
-        <NavLink to="/login">Giriş Yap</NavLink>
-      )}
+      </div>
+      <div className="header-right">
+        {isLoggedIn ? (
+          <>
+            <div className="dropdown">
+              <NavLink to="/profile/cart" className="basket-icon">
+                <FaShoppingCart />
+              </NavLink>
+            </div>
+            <div
+              className="dropdown"
+              onMouseEnter={handleProfileDropdownEnter}
+              onMouseLeave={handleProfileDropdownLeave}
+            >
+              <NavLink to="/profile" className="profile-icon">
+                <FaUser />
+              </NavLink>
+              {isProfileDropdownVisible && (
+                <div className="profile-dropdown popup-profile">
+                  <div className="popup-profile">
+                    <NavLink to="/profile/orders">Siparişlerim</NavLink>
+                    <NavLink to="/profile/cart">Sepetim</NavLink>
+                    <button className="logout-btn" onClick={handleLogout}>
+                      Çıkış Yap
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="dropdown">
+            <NavLink to="/login">Giriş yap</NavLink>
+          </div>
+        )}
+      </div>
     </nav>
   );
 };

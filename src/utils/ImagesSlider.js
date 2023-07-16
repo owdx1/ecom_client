@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from 'react';
 
 const slideStyles = {
   width: "100%",
@@ -48,24 +48,33 @@ const dotStyle = {
 
 const activeDotStyle = {
   ...dotStyle,
-  color: "blue", 
+  color: "blue",
 };
 
-const ImageSlider = ({ slides }) => {
+const ImageSlider = ({ slides, selectedImage }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const selectedIndex = slides.findIndex((slide) => slide.url === selectedImage);
+    setCurrentIndex(selectedIndex >= 0 ? selectedIndex : 0);
+  }, [selectedImage, slides]);
+
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
   };
+
   const goToNext = () => {
     const isLastSlide = currentIndex === slides.length - 1;
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
   };
+
   const goToSlide = (slideIndex) => {
     setCurrentIndex(slideIndex);
   };
+
   const slideStylesWidthBackground = {
     ...slideStyles,
     backgroundImage: `url(${slides[currentIndex].url})`,
