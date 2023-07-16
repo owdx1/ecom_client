@@ -30,10 +30,10 @@ const ASingleProduct = () => {
   
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/shop/products/${product_id}`);
+      const response = await fetch(`http://localhost:5000/shop/products/24`);
       if (response.ok) {
-        const { transformedData,sizeIsNotNUll } = await response.json();
-        console.log("TRANSFORMED DATA" , transformedData , "NNULL OLMAYAN SIZELER" ,  sizeIsNotNUll);
+        const { transformedData,SizeIsNotNUll } = await response.json();
+        console.log("TRANSFORMED DATA" , transformedData , "NNULL OLMAYAN SIZELER" ,  SizeIsNotNUll);
         
       } else {
         throw new Error('An error occurred while fetching the products');
