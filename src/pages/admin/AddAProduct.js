@@ -36,8 +36,8 @@ const AddAProduct = () => {
     'haki', 'menekse', 'kot_mavisi', 'bej', 'kahverengi', 'kum_rengi', 'turuncu_turkuaz',
     'mint_yesili', 'mavi', 'krem', 'antep_fistigi'
   ];
-  const sizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
-  const sizes_i = [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45];
+  const sizes = ['bos','XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+  const sizes_i = [0,35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45];
   const patterns = ['likrali soft', 'likrali koroflex', 'trikoton', 'alpaka'];
 
   const handleAddProduct = async (event) => {

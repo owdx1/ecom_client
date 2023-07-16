@@ -26,12 +26,23 @@ const Search = () => {
     'haki', 'menekse', 'kot_mavisi', 'bej', 'kahverengi', 'kum_rengi', 'turuncu_turkuaz',
     'mint_yesili', 'mavi', 'krem', 'antep_fistigi'
   ];
-  const categories = [
+  const categories = {
+    'takim':1,
+    'tek-ust':2,
+    'tek-alt':3,
+    'tesettur':4,
+    'bone':5,
+    'terlik':6
+};
+const categoryArray =[
     'takim',
     'tek-ust',
     'tek-alt',
-    'tesettur'
-  ];
+    'tesettur',
+    'bone',
+    'terlik'
+]
+
 
   useEffect(() => {
     const fetchOriginalProducts = async () => {
@@ -82,8 +93,9 @@ const Search = () => {
     const filtered = originalProducts.filter((product) =>
       (selectedSize === '' || product.size === selectedSize) &&
       (selectedColor === '' || product.color === selectedColor) 
-     // && (selectedCategory === '' || product.category === selectedCategory) simdilik kategori bir ise yaramıyo bu dursun bi
+      && (selectedCategory === '' || product.category_id === categories[selectedCategory]) 
     );
+    
     setFilteredProducts(filtered);
 
     const queryParams = new URLSearchParams();
@@ -166,7 +178,7 @@ const Search = () => {
                 <div className="search-feature">
                   <span>Category:</span>
                   <div className="category-options">
-                    {categories.map((category) => (
+                    {categoryArray.map((category) => (
                       <label key={category}>
                         <input
                           type="button"

@@ -39,6 +39,7 @@
           if (response.ok) {
             const { data } = await response.json();
             setOriginalProducts(data);
+            
             setFilteredProducts(data);
             console.log(data);
           } else {
@@ -64,15 +65,15 @@
       if (option === 'takim') {
         filteredProducts = filteredProducts.filter((product) => product.category_id === 1);
       } else if (option === 'tek-ust') {
-        filteredProducts = filteredProducts.filter((product) => product.category_id === 1);
+        filteredProducts = filteredProducts.filter((product) => product.category_id === 2);
       } else if (option === 'tek-alt') {
-        filteredProducts = filteredProducts.filter((product) => product.category_id === 1);
+        filteredProducts = filteredProducts.filter((product) => product.category_id === 3);
       } else if (option === 'tesettur') {
-        filteredProducts = filteredProducts.filter((product) => product.category_id === 1);
+        filteredProducts = filteredProducts.filter((product) => product.category_id === 4);
       } else if (option === 'bone') {
-        filteredProducts = filteredProducts.filter((product) => product.category_id === 2);
+        filteredProducts = filteredProducts.filter((product) => product.category_id === 5);
       } else if (option === 'terlik') {
-        filteredProducts = filteredProducts.filter((product) => product.category_id === 2);
+        filteredProducts = filteredProducts.filter((product) => product.category_id === 6);
       }
       
       setFilteredProducts(filteredProducts);
@@ -169,7 +170,7 @@
                 </Link>
               ))}
               {searchResults.length === 5 && (
-                <NavLink to="/search" className="see-all-link">
+                <NavLink to={`/search?search_parameter=${searchTerm}`} className="see-all-link">
                   See All Results
                 </NavLink>
               )}
@@ -231,11 +232,13 @@
                   
                   <div className="first-detail">
                     <p>{product.product_name}</p>
+                    <p>Renk: {product.color}</p>
+                    <p>İndirim {product.discount}</p>
                   </div>
                     
-                  
+                   {/***** 
                   {product.quantity <= 4 && product.quantity !== 0 ? <p className='p-quan'>Son {product.quantity} ürün!</p> : null}
-                  {product.quantity > 0 ? <p className='p-quan'>Stokta ✔️</p> : <p>Stokta değil ❌</p>}
+                  {product.quantity > 0 ? <p className='p-quan'>Stokta ✔️</p> : <p>Stokta değil ❌</p>} ****/}
                   <div className="product-price-div">
                       <p className="product-price"> {product.price} TL</p>
                   </div>

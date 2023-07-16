@@ -28,6 +28,7 @@ function App() {
   useEffect(() =>{
     const accessToken = localStorage.getItem('accessToken');
     
+    
     if(accessToken === 'undefined' || !accessToken){
       handleLogout();
     }
@@ -37,6 +38,8 @@ function App() {
 
 
   }, [])
+
+  
 
   const handleLogout = () => {
     setIsLoggedIn(false);

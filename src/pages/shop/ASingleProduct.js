@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { json, useLocation, useNavigate} from 'react-router-dom';
 import ImageSlider from '../../utils/ImagesSlider';
 import '../../styles/ASingleProduct.css';
 
 const ASingleProduct = () => {
+  const navigate = useNavigate();
+  const [errorM, setErrorM] = useState("")
   const slides = [
     { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
     { url: 'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg', title: 'boats' },
@@ -14,9 +16,12 @@ const ASingleProduct = () => {
   const location = useLocation();
   const { product } = location.state;
   console.log(product);
+  const accessToken = localStorage.getItem('accessToken');
 
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(slides[0].url);
+  const yollanacak_size = product.size;
+  const yollanacak_product_id = product.product_id;
 
   const increaseQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
@@ -28,8 +33,36 @@ const ASingleProduct = () => {
     }
   };
 
-  const addToCart = () => {
-    console.log(`Added ${quantity} product(s) to the cart`);
+  const addToCart = async () => {
+
+    try {  
+        
+      const response = await fetch('http://localhost:5000/shop/add-basket', {
+        method: 'POST',
+        headers:{
+          
+          Authorization:`Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({quantity, size:yollanacak_size, product_id:yollanacak_product_id }),
+      });
+      if (response.ok) {
+        const { accessToken , message} = await response.json();
+        
+        localStorage.setItem('accessToken', accessToken);
+        console.log(message);
+        
+        navigate("/");
+        
+    }else {
+      throw new Error(`HTTP error, status = ${response.status}`);
+      
+    }
+      
+    } catch (error) {
+      setErrorM(`Failed to log in: ${error.message}`);
+      
+  }
+    
   };
 
   const handleThumbnailClick = (imageURL) => {
@@ -79,6 +112,7 @@ const ASingleProduct = () => {
           </p>
         </div>
       </div>
+      {errorM && <p>{errorM}</p>}
     </div>
   );
 };
