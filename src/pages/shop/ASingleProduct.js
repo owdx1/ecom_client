@@ -32,8 +32,8 @@ const ASingleProduct = () => {
     try {
       const response = await fetch(`http://localhost:5000/shop/products/${product_id}`);
       if (response.ok) {
-        const { transformedData,SizeIsNotNUll } = await response.json();
-        console.log("TRANSFORMED DATA" , transformedData , "NNULL OLMAYAN SIZELER" ,  SizeIsNotNUll);
+        const { transformedData,sizeIsNotNUll } = await response.json();
+        console.log("TRANSFORMED DATA" , transformedData , "NNULL OLMAYAN SIZELER" ,  sizeIsNotNUll);
         
       } else {
         throw new Error('An error occurred while fetching the products');
