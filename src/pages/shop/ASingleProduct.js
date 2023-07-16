@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { json, useLocation, useNavigate} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import ImageSlider from '../../utils/ImagesSlider';
 import '../../styles/ASingleProduct.css';
 
 const ASingleProduct = () => {
   const navigate = useNavigate();
   const [errorM, setErrorM] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [loading, setLoading] = useState(true)
   const slides = [
     { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
     { url: 'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg', title: 'boats' },
@@ -15,13 +18,37 @@ const ASingleProduct = () => {
   ];
   const location = useLocation();
   const { product } = location.state;
-  console.log(product);
+
   const accessToken = localStorage.getItem('accessToken');
 
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(slides[0].url);
   const yollanacak_size = product.size;
   const yollanacak_product_id = product.product_id;
+  const { product_id } = useParams();
+  
+  
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/shop/products/${product_id}`);
+      if (response.ok) {
+        const { transformedData,SizeIsNotNUll } = await response.json();
+        console.log("TRANSFORMED DATA" , transformedData , "NNULL OLMAYAN SIZELER" ,  SizeIsNotNUll);
+        
+      } else {
+        throw new Error('An error occurred while fetching the products');
+      }
+    } catch (error) {
+      setErrorMessage('Service unavailable');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+      fetchProducts();
+  }, []);
+
 
   const increaseQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
