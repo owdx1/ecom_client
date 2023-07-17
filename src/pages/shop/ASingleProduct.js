@@ -3,8 +3,11 @@ import { json, useLocation, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import ImageSlider from '../../utils/ImagesSlider';
 import '../../styles/ASingleProduct.css';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const ASingleProduct = () => {
+const ASingleProduct = ({ isLoggedIn }) => {
+  console.log("is logged in:", isLoggedIn);
   const navigate = useNavigate();
   const [errorM, setErrorM] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -16,7 +19,7 @@ const ASingleProduct = () => {
     { url: 'https://images.wallpaperscraft.com/image/single/drone_camera_technology_171576_1600x900.jpg', title: 'drone' },
     { url: 'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg', title: 'coding' },
   ];
-  
+
   const location = useLocation();
   const { product } = location.state;
   console.log('state ile gelen product', product);
@@ -29,10 +32,9 @@ const ASingleProduct = () => {
   const [transformedData, setTransformedData] = useState([]);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedSize_i, setSelectedSize_i] = useState('');
-  const [addToCartSuccessfull, setAddToCartSuccessfull] = useState("");
-  const [totalAmount, setTotalAmount] = useState(quantity*product.price);
-  console.log("total amount init" , totalAmount);
-  
+  const [addToCartSuccessfull, setAddToCartSuccessfull] = useState('');
+  const [totalAmount, setTotalAmount] = useState(quantity * product.price);
+  console.log('total amount init', totalAmount);
 
   const fetchProducts = async () => {
     try {
@@ -42,7 +44,7 @@ const ASingleProduct = () => {
         console.log('TRANSFORMED DATA', transformedData, 'NNULL OLMAYAN SIZELER', SizeIsNotNUll);
         setTransformedData(transformedData);
         setSelectedSize(transformedData[0].size);
-        setSelectedSize_i(transformedData[0].size_i)
+        setSelectedSize_i(transformedData[0].size_i);
       } else {
         throw new Error('An error occurred while fetching the products');
       }
@@ -59,8 +61,7 @@ const ASingleProduct = () => {
 
   const increaseQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
-    console.log("suanki urun miktari" , quantity);
-   
+    console.log('suanki urun miktari', quantity);
   };
 
   const decreaseQuantity = () => {
@@ -68,6 +69,18 @@ const ASingleProduct = () => {
       setQuantity((prevQuantity) => prevQuantity - 1);
     }
   };
+
+  useEffect(() => {
+    if (errorM !== '') {
+      toast.error(errorM, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        className: 'toast-error',
+        bodyClassName: 'toast-body',
+      });
+    }
+  }, [errorM]);
+
   useEffect(() => {
     setTotalAmount(quantity * product.price);
   }, [quantity, product.price]);
@@ -77,32 +90,47 @@ const ASingleProduct = () => {
       setErrorM('Please select a size before adding to cart');
       return;
     }
+    if (!isLoggedIn) {
+      navigate('/login');
+      return; // Stop the function execution if not logged in
+    }
 
     const size = product.category_id === 6 ? selectedSize_i : selectedSize;
+    console.log('isteği yaparken', selectedSize_i, selectedSize);
+    console.log('seçim sonrasi sectigim size', size);
     const product_id = product.product_id;
     const color = product.color;
-  
+    const category = product.category_id;
+
     try {
-      const response = await fetch('http://localhost:5000/shop/add-basket', {
+      const response = await fetch(`http://localhost:5000/shop/add-basket`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           quantity,
-          size, 
+          size,
           product_id,
-          color,  
-          totalAmount}), 
-          // normalde pattern de yollamam lazım ama dbye eklenince yollarım
+          category,
+          totalAmount,
+        }),
+        // normalde pattern de yollamam lazım ama dbye eklenince yollarım
       });
       if (response.ok) {
         const { accessToken, message } = await response.json();
-  
+
         localStorage.setItem('accessToken', accessToken);
         setAddToCartSuccessfull(message);
-  
-        navigate('/');
+
+        toast.success('Ürün sepete eklendi ✔️', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+        });
+
+        setTimeout(() => {
+          navigate('/');
+        }, 3000);
       } else {
         throw new Error(`HTTP error, status = ${response.status}`);
       }
@@ -116,21 +144,20 @@ const ASingleProduct = () => {
   };
 
   const handleSizeButtonClick = (size) => {
-    if(selectedSize === size){
+    if (selectedSize === size) {
       setSelectedSize('');
-      
-    } else{
+    } else {
       setSelectedSize(size);
     }
   };
 
   const handleSize_iButtonClick = (size) => {
-    if (selectedSize_i === size){
-      selectedSize_i(0)
-    }else{
-      selectedSize_i(size);
+    if (selectedSize_i === size) {
+      setSelectedSize_i(0);
+    } else {
+      setSelectedSize_i(size);
     }
-  }
+  };
 
   return (
     <div className="container">
@@ -172,7 +199,7 @@ const ASingleProduct = () => {
             transformedData.map((data, index) => (
               <button
                 key={index}
-                className={`size-button ${selectedSize === data.size_i ? 'active' : ''}`}
+                className={`size-button ${selectedSize_i === data.size_i ? 'active' : ''}`}
                 onClick={() => handleSize_iButtonClick(data.size_i)}
               >
                 {data.size_i}
@@ -202,8 +229,7 @@ const ASingleProduct = () => {
           <p className="product-description">{product.description}</p>
         </div>
       </div>
-      {errorM && <p>{errorM}</p>}
-      {addToCartSuccessfull && addToCartSuccessfull !== '' && <p>{addToCartSuccessfull} added successfully!!!</p>}
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

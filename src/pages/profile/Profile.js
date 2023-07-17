@@ -10,7 +10,7 @@ const Profile = ({onLogout}) => {
     const accessToken = localStorage.getItem("accessToken");
     console.log("Current accessToken", accessToken);
     if (!accessToken || accessToken === "undefined") {
-      navigate("/error"); // Redirect to error page if no access token
+      navigate("/error"); 
     } else {
       fetchProfile(accessToken);
     }
@@ -25,7 +25,7 @@ const Profile = ({onLogout}) => {
       });
   
       if (response.status === 401) {
-        onLogout(); // Call onLogout function here
+        onLogout(); 
         navigate('/');
       }
   
