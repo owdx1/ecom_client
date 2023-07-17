@@ -4,7 +4,7 @@ import { FaShoppingCart, FaUser } from 'react-icons/fa';
 import { AiOutlineMenu } from 'react-icons/ai';
 import '../src/styles/Header.css';
 
-const Header = ({ isLoggedIn, onLogout }) => {
+const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
   const [isHamburgerDropdownVisible, setHamburgerDropdownVisible] = useState(false);
   const [isProfileDropdownVisible, setProfileDropdownVisible] = useState(false);
   const navigate = useNavigate();
@@ -63,6 +63,9 @@ const Header = ({ isLoggedIn, onLogout }) => {
             <div className="dropdown">
               <NavLink to="/profile/cart" className="basket-icon">
                 <FaShoppingCart />
+                {numberOfProductsInCart > 0 && (
+                  <span className="cart-counter">{numberOfProductsInCart}</span>
+                )}
               </NavLink>
             </div>
             <div

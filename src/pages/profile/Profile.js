@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../styles/Profile.css"; // Import the CSS file for Profile component
+import "../../styles/Profile.css"; 
 
-const Profile = () => {
+const Profile = ({onLogout}) => {
   const [customer, setCustomer] = useState(null);
   const navigate = useNavigate();
 
@@ -16,50 +16,57 @@ const Profile = () => {
     }
   }, []);
 
-  const fetchProfile = (accessToken) => {
-    fetch("http://localhost:5000/profile", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const { customer, accessToken: newAccessToken } = data;
-        localStorage.setItem("accessToken", newAccessToken);
-        console.log("New accessToken", newAccessToken);
-        setCustomer(customer);
-        console.log(customer);
-      })
-      .catch((error) => {
-        console.error("Error fetching profile:", error);
-        // Handle error here, e.g., show an error message or redirect to an error page
+  const fetchProfile = async (accessToken) => {
+    try {
+      const response = await fetch("http://localhost:5000/profile", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
+  
+      if (response.status === 401) {
+        onLogout(); // Call onLogout function here
+        navigate('/');
+      }
+  
+      if (!response.ok) {
+        throw new Error("Error fetching profile");
+      }
+  
+      const data = await response.json();
+      const { customer, accessToken: newAccessToken } = data;
+  
+      localStorage.setItem("accessToken", newAccessToken);
+      console.log("New accessToken", newAccessToken);
+      setCustomer(customer);
+      console.log(customer);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
   };
-
+  
   if (!customer) {
-    return <div>Loading...</div>; // Render a loading indicator while fetching profile
+    return <div>Loading...</div>; 
   }
 
   const handleUpdateInfo = () => {
-    // Handle updating customer information
-    // This function will be called when the "bilgilerimi güncelle" button is clicked
+    
   };
 
   const handleMyOrders = () => {
-    // Handle displaying customer's orders
-    // This function will be called when the "siparişlerim" button is clicked
+    
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    navigate("/login"); // Redirect to the login page after logout
+    onLogout();
+    navigate("/"); 
   };
 
   return (
     <div className="profile-container">
       <div className="info-container">
         <p>
-          <span className="label">Name:</span> {customer.first_name}
+          <span className="label">Name:</span> {customer.first_name} {customer.last_name}
         </p>
         <p>
           <span className="label">Email:</span> {customer.email}

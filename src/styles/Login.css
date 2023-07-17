@@ -103,3 +103,7 @@
     background-color: #ffffff;
 
 }
+.cart-counter {
+    border-radius: 10px;
+    padding-bottom: 3px;
+}

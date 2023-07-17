@@ -151,3 +151,21 @@ html {
   margin-bottom: 10px;
   
 }
+
+.size-button {
+  padding: 10px;
+  background-color: #eee;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.size-button.active {
+  background-color: #dd63ed;
+  color: #fff;
+}
+
+.size-button:hover {
+  background-color: #ddd;
+}

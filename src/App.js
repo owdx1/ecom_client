@@ -20,46 +20,66 @@ import Search from './pages/search/Search';
 
 
 
+
 function App() {
 
   const [isLoggedIn , setIsLoggedIn] = useState(false);
-  
+  const [numberOfProductsInCart, setNumberOfProductsInCart] = useState(0);
 
-  useEffect(() =>{
+  
+  
+  useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
-    
-    
     if(accessToken === 'undefined' || !accessToken){
       handleLogout();
-    }
+    } 
     else{
       setIsLoggedIn(true);
     }
+    const getNumberOfProductsInCart = async (accessToken) => {
 
+      try {
+        const response = await fetch('http://localhost:5000/cart-control' , {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        if(response.ok){
+          const {data} = await response.json();
+          setNumberOfProductsInCart(data)
+  
+        } else {
+          console.error('app js in icindeki useeffecte hata var')
+        }
+  
+        
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getNumberOfProductsInCart(accessToken);
 
   }, [])
-
-  
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('accessToken');
   };
+
+
+
+
   
   return (
     <>
-      <Header isLoggedIn= {isLoggedIn} onLogout={handleLogout}/>
-      
-      
+      <Header isLoggedIn= {isLoggedIn} onLogout={handleLogout} numberOfProductsInCart={numberOfProductsInCart}/>
       
       <Routes>
         <Route path='/' element={<Shop />}></Route>
         <Route path='/shop/products/:product_id' element={<ASingleProduct />}></Route>
-
         <Route path='/search' element={<Search />}></Route>
-
-
-        <Route path='/profile' element={<Profile />}></Route>
+        <Route path='/profile' element={<Profile onLogout={handleLogout}/>}></Route>
         <Route path='/profile/cart' element={<Cart />}></Route>
 
 

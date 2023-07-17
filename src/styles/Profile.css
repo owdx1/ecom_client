@@ -24,7 +24,7 @@
   }
   
   .update-button {
-    background-color: #4caf50;
+    background-color: rgb(111, 107, 107);
     color: white;
     padding: 10px 20px;
     font-size: 16px;
@@ -34,7 +34,7 @@
   }
   
   .orders-button {
-    background-color: #fbc02d;
+    background-color: rgb(111, 107, 107);
     color: white;
     padding: 10px 20px;
     font-size: 16px;
@@ -44,13 +44,12 @@
   }
   
   .logout-button {
-    background-color: #f44336;
+    background-color: rgb(111, 107, 107);
     color: white;
     padding: 10px 20px;
     font-size: 16px;
     border: none;
     cursor: pointer;
   }
-  
-  /* Add more styles as needed */
+
   
