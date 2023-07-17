@@ -10,6 +10,7 @@
   import Register from './pages/auth/Register';
   import PatchASingleProduct from './pages/admin/PatchASingleProduct';
   import { useState, useEffect } from 'react';
+  
   import Profile from './pages/profile/Profile';
   import Cart from './pages/profile/Cart';
   import ASingleProduct from './pages/shop/ASingleProduct';
@@ -25,13 +26,15 @@
 
     const [isLoggedIn , setIsLoggedIn] = useState(false);
     const [numberOfProductsInCart, setNumberOfProductsInCart] = useState(0);
-
+    
     
     
     useEffect(() => {
       const accessToken = localStorage.getItem('accessToken');
       if(accessToken === 'undefined' || !accessToken){
         handleLogout();
+        
+        
       } 
       else{
         setIsLoggedIn(true);
@@ -39,14 +42,17 @@
       const getNumberOfProductsInCart = async (accessToken) => {
 
         try {
-          const response = await fetch('http://localhost:5000/cart-control' , {
+          const response = await fetch('http://localhost:5000/product-num' , {
             headers: {
               Authorization: `Bearer ${accessToken}`
             }
           })
           if(response.ok){
-            const {data} = await response.json();
-            setNumberOfProductsInCart(data)
+            const allFetch = await response.json();
+            const {productNum} = allFetch;
+            console.log("şuanki urun miktari" , productNum);
+            setNumberOfProductsInCart(productNum);
+            
     
           } else if(response.status === 401){
             handleLogout();

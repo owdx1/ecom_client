@@ -5,6 +5,7 @@ const Cart = ({onLogout}) => {
   const [customer , setCustomer] = useState({})
 
   const navigate = useNavigate();
+  const [dataDisplay , setDataDisplay] = useState([]);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -34,8 +35,10 @@ const Cart = ({onLogout}) => {
       }
   
       const data = await response.json();
+      
       const { customer , newData , accessToken: newAccessToken } = data;
-      console.log("kartın içeriği" , newData);
+      setDataDisplay(newData);
+      console.log("suanki data " , dataDisplay);
       localStorage.setItem("accessToken", newAccessToken);
       
       setCustomer(customer);
@@ -48,7 +51,16 @@ const Cart = ({onLogout}) => {
 
 
   return (
-    <div>{customer.customer_id}</div>
+    <>
+      <div>{customer.id}</div>
+      <div>
+        {
+          dataDisplay.map((product) => (
+            <p>{product.price}</p>
+          ))
+        }
+      </div>
+    </>
   )
 }
 
