@@ -39,7 +39,7 @@ const Profile = ({onLogout}) => {
       localStorage.setItem("accessToken", newAccessToken);
       console.log("New accessToken", newAccessToken);
       setCustomer(customer);
-      console.log(customer);
+      console.log("suanki customerim" , customer);
     } catch (error) {
       console.error("Error fetching profile:", error);
     }

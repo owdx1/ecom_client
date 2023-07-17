@@ -51,6 +51,7 @@
             const allFetch = await response.json();
             const {productNum} = allFetch;
             console.log("şuanki urun miktari" , productNum);
+            
             setNumberOfProductsInCart(productNum);
             
     
