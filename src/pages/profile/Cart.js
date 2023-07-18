@@ -91,7 +91,7 @@ const Cart = ({ onLogout }) => {
             <div className="cart-item" key={product.id}>
               <img src={dummmyImage} alt="Product" className="product-image" />
               <div className="product-details">
-                <p>{product.product_name}</p>
+                <h2>{product.product_name}</h2>
                 <p>Price: {product.price}</p>
                 <p>Quantity: {product.quantity} tane</p>
                 <p>Color: {product.color}</p>

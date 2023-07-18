@@ -30,10 +30,12 @@ function Login({ onLogin }) {
         onLogin();
         navigate('/', { state: { toastMessage: message } });
       } else {
-        throw new Error(`HTTP error, status = ${response.status}`);
+        const { message } = await response.json();
+        throw new Error(message);
       }
     } catch (error) {
       setError(`Failed to log in: ${error.message}`);
+      toast.error(`Failed to log in: ${error.message}`);
     }
   };
 
