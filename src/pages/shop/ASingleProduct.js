@@ -57,6 +57,7 @@ const ASingleProduct = ({ isLoggedIn }) => {
 
   useEffect(() => {
     fetchProducts();
+    window.scrollTo(0,0)
   }, []);
 
   const increaseQuantity = () => {

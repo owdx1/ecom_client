@@ -1,4 +1,5 @@
-giriş yaparken hata olduğu zaman kullanıcıya hata mesajı vermek lazım o duruma göre
-popup dropdown her zaman true mu başlıyo emin değilim onun kontrol edilmesi gerekli
+giriş yaparken hata olduğu zaman kullanıcıya hata mesajı vermek lazım o duruma göre +
+popup dropdown her zaman true mu başlıyo emin değilim onun kontrol edilmesi gerekli ? 
 header'a sepet, sepette bulunan ürün miktarı vs şeyler eklenecek
-register olunuyor, fakat register sonrası verilen mesajlarda sıkıntı var
+register olunuyor, fakat register sonrası verilen mesajlarda sıkıntı var +
+mobil cihazlar için banner slider özelliği lazım
