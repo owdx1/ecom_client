@@ -21,7 +21,9 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-  }
+    margin: 40px;
+    gap: 10px;
+}
   
   .update-button {
     background-color: rgb(111, 107, 107);

@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaUser } from 'react-icons/fa';
-import { AiOutlineMenu } from 'react-icons/ai';
+import { styled } from '@mui/material/styles';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiList from '@mui/material/List';
+import MuiListItem from '@mui/material/ListItem';
+import MuiListItemIcon from '@mui/material/ListItemIcon';
+import MuiListItemText from '@mui/material/ListItemText';
+import MuiBadge from '@mui/material/Badge';
+import { ShoppingCart, Person, Menu } from '@mui/icons-material';
 import '../src/styles/Header.css';
 
 const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
@@ -30,31 +36,59 @@ const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
     navigate('/');
   };
 
+  const handleHamburgerLinkClick = () => {
+    setHamburgerDropdownVisible(false);
+  };
+
+  const handleProfileLinkClick = () => {
+    setProfileDropdownVisible(false);
+  };
+
+  const Drawer = styled(MuiDrawer)(({ theme }) => ({
+    '& .MuiDrawer-paper': {
+      width: '250px',
+    },
+  }));
+
+  const LinkList = ({ links, onClose }) => (
+    <MuiList>
+      {links.map(({ to, label }) => (
+        <MuiListItem button key={to} component={NavLink} to={to} onClick={onClose}>
+          <MuiListItemText primary={label} />
+        </MuiListItem>
+      ))}
+    </MuiList>
+  );
+
   return (
     <nav>
       <div className="header-left">
-        <div className="dropdown">
-          <NavLink to="/">Anasayfa</NavLink>
-        </div>
+        
         <div
           className="dropdown"
           onMouseEnter={handleHamburgerDropdownEnter}
           onMouseLeave={handleHamburgerDropdownLeave}
         >
-          <AiOutlineMenu className="hamburger-icon" />
+          <Menu className="hamburger-icon" />
           {isHamburgerDropdownVisible && (
-            <div className="hamburger-dropdown popup-hamburger">
-              <div className="popup-hamburger">
-                <NavLink to="/search?search_parameter=u-flex likrali takim">u-Flex Likralı Takımlar</NavLink>
-                <NavLink to="/search?search_parameter=coro-flex likrali takim">coro-Flex Likralı Takımlar</NavLink>
-                <NavLink to="/search?search_parameter=tek üst">Tek üst </NavLink>
-                <NavLink to="/search?search_parameter=desenli">Desenli Ürünler</NavLink>
-                <NavLink to="/search?search_parameter=tesettür">Likralı Tesettürler</NavLink>
-                <NavLink to="/search?search_parameter=bone">Boneler</NavLink>
-                <NavLink to="/search?search_parameter=terlik">Terlikler</NavLink>
-              </div>
-            </div>
+            <Drawer anchor="left" open={isHamburgerDropdownVisible} onClose={handleHamburgerDropdownLeave}>
+              <LinkList
+                links={[
+                  { to: '/search?search_parameter=u-flex likrali takim', label: 'u-Flex Likralı Takımlar' },
+                  { to: '/search?search_parameter=coro-flex likrali takim', label: 'coro-Flex Likralı Takımlar' },
+                  { to: '/search?search_parameter=tek üst', label: 'Tek üst' },
+                  { to: '/search?search_parameter=desenli', label: 'Desenli Ürünler' },
+                  { to: '/search?search_parameter=tesettür', label: 'Likralı Tesettürler' },
+                  { to: '/search?search_parameter=bone', label: 'Boneler' },
+                  { to: '/search?search_parameter=terlik', label: 'Terlikler' },
+                ]}
+                onClose={handleHamburgerLinkClick}
+              />
+            </Drawer>
           )}
+        </div>
+        <div className="dropdown">
+          <NavLink to="/">Anasayfa</NavLink>
         </div>
       </div>
       <div className="header-right">
@@ -62,10 +96,9 @@ const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
           <>
             <div className="dropdown">
               <NavLink to="/profile/cart" className="basket-icon">
-                <FaShoppingCart />
-                {numberOfProductsInCart > 0 && (
-                  <span className="cart-counter">{numberOfProductsInCart}</span>
-                )}
+                <MuiBadge badgeContent={numberOfProductsInCart} color="secondary">
+                  <ShoppingCart />
+                </MuiBadge>
               </NavLink>
             </div>
             <div
@@ -74,18 +107,23 @@ const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
               onMouseLeave={handleProfileDropdownLeave}
             >
               <NavLink to="/profile" className="profile-icon">
-                <FaUser />
+                <Person />
               </NavLink>
               {isProfileDropdownVisible && (
-                <div className="profile-dropdown popup-profile">
-                  <div className="popup-profile">
-                    <NavLink to="/profile/orders">Siparişlerim</NavLink>
-                    <NavLink to="/profile/cart">Sepetim</NavLink>
-                    <button className="logout-btn" onClick={handleLogout}>
-                      Çıkış Yap
-                    </button>
-                  </div>
-                </div>
+                <Drawer anchor="right" open={isProfileDropdownVisible} onClose={handleProfileDropdownLeave}>
+                  <LinkList
+                    links={[
+                      { to: '/profile' , label: 'Profilim'},
+                      { to: '/profile/orders', label: 'Siparişlerim' },
+                      { to: '/profile/cart', label: 'Sepetim' }
+                      
+                    ]}
+                    onClose={handleProfileLinkClick}
+                  />
+                  <button className="logout-btn" onClick={handleLogout}>
+                    Çıkış Yap
+                  </button>
+                </Drawer>
               )}
             </div>
           </>

@@ -1,6 +1,18 @@
 .shop-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center; /* Center the products on larger screens */
+}
+
+/* For mobile devices, display 2 products per row */
+@media (max-width: 600px) {
+  .shop-container {
+    justify-content: flex-start;
+  }
+
+  .product-item {
+    width: calc(50% - 20px);
+  }
 }
 
 .product-item {
@@ -42,7 +54,7 @@
 
 .product-details-main {
   display: block;
-  width: 400px;
+  width: 100%; /* Adjust the width for mobile devices */
   height: 100px;
 }
 
@@ -99,7 +111,7 @@ h3 {
 .filter-button {
   margin: 0 10px;
   padding: 8px 16px;
-  background-color: #eee;
+  background-color: #555252;
   border: none;
   border-radius: 4px;
   font-size: 14px;
@@ -111,7 +123,7 @@ h3 {
 }
 
 .filter-button.active {
-  background-color: #714d4d;
+  background-color: #353434;
 }
 
 .search-container {
@@ -127,7 +139,7 @@ h3 {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
-  width: 400px;
+  width: 100%; /* Adjust the width for mobile devices */
 }
 
 .search-container input[type="text"]::placeholder {
@@ -148,7 +160,7 @@ h3 {
   border: 1px solid #ccc;
   border-top: none;
   z-index: 1;
-  width: 700px;
+  width: 100%; /* Adjust the width for mobile devices */
 }
 
 .search-result-item {
@@ -179,13 +191,8 @@ h3 {
 }
 
 .CircularProgress {
-
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: '100vh';
-  /*display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',*/
+  min-height: 100vh;
 }

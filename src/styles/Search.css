@@ -179,3 +179,8 @@ html{
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
 }
+
+
+.ara-button{
+  background-color:#6f70ac;
+}

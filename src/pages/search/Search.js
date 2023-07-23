@@ -1,7 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import dummyImage from '../../images/cat.jpg';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+
 import '../../styles/Search.css';
+
+const SearchContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: theme.spacing(2),
+  marginBottom: theme.spacing(2),
+}));
+
+const FilterButton = styled(Button)(({ theme, selected }) => ({
+  backgroundColor: selected ? theme.palette.primary.main : 'transparent',
+  color: selected ? theme.palette.common.white : theme.palette.text.primary,
+  '&:hover': {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+}));
 
 const Search = () => {
   const location = useLocation();
@@ -27,22 +52,21 @@ const Search = () => {
     'mint_yesili', 'mavi', 'krem', 'antep_fistigi'
   ];
   const categories = {
-    'takim':1,
-    'tek-ust':2,
-    'tek-alt':3,
-    'tesettur':4,
-    'bone':5,
-    'terlik':6
-};
-const categoryArray =[
+    'takim': 1,
+    'tek-ust': 2,
+    'tek-alt': 3,
+    'tesettur': 4,
+    'bone': 5,
+    'terlik': 6
+  };
+  const categoryArray = [
     'takim',
     'tek-ust',
     'tek-alt',
     'tesettur',
     'bone',
     'terlik'
-]
-
+  ];
 
   useEffect(() => {
     const fetchOriginalProducts = async () => {
@@ -51,7 +75,6 @@ const categoryArray =[
         if (response.ok) {
           const { data } = await response.json();
           setOriginalProducts(data);
-          originalProducts.map((prod) => console.log(prod))
         } else {
           throw new Error('An error occurred while fetching original products');
         }
@@ -92,10 +115,10 @@ const categoryArray =[
 
     const filtered = originalProducts.filter((product) =>
       (selectedSize === '' || product.size === selectedSize) &&
-      (selectedColor === '' || product.color === selectedColor) 
-      && (selectedCategory === '' || product.category_id === categories[selectedCategory]) 
+      (selectedColor === '' || product.color === selectedColor)
+      && (selectedCategory === '' || product.category_id === categories[selectedCategory])
     );
-    
+
     setFilteredProducts(filtered);
 
     const queryParams = new URLSearchParams();
@@ -115,83 +138,84 @@ const categoryArray =[
 
   return (
     <div className="search-page">
-      
       <div className="search-container">
         <div className="search-options">
-          <div className="search-buttons">
-            <button
-              className={`search-button ${activeButton === 'name' ? 'active' : ''}`}
+          <SearchContainer>
+            <FilterButton
+              variant="contained"
+              selected={activeButton === 'name'}
               onClick={() => setActiveButton('name')}
             >
               İsme göre ara
-            </button>
-            <button
-              className={`search-button ${activeButton === 'features' ? 'active' : ''}`}
+            </FilterButton>
+            <FilterButton
+              variant="contained"
+              selected={activeButton === 'features'}
               onClick={() => setActiveButton('features')}
             >
               Özelliğe göre ara
-            </button>
-          </div>
+            </FilterButton>
+          </SearchContainer>
           {activeButton === 'name' ? (
             <form onSubmit={handleSearchByName}>
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <button type="submit">Ara</button>
+              <FormControl>
+                <InputBase
+                  type="text"
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  startAdornment={<SearchIcon />}
+                />
+              </FormControl>
+              <Button className='ara-button' type="submit" variant="contained">Ara</Button>
             </form>
           ) : (
             <form onSubmit={handleSearchByFeatures}>
               <div className="search-features">
                 <div className="search-feature">
                   <span>Size:</span>
-                  <div className='size-options'>
-                    {sizes.map((size) => (
-                      <label key={size}>
-                        <input
-                          type="button"
-                          onClick={() => setSelectedSize(size === selectedSize ? '' : size)}
-                          value={size}
-                          className={`filter-button ${size === selectedSize ? 'active' : ''}`}
-                        />
-                      </label>
-                    ))}
-                  </div>
+                  <FormControl>
+                    <Select
+                      value={selectedSize}
+                      onChange={(e) => setSelectedSize(e.target.value)}
+                    >
+                      <MenuItem value="">Tümü</MenuItem>
+                      {sizes.map((size) => (
+                        <MenuItem key={size} value={size}>{size}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
                 <div className="search-feature">
                   <span>Color:</span>
-                  <div className="color-options">
-                    {colors.map((color) => (
-                      <label key={color}>
-                        <input
-                          type="button"
-                          onClick={() => setSelectedColor(color === selectedColor ? '' : color)}
-                          value={color}
-                          className={`filter-button ${color === selectedColor ? 'active' : ''}`}
-                        />
-                      </label>
-                    ))}
-                  </div>
+                  <FormControl>
+                    <Select
+                      value={selectedColor}
+                      onChange={(e) => setSelectedColor(e.target.value)}
+                    >
+                      <MenuItem value="">Tümü</MenuItem>
+                      {colors.map((color) => (
+                        <MenuItem key={color} value={color}>{color}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
                 <div className="search-feature">
                   <span>Category:</span>
-                  <div className="category-options">
-                    {categoryArray.map((category) => (
-                      <label key={category}>
-                        <input
-                          type="button"
-                          onClick={() => setSelectedCategory(category === selectedCategory ? '' : category)}
-                          value={category}
-                          className={`filter-button ${category === selectedCategory ? 'active' : ''}`}
-                        />
-                      </label>
-                    ))}
-                  </div>
+                  <FormControl>
+                    <Select
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                      <MenuItem value="">Tümü</MenuItem>
+                      {categoryArray.map((category) => (
+                        <MenuItem key={category} value={category}>{category}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
               </div>
-              <button type="submit">Ara</button>
+              <Button type="submit" variant="contained">Ara</Button>
             </form>
           )}
         </div>
@@ -203,35 +227,31 @@ const categoryArray =[
         </div>
       )}
       {
-        filteredProducts.length > 0 ? 
-        <div className="shop-container">
-          {filteredProducts.map((product) => (
-            <Link key={product.product_id} to={`/shop/products/${product.product_id}`} state={{ product }}>
-              <div className="product-item">
-                <div className="product-image">
-                  <img src={dummyImage} alt={product.product_id} />
-                </div>
-                <div className="product-details-main">
-                  <div className="first-detail">
-                    <p>{product.product_name}</p>
+        filteredProducts.length > 0 ?
+          <div className="shop-container">
+            {filteredProducts.map((product) => (
+              <Link key={product.product_id} to={`/shop/products/${product.product_id}`} state={{ product }}>
+                <div className="product-item">
+                  <div className="product-image">
+                    <img src={dummyImage} alt={product.product_id} />
                   </div>
-                  {product.quantity <= 4 && product.quantity !== 0 ? <p>Son {product.quantity} ürün!</p> : null}
-                  {product.quantity > 0 ? <p>Stokta ✔️</p> : <p>Stokta değil ❌</p>}
-                  <div className="product-price-div">
-                    <p className="product-price">{product.price} TL</p>
+                  <div className="product-details-main">
+                    <div className="first-detail">
+                      <p>{product.product_name}</p>
+                    </div>
+                    {product.quantity <= 4 && product.quantity !== 0 ? <p>Son {product.quantity} ürün!</p> : null}
+                    {product.quantity > 0 ? <p>Stokta ✔️</p> : <p>Stokta değil ❌</p>}
+                    <div className="product-price-div">
+                      <p className="product-price">{product.price} TL</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      :
-        <h1>ürün bulunamadi</h1>
-
-      }               
-      
-
-
+              </Link>
+            ))}
+          </div>
+          :
+          <h1>ürün bulunamadi</h1>
+      }
     </div>
   );
 };

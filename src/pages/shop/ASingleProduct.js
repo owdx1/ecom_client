@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { json, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import ImageSlider from '../../utils/ImagesSlider';
 import '../../styles/ASingleProduct.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {
+  Container,
+  Typography,
+  Button,
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  IconButton,
+  Box,
+  CircularProgress,
+} from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
 
 const ASingleProduct = ({ isLoggedIn }) => {
-  console.log("is logged in:", isLoggedIn);
   const navigate = useNavigate();
   const [errorM, setErrorM] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -22,7 +34,6 @@ const ASingleProduct = ({ isLoggedIn }) => {
 
   const location = useLocation();
   const { product } = location.state;
-  console.log('state ile gelen product', product);
 
   const accessToken = localStorage.getItem('accessToken');
   const [quantity, setQuantity] = useState(1);
@@ -34,14 +45,12 @@ const ASingleProduct = ({ isLoggedIn }) => {
   const [selectedSize_i, setSelectedSize_i] = useState('');
   const [addToCartSuccessfull, setAddToCartSuccessfull] = useState('');
   const [totalAmount, setTotalAmount] = useState(quantity * product.price);
-  console.log('total amount init', totalAmount);
 
   const fetchProducts = async () => {
     try {
       const response = await fetch(`http://localhost:5000/shop/products/${product_id}`);
       if (response.ok) {
         const { transformedData, SizeIsNotNUll } = await response.json();
-        console.log('TRANSFORMED DATA', transformedData, 'NNULL OLMAYAN SIZELER', SizeIsNotNUll);
         setTransformedData(transformedData);
         setSelectedSize(transformedData[0].size);
         setSelectedSize_i(transformedData[0].size_i);
@@ -57,12 +66,11 @@ const ASingleProduct = ({ isLoggedIn }) => {
 
   useEffect(() => {
     fetchProducts();
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
   }, []);
 
   const increaseQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
-    console.log('suanki urun miktari', quantity);
   };
 
   const decreaseQuantity = () => {
@@ -97,8 +105,6 @@ const ASingleProduct = ({ isLoggedIn }) => {
     }
 
     const size = product.category_id === 6 ? selectedSize_i : selectedSize;
-    console.log('isteği yaparken', selectedSize_i, selectedSize);
-    console.log('seçim sonrasi sectigim size', size);
     const product_id = product.product_id;
     const color = product.color;
     const category = product.category_id;
@@ -116,7 +122,6 @@ const ASingleProduct = ({ isLoggedIn }) => {
           category,
           totalAmount,
         }),
-        // normalde pattern de yollamam lazım ama dbye eklenince yollarım
       });
       if (response.ok) {
         const { accessToken, message } = await response.json();
@@ -161,77 +166,119 @@ const ASingleProduct = ({ isLoggedIn }) => {
   };
 
   return (
-    <div className="container">
-      <div className="thumbnail-gallery">
-        {slides.map((slide, index) => (
-          <img
-            key={index}
-            src={slide.url}
-            alt={slide.title}
-            className={`thumbnail-image ${slide.url === selectedImage ? 'active' : ''}`}
-            onClick={() => handleThumbnailClick(slide.url)}
-          />
-        ))}
-      </div>
-      <div className="image-slider-container">
-        <ImageSlider slides={slides} selectedImage={selectedImage} />
-      </div>
-
-      <div className="product-details">
-        <div className="product-name-container">
-          <h2 className="product-name">{product.product_name}</h2>
-          {/*<h3 className="product-stock">{product.quantity > 0 ? 'In Stock ✔️' : 'Out of Stock ❌'}</h3>*/}
-        </div>
-
-        <p className="product-info">Color: {product.color}</p>
-        <p className="product-info">Fabric: {product.fabric}</p>
-        <div className="sizes-container">
-          {product.category_id !== 6 ? (
-            transformedData.map((data, index) => (
-              <button
+    <Container maxWidth="xl">
+      <Box mt={2}>
+        <Button
+          variant="outlined"
+          startIcon={<ArrowBack />}
+          onClick={() => navigate('/')}
+        >
+          Anasayfa
+        </Button>
+      </Box>
+      <Grid container spacing={2} mt={3}>
+        <Grid item xs={12} md={4}>
+          <div className="thumbnail-gallery">
+            {slides.map((slide, index) => (
+              <img
                 key={index}
-                className={`size-button ${selectedSize === data.size ? 'active' : ''}`}
-                onClick={() => handleSizeButtonClick(data.size)}
-              >
-                {data.size}
-              </button>
-            ))
+                src={slide.url}
+                alt={slide.title}
+                className={`thumbnail-image ${
+                  slide.url === selectedImage ? 'active' : ''
+                }`}
+                onClick={() => handleThumbnailClick(slide.url)}
+              />
+            ))}
+          </div>
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <div className="image-slider-container">
+            <ImageSlider slides={slides} selectedImage={selectedImage} />
+          </div>
+          {loading ? (
+            <CircularProgress />
           ) : (
-            transformedData.map((data, index) => (
-              <button
-                key={index}
-                className={`size-button ${selectedSize_i === data.size_i ? 'active' : ''}`}
-                onClick={() => handleSize_iButtonClick(data.size_i)}
-              >
-                {data.size_i}
-              </button>
-            ))
+            <Card>
+              <CardContent>
+                <div className="product-name-container">
+                  <Typography variant="h5" gutterBottom>
+                    {product.product_name}
+                  </Typography>
+                </div>
+                <Typography variant="body1" gutterBottom>
+                  Renk: {product.color}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  Desen: {product.fabric}
+                </Typography>
+                <div className="sizes-container">
+                  {product.category_id !== 6 ? (
+                    transformedData.map((data, index) => (
+                      <Button
+                        key={index}
+                        variant="outlined"
+                        className={`size-button ${
+                          selectedSize === data.size ? 'active' : ''
+                        }`}
+                        onClick={() => handleSizeButtonClick(data.size)}
+                      >
+                        {data.size}
+                      </Button>
+                    ))
+                  ) : (
+                    transformedData.map((data, index) => (
+                      <Button
+                        key={index}
+                        variant="outlined"
+                        className={`size-button ${
+                          selectedSize_i === data.size_i ? 'active' : ''
+                        }`}
+                        onClick={() => handleSize_iButtonClick(data.size_i)}
+                      >
+                        {data.size_i}
+                      </Button>
+                    ))
+                  )}
+                </div>
+                <Typography variant="body1" gutterBottom>
+                  Ürün ID'si: {product.product_id}
+                </Typography>
+                
+                <Typography variant="body1" gutterBottom>
+                  Fiyat: {product.price} TL
+                </Typography>
+                <div className="quantity-container">
+                  <Button variant="outlined" onClick={decreaseQuantity}>
+                    -
+                  </Button>
+                  <span className="quantity-text">{quantity}</span>
+                  <Button variant="outlined" onClick={increaseQuantity}>
+                    +
+                  </Button>
+                </div>
+                <Typography variant="body1" gutterBottom>
+                  Toplam Fiyat: {quantity * product.price} TL
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={addToCart}
+                >
+                  Sepete Ekle
+                </Button>
+                <div className="description">
+                  <Typography variant="body1" className="product-description">
+                    {product.description}
+                  </Typography>
+                </div>
+              </CardContent>
+            </Card>
           )}
-        </div>
-
-        <p className="product-info">Product ID: {product.product_id}</p>
-        <p className="product-info">Category ID: {product.category_id}</p>
-        <p className="product-info">Price: {product.price} TL</p>
-
-        <div className="quantity-container">
-          <button className="quantity-button" onClick={decreaseQuantity}>
-            -
-          </button>
-          <span className="quantity-text">{quantity}</span>
-          <button className="quantity-button" onClick={increaseQuantity}>
-            +
-          </button>
-        </div>
-        <p className="price">Total Price: {quantity * product.price} TL</p>
-        <button className="add-to-cart-button" onClick={addToCart}>
-          Add to Cart
-        </button>
-        <div className="description">
-          <p className="product-description">{product.description}</p>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
       <ToastContainer position="top-right" autoClose={3000} />
-    </div>
+    </Container>
   );
 };
 

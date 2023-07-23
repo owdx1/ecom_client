@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Container, Typography, TextField, Button, Box, Grid } from "@mui/material";
+
 import "../../styles/Profile.css";
 
 const Profile = ({ onLogout }) => {
@@ -10,11 +12,11 @@ const Profile = ({ onLogout }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordRepeat, setNewPasswordRepeat] = useState("");
-  const [changePasswordMessage ,setChangePasswordMessage] = useState("");
+  const [changePasswordMessage, setChangePasswordMessage] = useState("");
 
   useEffect(() => {
     toast.done(changePasswordMessage);
-  } , [changePasswordMessage])
+  }, [changePasswordMessage]);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -56,11 +58,11 @@ const Profile = ({ onLogout }) => {
   };
 
   const handleUpdateInfo = () => {
-    
+    navigate('/profile/update')
   };
 
   const handleMyOrders = () => {
-   
+    
   };
 
   const handleLogout = () => {
@@ -69,118 +71,125 @@ const Profile = ({ onLogout }) => {
   };
 
   const handleChangePassword = async () => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem("accessToken");
     try {
       if (!oldPassword || !newPassword || !newPasswordRepeat) {
         toast.error("Please fill in all password fields.");
         return;
       }
 
-      
-
-      const response = await fetch("http://localhost:5000/change-password", {
+      const response = await fetch("http://localhost:5000/reset-password", {
         method: "POST",
         headers: {
-          Authorization:`Bearer ${accessToken}`
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
         },
         body: JSON.stringify({oldPassword, newPassword, newPasswordRepeat}),
       });
 
       const data = await response.json();
-      console.log("suan aldıgım data" , data);
+      console.log("suan aldıgım data", data);
       setChangePasswordMessage(data.message);
 
-
       if (response.status === 200) {
+        const newAccessToken = data.accessToken;
+        localStorage.setItem('accessToken' , newAccessToken);
         setTimeout(() => {
           handleLogout();
+          navigate('/');
         }, 3000);
       }
     } catch (error) {
       console.error(error);
-      toast.error("An error occurred while changing the password.");
+      toast.error(changePasswordMessage);
     }
   };
+
+  useEffect(() => {
+    if (changePasswordMessage !== '') toast.warn(changePasswordMessage);
+  }, [changePasswordMessage]);
 
   if (!customer) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="profile-container">
-      <div className="info-container">
-        <p>
-          <span className="label">Name:</span> {customer.first_name} {customer.last_name}
-        </p>
-        <p>
-          <span className="label">Email:</span> {customer.email}
-        </p>
-        <p>
-          <span className="label">Address:</span> {customer.address}
-        </p>
-        <p>
-          <span className="label">City:</span> {customer.city}
-        </p>
-        <p>
-          <span className="label">Country:</span> {customer.country}
-        </p>
-        <p>
-          <span className="label">Customer ID:</span> {customer.customer_id} <span style={{color:"blue"}}> dennemme</span>
-        </p>
-        <p>
-          <span className="label">Last Name:</span> {customer.last_name}
-        </p>
-        <p>
-          <span className="label">Postal Code:</span> {customer.postal_code}
-        </p>
-      </div>
-
-      <div className="password-container">
-        <h2>Change Password</h2>
-        <div>
-          <label>Old Password:</label>
-          <input
-            type="text"
-            value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>New Password:</label>
-          <input
-            type="text"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Repeat New Password:</label>
-          <input
-            type="text"
-            value={newPasswordRepeat}
-            onChange={(e) => setNewPasswordRepeat(e.target.value)}
-          />
-        </div>
-        <button className="change-password-button" onClick={handleChangePassword}>
-          Şifre Değiştir
-        </button>
-      </div>
-
-      <div className="button-container">
-        {/* Existing buttons */}
-        <button className="update-button" onClick={handleUpdateInfo}>
+    <Container maxWidth="md" className="profile-container">
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <Box p={2}>
+            <Typography variant="h4">Profil Bilgisi</Typography>
+            <Typography>
+              <span className="label">İsim:</span> {customer.first_name} {customer.last_name}
+            </Typography>
+            
+            <Typography>
+              <span className="label">Soyisim:</span> {customer.email}
+            </Typography>
+            <Typography>
+              <span className="label">Adres:</span> {customer.address}
+            </Typography>
+            <Typography>
+              <span className="label">Şehir:</span> {customer.city}
+            </Typography>
+            <Typography>
+              <span className="label">Ülke:</span> {customer.country}
+            </Typography>
+          </Box>
+        </Grid>
+        <div className="button-container">
+        
+        <Button variant="contained" color="primary" onClick={handleUpdateInfo}>
           Bilgilerimi Güncelle
-        </button>
-        <button className="orders-button" onClick={handleMyOrders}>
+        </Button>
+        <Button variant="contained" color="primary" onClick={handleMyOrders}>
           Siparişlerim
-        </button>
-        <button className="logout-button" onClick={handleLogout}>
+        </Button>
+        <Button variant="contained" color="secondary" onClick={handleLogout}>
           Çıkış Yap
-        </button>
+        </Button>
       </div>
+        <Grid item xs={12} md={6}>
+          <Box p={2}>
+            <Typography variant="h4">Şifre değiştirme</Typography>
+            <TextField
+              type="text"
+              label="Eski Şifre"
+              fullWidth
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+            />
+            <TextField
+              type="text"
+              label="Yeni Şifre"
+              fullWidth
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <TextField
+              type="text"
+              label="Yeni Şifre Tekrar"
+              fullWidth
+              value={newPasswordRepeat}
+              onChange={(e) => setNewPasswordRepeat(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleChangePassword}
+              fullWidth
+              style={{ marginTop: "10px" }}
+            >
+              Şifre Değiştir
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
 
-      <ToastContainer /> {/* Toast notifications container */}
-    </div>
+      
+
+      <ToastContainer /> 
+    </Container>
   );
 };
 

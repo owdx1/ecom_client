@@ -1,23 +1,24 @@
-  import './App.css';
-  import { Route, Routes} from 'react-router-dom';
-  import Shop from './pages/shop/Shop';
-  import Contact from './pages/Contact';
-  import Header from './Header';
-  import AdminLogin from './pages/admin/AdminLogin';
-  import Dash from './pages/admin/Dash';
-  import AddAProduct from './pages/admin/AddAProduct';
-  import Login from './pages/auth/Login'
-  import Register from './pages/auth/Register';
-  import PatchASingleProduct from './pages/admin/PatchASingleProduct';
-  import { useState, useEffect } from 'react';
-  
-  import Profile from './pages/profile/Profile';
-  import Cart from './pages/profile/Cart';
-  import ASingleProduct from './pages/shop/ASingleProduct';
-  import Error  from './utils/Error';
-  import Search from './pages/search/Search';
-  import ResetPassword from './utils/ResetPassword';
+import './App.css';
+import { Route, Routes} from 'react-router-dom';
+import Shop from './pages/shop/Shop';
+import Contact from './pages/Contact';
+import Header from './Header';
+import AdminLogin from './pages/admin/AdminLogin';
+import Dash from './pages/admin/Dash';
+import AddAProduct from './pages/admin/AddAProduct';
+import Login from './pages/auth/Login'
+import Register from './pages/auth/Register';
+import PatchASingleProduct from './pages/admin/PatchASingleProduct';
+import { useState, useEffect } from 'react';
+
+import Profile from './pages/profile/Profile';
+import Cart from './pages/profile/Cart';
+import ASingleProduct from './pages/shop/ASingleProduct';
+import Error  from './utils/Error';
+import Search from './pages/search/Search';
+import ResetPassword from './utils/ResetPassword';
 import Footer from './utils/Footer';
+import UpdateInfo from './pages/profile/UpdateInfo';
 
 
 
@@ -97,7 +98,7 @@ import Footer from './utils/Footer';
           <Route path='/profile/cart' element={<Cart onLogout={handleLogout}/>}></Route>
 
           <Route path='/forget-password' element={<ResetPassword onLogout={handleLogout}/>}></Route>
-
+          <Route path='/profile/update' element={<UpdateInfo />}></Route>
 
 
           <Route path='/login' element={<Login onLogin={() => setIsLoggedIn(true)}/>} />

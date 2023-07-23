@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import dummmyImage from '../../images/cat.jpg';
+import dummyImage from '../../images/cat.jpg';
+import { Button, Grid, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import '../../styles/Cart.css';
 
 const Cart = ({ onLogout }) => {
@@ -21,7 +23,6 @@ const Cart = ({ onLogout }) => {
   }, []);
 
   useEffect(() => {
-    
     const priceSum = dataDisplay.reduce((sum, product) => {
       return sum + product.price * product.quantity;
     }, 0);
@@ -36,8 +37,6 @@ const Cart = ({ onLogout }) => {
         },
       });
 
-      
-
       if (response.status === 401) {
         onLogout();
         navigate('/');
@@ -48,8 +47,6 @@ const Cart = ({ onLogout }) => {
       }
 
       const data = await response.json();
-      
-
       const { customer, newData, accessToken: newAccessToken } = data;
       setDataDisplay(newData);
       console.log('Current data:', newData);
@@ -63,56 +60,84 @@ const Cart = ({ onLogout }) => {
   };
 
   const handleDeleteProduct = (productId) => {
-    // Implement the delete product functionality
-    // Call the backend API to delete the product from the cart
-    // Update the dataDisplay state with the modified cart data
     const updatedData = dataDisplay.filter((product) => product.id !== productId);
     setDataDisplay(updatedData);
   };
 
   const handleEmptyCart = () => {
-    
+    // Implement functionality to empty the cart
   };
 
   const handleBuy = () => {
-    
-    
+    // Implement functionality to process the purchase
   };
 
   return (
     <>
       <div className="empty-cart-button">
-        <button onClick={handleEmptyCart}>Empty Cart</button>
+        <Button onClick={handleEmptyCart} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+          Empty Cart
+        </Button>
       </div>
       <div className="cart-container">
-        <div className="cart-items">
-          {dataDisplay.map((product) => (
-            <div className="cart-item" key={product.id}>
-              <img src={dummmyImage} alt="Product" className="product-image" />
-              <div className="product-details">
-                <h2>{product.product_name}</h2>
-                <p>Price: {product.price}</p>
-                <p>Quantity: {product.quantity} tane</p>
-                <p>Color: {product.color}</p>
-                <p>Size: {product.size}</p>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Product</TableCell>
+                <TableCell>Price</TableCell>
+                <TableCell>Quantity</TableCell>
+                <TableCell>Color</TableCell>
+                <TableCell>Size</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {dataDisplay.map((product) => (
+                <TableRow key={product.id}>
+                  <TableCell>
+                    <Grid container alignItems="center" spacing={2}>
+                      <Grid item>
+                        <img src={dummyImage} alt="Product" className="product-image" />
+                      </Grid>
+                      <Grid item>
+                        <Typography variant="body1">{product.product_name}</Typography>
+                      </Grid>
+                    </Grid>
+                  </TableCell>
+                  <TableCell>${product.price}</TableCell>
+                  <TableCell>{product.quantity}</TableCell>
+                  <TableCell>{product.color}</TableCell>
+                  <TableCell>{product.size}</TableCell>
+                  <TableCell>
+                    <Button onClick={() => handleDeleteProduct(product.id)} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <div className="cart-info" style={{ backgroundColor: '#f5f5f5', padding: '20px', borderRadius: '4px', marginTop: '20px' }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <div className="user-info">
+                <Typography variant="h5">User Info</Typography>
+                <Typography variant="body1">Email: {customer.email}</Typography>
+                <Typography variant="body1">Address: Dummy Address</Typography>
               </div>
-              <button className='delete-button' onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-            </div>
-          ))}
-        </div>
-        <div className="cart-info">
-          <div>
-            <h3>User Info</h3>
-            <p className="cart-text">Email: {customer.email}</p>
-            <p className="cart-text">Address: Dummy Address</p> 
-          </div>
-          <div>
-            <h3>Cart Info</h3>
-            <p className="cart-text">Total Price: {totalPrice}</p>
-            <button className="buy-button" onClick={handleBuy}>
-              Buy
-            </button>
-          </div>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <div className="total-price">
+                <Typography variant="h5">Cart Info</Typography>
+                <Typography variant="body1">Total Price: ${totalPrice}</Typography>
+                <Button onClick={handleBuy} variant="contained" color="primary">
+                  Buy
+                </Button>
+              </div>
+            </Grid>
+          </Grid>
         </div>
       </div>
     </>

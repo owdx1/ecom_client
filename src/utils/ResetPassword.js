@@ -17,7 +17,7 @@ const ResetPassword = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Input validation (you can add more checks if needed)
+    
     if (password1 !== password2) {
       toast.error('Şifreler eşleşmiyor.');
       return;
