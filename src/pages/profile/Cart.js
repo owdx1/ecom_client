@@ -4,11 +4,13 @@ import dummyImage from '../../images/cat.jpg';
 import { Button, Grid, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../../styles/Cart.css';
+import { ToastContainer , toast } from 'react-toastify';
 
 const Cart = ({ onLogout }) => {
   const [customer, setCustomer] = useState({});
   const [dataDisplay, setDataDisplay] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [backEndMessage, setBackEndMessage] = React.useState('');
 
   const navigate = useNavigate();
 
@@ -59,23 +61,70 @@ const Cart = ({ onLogout }) => {
     }
   };
 
-  const handleDeleteProduct = (productId) => {
-    const updatedData = dataDisplay.filter((product) => product.id !== productId);
-    setDataDisplay(updatedData);
+  useEffect(() => {
+    if (backEndMessage !== '') toast.warn(backEndMessage);
+  }, [backEndMessage]);
+
+  const handleDeleteProduct = async (productId) => {
+    const accessToken = localStorage.getItem('accessToken');
+    try {
+      const response = await fetch('http://localhost:3000/cart/delete-a-product', {
+      headers:{
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      method: 'DELETE',
+      body: JSON.stringify({product_id: productId})
+      })
+      const {message} = await response.json();
+      setBackEndMessage(message);
+      if (response.status !== 200) {
+        throw new Error(backEndMessage || 'Failed to register');
+      } 
+      else{
+        localStorage.setItem('accessToken', response.accessToken);
+      }
+    } catch (error) {
+      console.error(error);
+      setBackEndMessage(error);
+    }
+  };
+  
+
+  const handleEmptyCart = async () => {
+    const accessToken = localStorage.getItem('accessToken')
+    try {
+      const response = await fetch('http://localhost:3000/cart/empty-card' , { //burdaki route'u düzenleriz
+      headers:{
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      method: 'DELETE',
+      // body: JSON.stringify ({customer_id : customer.id})
+    }) 
+    const {message} = await response.json();
+    setBackEndMessage(message);
+
+    if (response.status !== 200) {
+      throw new Error(backEndMessage || 'Failed to register');
+    } else{
+      localStorage.setItem('accessToken', response.accessToken);
+    }
+    
+  } catch (error) {
+      console.error(error);
+      setBackEndMessage(error);
+    }
   };
 
-  const handleEmptyCart = () => {
-    // Implement functionality to empty the cart
-  };
-
-  const handleBuy = () => {
-    // Implement functionality to process the purchase
+  const handleBuy =  () => {
+    
   };
 
   return (
     <>
       <div className="empty-cart-button">
-        <Button onClick={handleEmptyCart} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+        <Button onClick={handleEmptyCart()} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
           Empty Cart
         </Button>
       </div>
@@ -94,7 +143,7 @@ const Cart = ({ onLogout }) => {
             </TableHead>
             <TableBody>
               {dataDisplay.map((product) => (
-                <TableRow key={product.id}>
+                <TableRow key={product.product_id}>
                   <TableCell>
                     <Grid container alignItems="center" spacing={2}>
                       <Grid item>
@@ -105,7 +154,7 @@ const Cart = ({ onLogout }) => {
                       </Grid>
                     </Grid>
                   </TableCell>
-                  <TableCell>${product.price}</TableCell>
+                  <TableCell>TL{product.price}</TableCell>
                   <TableCell>{product.quantity}</TableCell>
                   <TableCell>{product.color}</TableCell>
                   <TableCell>{product.size}</TableCell>
@@ -131,7 +180,7 @@ const Cart = ({ onLogout }) => {
             <Grid item xs={12} md={6}>
               <div className="total-price">
                 <Typography variant="h5">Cart Info</Typography>
-                <Typography variant="body1">Total Price: ${totalPrice}</Typography>
+                <Typography variant="body1">Total Price: TL{totalPrice}</Typography>
                 <Button onClick={handleBuy} variant="contained" color="primary">
                   Buy
                 </Button>
