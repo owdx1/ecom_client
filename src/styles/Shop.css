@@ -177,3 +177,15 @@ h3 {
 .see-all-link:hover {
   background-color: #ebebeb;
 }
+
+.CircularProgress {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: '100vh';
+  /*display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',*/
+}

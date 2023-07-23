@@ -5,6 +5,7 @@ import dummyImage from '../../images/cat.jpg';
 import ImageSlider from '../../utils/ImagesSlider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CircularProgress } from '@mui/material';
 
 const slides = [
   { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
@@ -120,7 +121,9 @@ function Shop() {
   }, [toastMessage]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className='CircularProgress'><CircularProgress/> </div>
+    )
   }
 
   if (errorMessage) {
