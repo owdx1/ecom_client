@@ -16,6 +16,8 @@
   import ASingleProduct from './pages/shop/ASingleProduct';
   import Error  from './utils/Error';
   import Search from './pages/search/Search';
+  import ResetPassword from './utils/ResetPassword';
+import Footer from './utils/Footer';
 
 
 
@@ -87,13 +89,14 @@
         
         <Routes>
           <Route path='/' element={<Shop />}></Route>
+          
           <Route path='/shop/products/:product_id' element={<ASingleProduct isLoggedIn={isLoggedIn} />} />
 
           <Route path='/search' element={<Search />}></Route>
           <Route path='/profile' element={<Profile onLogout={handleLogout}/>}></Route>
           <Route path='/profile/cart' element={<Cart onLogout={handleLogout}/>}></Route>
 
-
+          <Route path='/forget-password' element={<ResetPassword onLogout={handleLogout}/>}></Route>
 
 
 
@@ -114,6 +117,8 @@
 
           <Route path='/error' element={<Error />}></Route>
         </Routes>
+
+        <Footer/>
 
       </>
 

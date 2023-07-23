@@ -21,7 +21,7 @@ const Cart = ({ onLogout }) => {
   }, []);
 
   useEffect(() => {
-    // Calculate the total price based on product price and quantity
+    
     const priceSum = dataDisplay.reduce((sum, product) => {
       return sum + product.price * product.quantity;
     }, 0);
@@ -36,6 +36,8 @@ const Cart = ({ onLogout }) => {
         },
       });
 
+      
+
       if (response.status === 401) {
         onLogout();
         navigate('/');
@@ -46,6 +48,7 @@ const Cart = ({ onLogout }) => {
       }
 
       const data = await response.json();
+      
 
       const { customer, newData, accessToken: newAccessToken } = data;
       setDataDisplay(newData);
@@ -68,16 +71,12 @@ const Cart = ({ onLogout }) => {
   };
 
   const handleEmptyCart = () => {
-    // Implement the empty cart functionality
-    // Call the backend API to delete all products from the cart
-    // Update the dataDisplay state to an empty array
-    setDataDisplay([]);
+    
   };
 
   const handleBuy = () => {
-    // Handle the buy functionality
-    // You can add your logic here for processing the purchase
-    console.log('Buy button clicked');
+    
+    
   };
 
   return (
@@ -105,7 +104,7 @@ const Cart = ({ onLogout }) => {
           <div>
             <h3>User Info</h3>
             <p className="cart-text">Email: {customer.email}</p>
-            <p className="cart-text">Address: Dummy Address</p> {/* Replace with actual address */}
+            <p className="cart-text">Address: Dummy Address</p> 
           </div>
           <div>
             <h3>Cart Info</h3>
