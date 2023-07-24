@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import dummyImage from '../../images/cat.jpg';
 import { Button, Grid, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,7 +10,7 @@ const Cart = ({ onLogout }) => {
   const [customer, setCustomer] = useState({});
   const [dataDisplay, setDataDisplay] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [backEndMessage, setBackEndMessage] = React.useState('');
+  const [backEndMessage, setBackEndMessage] = useState('');
 
   const navigate = useNavigate();
 
@@ -33,7 +33,8 @@ const Cart = ({ onLogout }) => {
 
   const fetchCart = async (accessToken) => {
     try {
-      const response = await fetch('http://localhost:5000/shop/basket', {
+      
+      const response = await fetch('http://localhost:5000/profile/cart', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -49,11 +50,11 @@ const Cart = ({ onLogout }) => {
       }
 
       const data = await response.json();
-      const { customer, newData, accessToken: newAccessToken } = data;
-      setDataDisplay(newData);
-      console.log('Current data:', newData);
+      const { customer, basket, accessToken: newAccessToken} = data;
+      setDataDisplay(basket);
+      console.log('Current data:', basket);
       localStorage.setItem('accessToken', newAccessToken);
-
+      
       setCustomer(customer);
       console.log(customer);
     } catch (error) {
@@ -68,7 +69,7 @@ const Cart = ({ onLogout }) => {
   const handleDeleteProduct = async (productId) => {
     const accessToken = localStorage.getItem('accessToken');
     try {
-      const response = await fetch('http://localhost:3000/cart/delete-a-product', {
+      const response = await fetch('http://localhost:3000/profile/cart/delete-a-product', {
       headers:{
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
@@ -89,42 +90,80 @@ const Cart = ({ onLogout }) => {
       setBackEndMessage(error);
     }
   };
+
+  useEffect(() => {
+
+  } , [dataDisplay]);
   
 
   const handleEmptyCart = async () => {
-    const accessToken = localStorage.getItem('accessToken')
-    try {
-      const response = await fetch('http://localhost:3000/cart/empty-card' , { //burdaki route'u düzenleriz
-      headers:{
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json'
-      },
-      method: 'DELETE',
-      // body: JSON.stringify ({customer_id : customer.id})
-    }) 
-    const {message} = await response.json();
-    setBackEndMessage(message);
+    const accessToken = localStorage.getItem('accessToken');
 
-    if (response.status !== 200) {
-      throw new Error(backEndMessage || 'Failed to register');
-    } else{
-      localStorage.setItem('accessToken', response.accessToken);
+    try {
+      const response = await fetch('http://localhost:5000/profile/cart/empty-cart',{
+        headers: {
+          'Authorization' : `Bearer ${accessToken}`
+        },
+        method: 'DELETE'
+      });
+
+      
+      const data = await response.json();
+      const message = data.message;
+
+      setBackEndMessage(message);
+
+      if (response.status === 200){
+        
+        localStorage.setItem('accessToken' , data.accessToken);
+      } 
+      else { 
+        throw new Error('Error fetching Cart');
+      }
+      
+    } catch (error) {
+      console.error(error);
     }
     
-  } catch (error) {
-      console.error(error);
-      setBackEndMessage(error);
-    }
+    
   };
 
-  const handleBuy =  () => {
+  const handleBuy = async () => {
+
+    const accessToken = localStorage.getItem('accessToken');
+
+    try {
+      const response = await fetch('http://localhost:5000/profile/cart/buy',{
+        headers: {
+          'Authorization' : `Bearer ${accessToken}`
+        },
+        method: 'POST'
+      });
+
+      
+      const data = await response.json();
+      const message = data.message;
+
+      setBackEndMessage(message);
+
+      if (response.status === 200){
+        
+        localStorage.setItem('accessToken' , data.accessToken);
+      } 
+      else { 
+        throw new Error('Error fetching Cart');
+      }
+      
+    } catch (error) {
+      console.error(error);
+    }
     
   };
 
   return (
     <>
       <div className="empty-cart-button">
-        <Button onClick={handleEmptyCart()} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+        <Button onClick={handleEmptyCart} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
           Empty Cart
         </Button>
       </div>
@@ -159,7 +198,7 @@ const Cart = ({ onLogout }) => {
                   <TableCell>{product.color}</TableCell>
                   <TableCell>{product.size}</TableCell>
                   <TableCell>
-                    <Button onClick={() => handleDeleteProduct(product.id)} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+                    <Button onClick={() => handleDeleteProduct(product.id,product.price,product.size)} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
                       Delete
                     </Button>
                   </TableCell>
@@ -168,7 +207,7 @@ const Cart = ({ onLogout }) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <div className="cart-info" style={{ backgroundColor: '#f5f5f5', padding: '20px', borderRadius: '4px', marginTop: '20px' }}>
+        <div className="cart-info" style={{ backgroundColor: '#f5f5f5', width:'500px' }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <div className="user-info">
@@ -188,6 +227,7 @@ const Cart = ({ onLogout }) => {
             </Grid>
           </Grid>
         </div>
+        <ToastContainer/>
       </div>
     </>
   );

@@ -1,0 +1,9 @@
+.container {
+    margin: 20px;
+  }
+  
+  .buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { CircularProgress, TextField, Button, Paper, Typography, Container, Grid } from '@mui/material';
+import { CircularProgress, TextField, Paper, Typography, Container, Grid } from '@mui/material';
 import '../../styles/Shop.css';
 import dummyImage from '../../images/cat.jpg';
 import ImageSlider from '../../utils/ImagesSlider';

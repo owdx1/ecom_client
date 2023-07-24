@@ -112,3 +112,15 @@
   }
   
   
+
+/* AddAProduct.css */
+
+/* Increase the height of the MenuItem components */
+.MuiMenuItem-root {
+  min-height: 48px; /* Adjust the height to your desired value */
+}
+
+/* Target the Select component */
+.MuiSelect-root {
+  width: 300px;
+}

@@ -8,7 +8,6 @@ import Dash from './pages/admin/Dash';
 import AddAProduct from './pages/admin/AddAProduct';
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register';
-import PatchASingleProduct from './pages/admin/PatchASingleProduct';
 import { useState, useEffect } from 'react';
 
 import Profile from './pages/profile/Profile';
@@ -19,6 +18,10 @@ import Search from './pages/search/Search';
 import ResetPassword from './utils/ResetPassword';
 import Footer from './utils/Footer';
 import UpdateInfo from './pages/profile/UpdateInfo';
+import Dashboard from '../src/pages/admin/Dashboard'
+import Orders from './pages/profile/Orders';
+import AdminProducts from './pages/admin/AdminProducts';
+import AdminProductDetails from './pages/admin/AdminProductDetails';
 
 
 
@@ -96,6 +99,7 @@ import UpdateInfo from './pages/profile/UpdateInfo';
           <Route path='/search' element={<Search />}></Route>
           <Route path='/profile' element={<Profile onLogout={handleLogout}/>}></Route>
           <Route path='/profile/cart' element={<Cart onLogout={handleLogout}/>}></Route>
+          <Route path='/profile/orders' element={<Orders  onLogout={handleLogout} />}></Route>
 
           <Route path='/forget-password' element={<ResetPassword onLogout={handleLogout}/>}></Route>
           <Route path='/profile/update' element={<UpdateInfo />}></Route>
@@ -111,10 +115,11 @@ import UpdateInfo from './pages/profile/UpdateInfo';
           <Route path='/admin/login' element={<AdminLogin />}></Route>
           <Route path='/admin/add-a-product' element={<AddAProduct />}></Route>
           <Route path='/admin/dashboard' element={<Dash />}></Route>
-          <Route path='/admin/products' element={<Contact />}></Route>
-          <Route path='/admin/products/:product_id' element={<Contact />}></Route>
+          <Route path='/admin/products' element={<AdminProducts />}></Route>
+          <Route path='/admin/products/:product_id' element={<AdminProductDetails />}></Route>
           <Route path='/admin/delete-a-product/:product_id' element={<Contact />}></Route>
-          <Route path='/admin/patch-a-product/:product_id' element={<PatchASingleProduct />}></Route>
+          
+          <Route path='/admin/denemeDashboard' element={<Dashboard />}></Route>
 
           <Route path='/error' element={<Error />}></Route>
         </Routes>
