@@ -24,6 +24,7 @@ const ASingleProduct = ({ isLoggedIn }) => {
   const [errorM, setErrorM] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [currentFeatureId, setCurrentFeatureId] = useState(0);
   const slides = [
     { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
     { url: 'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg', title: 'boats' },
@@ -34,6 +35,7 @@ const ASingleProduct = ({ isLoggedIn }) => {
 
   const location = useLocation();
   const { product } = location.state;
+  console.log('suanki product', product);
 
   const accessToken = localStorage.getItem('accessToken');
   const [quantity, setQuantity] = useState(1);
@@ -52,8 +54,10 @@ const ASingleProduct = ({ isLoggedIn }) => {
       if (response.ok) {
         const { transformedData, SizeIsNotNUll } = await response.json();
         setTransformedData(transformedData);
+        console.log(transformedData);
         setSelectedSize(transformedData[0].size);
         setSelectedSize_i(transformedData[0].size_i);
+        setCurrentFeatureId(transformedData[0].feature_id)
       } else {
         throw new Error('An error occurred while fetching the products');
       }
@@ -94,6 +98,10 @@ const ASingleProduct = ({ isLoggedIn }) => {
     setTotalAmount(quantity * product.price);
   }, [quantity, product.price]);
 
+  useEffect(() =>{
+    console.log('current feature id' , currentFeatureId);
+  },[currentFeatureId])
+
   const addToCart = async () => {
     if (selectedSize === '') {
       setErrorM('Please select a size before adding to cart');
@@ -106,14 +114,16 @@ const ASingleProduct = ({ isLoggedIn }) => {
 
     const size = product.category_id === 6 ? selectedSize_i : selectedSize;
     const product_id = product.product_id;
+    console.log('suanki feaute id' , currentFeatureId);
     const color = product.color;
     const category = product.category_id;
+
 
     try {
       const response = await fetch(`http://localhost:5000/shop/add-basket`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          'Authorization': `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           quantity,
@@ -121,6 +131,7 @@ const ASingleProduct = ({ isLoggedIn }) => {
           product_id,
           category,
           totalAmount,
+          currentFeatureId
         }),
       });
       if (response.ok) {
@@ -149,19 +160,23 @@ const ASingleProduct = ({ isLoggedIn }) => {
     setSelectedImage(imageURL);
   };
 
-  const handleSizeButtonClick = (size) => {
+  const handleSizeButtonClick = (size , feature_id) => {
     if (selectedSize === size) {
       setSelectedSize('');
+      setCurrentFeatureId(0);
     } else {
       setSelectedSize(size);
+      setCurrentFeatureId(feature_id)
     }
   };
 
-  const handleSize_iButtonClick = (size) => {
+  const handleSize_iButtonClick = (size,feature_id) => {
     if (selectedSize_i === size) {
       setSelectedSize_i(0);
+      setCurrentFeatureId(0);
     } else {
       setSelectedSize_i(size);
+      setCurrentFeatureId(feature_id)
     }
   };
 
@@ -221,7 +236,7 @@ const ASingleProduct = ({ isLoggedIn }) => {
                         className={`size-button ${
                           selectedSize === data.size ? 'active' : ''
                         }`}
-                        onClick={() => handleSizeButtonClick(data.size)}
+                        onClick={() => handleSizeButtonClick(data.size, data.feature_id)}
                       >
                         {data.size}
                       </Button>
@@ -234,7 +249,7 @@ const ASingleProduct = ({ isLoggedIn }) => {
                         className={`size-button ${
                           selectedSize_i === data.size_i ? 'active' : ''
                         }`}
-                        onClick={() => handleSize_iButtonClick(data.size_i)}
+                        onClick={() => handleSize_iButtonClick(data.size_i , data.feature_id)}
                       >
                         {data.size_i}
                       </Button>

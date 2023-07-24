@@ -66,24 +66,24 @@ const Cart = ({ onLogout }) => {
     if (backEndMessage !== '') toast.warn(backEndMessage);
   }, [backEndMessage]);
 
-  const handleDeleteProduct = async (productId) => {
+  const handleDeleteProduct = async (productId , featureId) => {
     const accessToken = localStorage.getItem('accessToken');
     try {
-      const response = await fetch('http://localhost:3000/profile/cart/delete-a-product', {
+      const response = await fetch('http://localhost:5000/profile/cart/delete-a-product', {
       headers:{
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
       },
-      method: 'DELETE',
-      body: JSON.stringify({product_id: productId})
+      method: 'POST',
+      body: JSON.stringify({product_id: productId , feature_id: featureId})
       })
-      const {message} = await response.json();
-      setBackEndMessage(message);
+      const data = await response.json();
+      setBackEndMessage(data.message);
       if (response.status !== 200) {
         throw new Error(backEndMessage || 'Failed to register');
       } 
       else{
-        localStorage.setItem('accessToken', response.accessToken);
+        localStorage.setItem('accessToken', data.accessToken);
       }
     } catch (error) {
       console.error(error);
@@ -92,7 +92,7 @@ const Cart = ({ onLogout }) => {
   };
 
   useEffect(() => {
-
+    setDataDisplay(dataDisplay)
   } , [dataDisplay]);
   
 
@@ -194,11 +194,11 @@ const Cart = ({ onLogout }) => {
                     </Grid>
                   </TableCell>
                   <TableCell>TL{product.price}</TableCell>
-                  <TableCell>{product.quantity}</TableCell>
+                  <TableCell>{product.orderquantity}</TableCell>
                   <TableCell>{product.color}</TableCell>
                   <TableCell>{product.size}</TableCell>
                   <TableCell>
-                    <Button onClick={() => handleDeleteProduct(product.id,product.price,product.size)} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+                    <Button onClick={() => handleDeleteProduct(product.product_id, product.feature_id)} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
                       Delete
                     </Button>
                   </TableCell>

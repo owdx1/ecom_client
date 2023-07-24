@@ -14,15 +14,16 @@ const Orders = ({onLogout}) => {
         if (!accessToken || accessToken === "undefined") {
             navigate("/error");
         } else {
-            fetchOrders(accessToken);
+            fetchOrders();
         }
         }, []);
 
-    const fetchOrders = async (accessToken) => {
+    const fetchOrders = async () => {
+        const accessToken = localStorage.getItem('accessToken')
         try {
             const response = await fetch("http://localhost:5000/profile/orders", {
             headers: {
-                Authorization: `Bearer ${accessToken}`,
+                'Authorization': `Bearer ${accessToken}`,
             },
             });
     
@@ -36,10 +37,11 @@ const Orders = ({onLogout}) => {
             }
     
             const data = await response.json();
-            const { accessToken: newAccessToken , oldOrders } = data;
+            const { accessToken : newAccessToken , oldOrders } = data;
             setDisplayOrders(oldOrders);
             localStorage.setItem("accessToken", newAccessToken);
             console.log("New accessToken", newAccessToken);
+            console.log('suanki siparisler' , displayOrders);
             
             
         } catch (error) {

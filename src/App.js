@@ -55,7 +55,7 @@ import AdminProductDetails from './pages/admin/AdminProductDetails';
           })
           if(response.ok){
             const allFetch = await response.json();
-            const {productNum} = allFetch;
+            let {productNum} = allFetch;
             console.log("şuanki urun miktari" , productNum);
             
             setNumberOfProductsInCart(productNum);
