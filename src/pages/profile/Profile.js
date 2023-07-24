@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Container, Typography, TextField, Button, Box, Grid } from "@mui/material";
@@ -142,9 +142,11 @@ const Profile = ({ onLogout }) => {
         <Button variant="contained" color="primary" onClick={handleUpdateInfo}>
           Bilgilerimi Güncelle
         </Button>
-        <Button variant="contained" color="primary" onClick={handleMyOrders}>
-          Siparişlerim
-        </Button>
+        <NavLink to='/profile/orders'>
+          <Button variant="contained" color="primary" onClick={handleMyOrders}>
+            Siparişlerim
+          </Button>
+        </NavLink>
         <Button variant="contained" color="secondary" onClick={handleLogout}>
           Çıkış Yap
         </Button>
