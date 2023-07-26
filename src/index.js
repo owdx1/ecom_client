@@ -15,7 +15,9 @@ addViewportMetaTag();
 
 ReactDOM.render(
   <BrowserRouter>
+  <div style={{userSelect: 'none'}}>
     <App />
+  </div>
   </BrowserRouter>,
   document.getElementById('root')
 );

@@ -4,8 +4,17 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Button } from '@mui/material';
+import { Button, containerClasses } from '@mui/material';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+
+const cartContainerStyle = {
+  border: '1px solid #ccc',
+  borderRadius: '4px',
+  padding: '16px',
+  width: '1200px', 
+  margin: '0 auto', 
+  marginTop:'30px'
+};
 
 
 export default function AddressForm({ onLogout }) {
@@ -89,10 +98,7 @@ export default function AddressForm({ onLogout }) {
 
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Shipping address
-      </Typography>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} style={cartContainerStyle}>
         <Grid item xs={12} sm={6}>
           <TextField
             required
@@ -214,15 +220,16 @@ export default function AddressForm({ onLogout }) {
             control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
             label="Use this address for payment details"
           />
+          <Grid item xs={12}>
+            <NavLink to='/profile/review-order' state={{dataDisplay , totalPrice, formData}}>
+              <Button variant="contained">
+                Sıradaki
+              </Button>
+            </NavLink>
+          </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <NavLink to='/profile/review-order' state={{dataDisplay , totalPrice, formData}}>
-          <Button variant="contained">
-            Sıradaki
-          </Button>
-        </NavLink>
-      </Grid>
+      
     </React.Fragment>
   );
 }

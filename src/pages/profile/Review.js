@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -6,13 +6,9 @@ import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import { useLocation, useNavigate } from 'react-router-dom';
 import dummyImage from '../../images/cat.jpg';
-import { useState, useEffect } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
-
 
 export default function Review({ getNumberOfProductsInCart }) {
   const addresses = [];
@@ -61,7 +57,6 @@ export default function Review({ getNumberOfProductsInCart }) {
     } catch (error) {
       console.error(error);
     }
-
   };
 
   useEffect(() => {
@@ -69,38 +64,34 @@ export default function Review({ getNumberOfProductsInCart }) {
   }, [backEndMessage]);
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px', border: '1px solid #ccc', borderRadius: '5px', marginTop: '30px' }}>
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', border: '1px solid #ccc', borderRadius: '5px', marginTop: '30px' }}>
       <Typography variant="h6" gutterBottom>
         Sipariş Özeti
       </Typography>
       <List disablePadding>
         {dataDisplay.map((product) => (
-          <ListItem key={product.product_id} sx={{ py: 1, px: 0 }}>
+          <ListItem key={product.product_id} style={{ marginBottom: '20px', display: 'flex', alignItems: 'center' }}>
             <img src={dummyImage} alt="Dummy Product" style={{ width: '100px', height: '100px', marginRight: '20px' }} />
-            <ListItemText primary={product.product_name} secondary={product.description} />
-            <ListItemText primary={`Quantity: ${product.orderquantity}`} />
-            {product.size && <Typography variant="body2" style={{ backgroundColor: '#f0f0f0', padding: '4px 8px', borderRadius: '4px', margin: '0.5rem 0.2rem' }}>{product.size}</Typography>}
-            {product.size_i !== 0 && <Typography variant="body2" style={{ backgroundColor: '#f0f0f0', padding: '4px 8px', borderRadius: '4px', margin: '0.5rem 0.2rem' }}>{product.size_i}</Typography>}
-            <Typography variant="body2">{`Price: $${product.price}`}</Typography>
+            <div>
+              <ListItemText primary={product.product_name} secondary={product.description} />
+              <ListItemText primary={`Miktar: ${product.orderquantity}`} />
+              {product.size && <Typography variant="body2" style={{ backgroundColor: '#f0f0f0', padding: '4px 8px', borderRadius: '4px', margin: '0.5rem 0.2rem' }}>Beden: {product.size}</Typography>}
+              {product.size_i !== 0 && <Typography variant="body2" style={{ backgroundColor: '#f0f0f0', padding: '4px 8px', borderRadius: '4px', margin: '0.5rem 0.2rem' }}>Beden: {product.size_i}</Typography>}
+              <Typography variant="body2">{`Fiyat: ${product.price} TL`}</Typography>
+            </div>
           </ListItem>
         ))}
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" style={{ fontWeight: 700 }}>
-            {`Total Price: $${totalPrice}`}
-          </Typography>
-        </ListItem>
       </List>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom style={{ mt: '2rem' }}>
+          <Typography variant="h6" gutterBottom>
             Teslimat
           </Typography>
           <Typography gutterBottom>{formData.name}</Typography>
           <Typography gutterBottom>{addresses.join(', ')}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom style={{ mt: '2rem' }}>
+          <Typography variant="h6" gutterBottom>
             Alıcı Bilgileri
           </Typography>
           <Grid container>
@@ -114,17 +105,22 @@ export default function Review({ getNumberOfProductsInCart }) {
               <Grid item xs={6}>
                 <Typography gutterBottom>{formData.phone}</Typography>
               </Grid>
-              <Grid item xs={6}>
-                <Typography gutterBottom>{`Total Price: ${totalPrice} TL`}</Typography>
-              </Grid>
+              <Typography variant="subtitle1" style={{ fontWeight: 1000, fontSize: '18px', marginTop: '10px' }}>
+                {`Toplam Fiyat: ${totalPrice} TL`}
+              </Typography>
             </React.Fragment>
           </Grid>
         </Grid>
-        <Button variant="contained" color="primary" onClick={handleBuy} disabled={buttonClicked}>{/**make it unclickable checking the buttonClickedVariable */}
-          Siparişi tamamla
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleBuy}
+          disabled={buttonClicked}
+          style={{ margin: '20px 0', alignSelf: 'flex-start' }}
+        >
+          Siparişi Tamamla
         </Button>
 
-        
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)} PaperProps={{ style: { borderRadius: '16px' } }}>
           <DialogTitle style={{ textAlign: 'center' }}>
             <span style={{ fontSize: '4rem', marginBottom: '1rem' }} role="img" aria-label="tick">✅</span>
@@ -135,13 +131,15 @@ export default function Review({ getNumberOfProductsInCart }) {
             </DialogContentText>
           </DialogContent>
           <DialogActions style={{ justifyContent: 'center' }}>
-            <Link href="/profile/orders" underline="none">
+            <Link href="/profile/orders" underline="none" style={{ marginRight: '10px' }}>
               Siparişler
             </Link>
-            <Link href="/" underline="none">
+            <Link href="/" underline="none" style={{ marginLeft: '10px' }}>
               Anasayfa
             </Link>
-            <Button onClick={() => setOpenDialog(false)}>Kapat</Button>
+            <Button onClick={() => setOpenDialog(false)} color="primary">
+              Kapat
+            </Button>
           </DialogActions>
         </Dialog>
       </Grid>
@@ -149,4 +147,3 @@ export default function Review({ getNumberOfProductsInCart }) {
     </div>
   );
 }
-

@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import '../../styles/Cart.css';
 import { ToastContainer, toast } from 'react-toastify';
 
-const Cart = ({ onLogout, getNumberOfProductsInCart}) => {
+const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
   const [customer, setCustomer] = useState({});
   const [dataDisplay, setDataDisplay] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -26,10 +26,14 @@ const Cart = ({ onLogout, getNumberOfProductsInCart}) => {
 
   useEffect(() => {
     const priceSum = dataDisplay.reduce((sum, product) => {
-      return sum + product.price * product.quantity;
+      const productPrice = parseFloat(product.price); // Convert 'price' to a float
+      return sum + productPrice * product.orderquantity;
     }, 0);
+  
     setTotalPrice(priceSum);
+    console.log(typeof totalPrice);
   }, [dataDisplay]);
+  
 
   const fetchCart = async (accessToken) => {
     try {
@@ -86,8 +90,6 @@ const Cart = ({ onLogout, getNumberOfProductsInCart}) => {
         getNumberOfProductsInCart(accessToken)
         setDataDisplay(prevDataDisplay => prevDataDisplay.filter(product => product.product_id !== productId || product.feature_id !== featureId));
         localStorage.setItem('accessToken', data.accessToken);
-        
-        
       }
     } catch (error) {
       console.error(error);
@@ -112,22 +114,17 @@ const Cart = ({ onLogout, getNumberOfProductsInCart}) => {
       setBackEndMessage(message);
 
       if (response.status !== 200) {
-          throw new Error('Error fetching Cart');
-        
+        throw new Error('Error fetching Cart');
       } else {
         localStorage.setItem('accessToken', data.accessToken);
-        setDataDisplay([]); // change this part.
+        setDataDisplay([]);
         getNumberOfProductsInCart(accessToken);
       }
 
     } catch (error) {
       console.error(error);
     }
-
-
   };
-
-  
 
   return (
     <>
@@ -142,59 +139,63 @@ const Cart = ({ onLogout, getNumberOfProductsInCart}) => {
         <>
           <div className="empty-cart-button">
             <Button onClick={handleEmptyCart} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
-              Empty Cart
+              Sepeti Boşalt 
             </Button>
           </div>
-          <div className="cart-container" style={{ width: '1600px' }}>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Product</TableCell>
-                    <TableCell>Price</TableCell>
-                    <TableCell>Quantity</TableCell>
-                    <TableCell>Color</TableCell>
-                    <TableCell>Size</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {dataDisplay.map((product) => (
-                    <TableRow key={product.product_id}>
-                      <TableCell>
-                        <Grid container alignItems="center" spacing={2}>
-                          <Grid item>
-                            <img src={dummyImage} alt="Product" className="product-image" />
-                          </Grid>
-                          <Grid item>
-                            <Typography variant="body1">{product.product_name}</Typography>
-                          </Grid>
-                        </Grid>
-                      </TableCell>
-                      <TableCell>TL{product.price}</TableCell>
-                      <TableCell>{product.orderquantity}</TableCell>
-                      <TableCell>{product.color}</TableCell>
-                      {product.size && <TableCell>{product.size}</TableCell>}
-                      {product.size_i !== 0 && <TableCell>{product.size_i}</TableCell>}
-                      <TableCell>
-                        <Button onClick={() => handleDeleteProduct(product.product_id, product.feature_id)} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
-                          Delete
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <Grid item xs={12} md={6}>
-              <div className="total-price">
-                <Typography variant="body1">Total Price:{totalPrice} TL</Typography>
-              </div>
-              <NavLink to='/profile/address-form' state={{customer , dataDisplay, totalPrice}}>
-                <Button variant="contained" color="primary">
-                  Ödemeye geç
-                </Button>
-              </NavLink>
+          <div className="cart-container">
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Ürün</TableCell>
+                        <TableCell>Renk</TableCell>
+                        <TableCell>Miktar</TableCell>
+                        <TableCell>Beden</TableCell>
+                        <TableCell>Fiyat</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {dataDisplay.map((product) => (
+                        <TableRow key={product.product_id}>
+                          <TableCell>
+                            <Grid container alignItems="center" spacing={2}>
+                              <Grid item>
+                                <img src={dummyImage} alt="Product" className="product-image" />
+                              </Grid>
+                              <Grid item>
+                                <Typography variant="body1">{product.product_name}</Typography>
+                              </Grid>
+                            </Grid>
+                          </TableCell>
+                          <TableCell>{product.color}</TableCell>
+                          <TableCell>{product.orderquantity}</TableCell>
+                          {product.size && <TableCell>{product.size}</TableCell>}
+                          {product.size_i !== 0 && <TableCell>{product.size_i}</TableCell>}
+                          <TableCell>TL {product.price}</TableCell>
+                          
+                          <TableCell>
+                            <Button onClick={() => handleDeleteProduct(product.product_id, product.feature_id)} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+                              Sepetten çıkar
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <div className="total-price">
+                  <Typography variant="body1" >Toplam Fiyat: {totalPrice} TL</Typography>
+                </div>
+                <NavLink to='/profile/address-form' state={{ customer, dataDisplay, totalPrice }}>
+                  <Button variant="contained" color="primary">
+                    Ödemeye geç
+                  </Button>
+                </NavLink>
+              </Grid>
             </Grid>
           </div>
         </>

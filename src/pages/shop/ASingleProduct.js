@@ -147,9 +147,9 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           autoClose: 3000,
         });
 
-        setTimeout(() => {
+        /*setTimeout(() => {
           navigate('/');
-        }, 3000);
+        }, 3000);   buna gerek var mı yok mu tam emin değilim                 */ 
       } else {
         throw new Error(`HTTP error, status = ${response.status}`);
       }

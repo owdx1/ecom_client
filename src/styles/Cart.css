@@ -115,3 +115,43 @@ button:hover {
     height: auto;
   }
 }
+/* Add these styles to your Cart.css or another CSS file */
+.cart-container {
+  margin-top: 20px;
+  padding: 20px;
+  width: 100%;
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.product-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.total-price {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.empty-cart-button {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+/* Responsive styles for mobile devices */
+@media (max-width: 600px) {
+  .product-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .cart-container {
+    padding: 10px;
+  }
+}
+
+
