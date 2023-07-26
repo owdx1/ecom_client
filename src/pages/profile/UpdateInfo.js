@@ -16,6 +16,7 @@ const UpdateInfo = () => {
   const [backEndMessage, setBackEndMessage] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [errorM , setErrorM] = useState('');
+  const [isClicked,setIsClicked] = useState(false);
 
   const handleUpdateInfo = async (event) => {
     event.preventDefault();
@@ -46,9 +47,7 @@ const UpdateInfo = () => {
       if (response.status === 200) {
         const newAccessToken = responseData.accessToken;
         localStorage.setItem('accessToken' , newAccessToken);
-        setTimeout(() => {
-          navigate('/profile');
-        }, 3000);
+        setIsClicked(true);
       }
     } catch (error) {
       setErrorM(error)
@@ -112,6 +111,7 @@ const UpdateInfo = () => {
           onClick={handleUpdateInfo}
           fullWidth
           style={{ marginTop: "10px" }}
+          disabled={isClicked}
         >
           Bilgilerimi Güncelle
         </Button>

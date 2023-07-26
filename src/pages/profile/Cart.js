@@ -26,8 +26,8 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
 
   useEffect(() => {
     const priceSum = dataDisplay.reduce((sum, product) => {
-      const productPrice = parseFloat(product.price); // Convert 'price' to a float
-      return sum + productPrice * product.orderquantity;
+      const productPrice = parseFloat(product.price); 
+      return sum + productPrice;
     }, 0);
   
     setTotalPrice(priceSum);

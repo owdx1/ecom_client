@@ -4,29 +4,31 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Button, containerClasses } from '@mui/material';
+import { Button } from '@mui/material';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 const cartContainerStyle = {
   border: '1px solid #ccc',
   borderRadius: '4px',
   padding: '16px',
-  width: '1200px', 
-  margin: '0 auto', 
-  marginTop:'30px'
+  width: '100%',
+  maxWidth: '1200px',
+  margin: '0 auto',
+  marginTop: '30px',
 };
 
+const addressFieldStyle = {
+  width: '100%',
+};
 
 export default function AddressForm({ onLogout }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [detailedCustomer, setDetailedCustomer] = useState({});
   const { dataDisplay, totalPrice } = location.state;
-  console.log('suanki dataDisplay' , dataDisplay);
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
-    console.log('Current accessToken', accessToken);
     if (!accessToken || accessToken === 'undefined') {
       navigate('/error');
     } else {
@@ -54,13 +56,11 @@ export default function AddressForm({ onLogout }) {
       const data = await response.json();
       const { customer, accessToken: newAccessToken } = data;
       setDetailedCustomer(customer);
-      console.log('detaylı customer: ', detailedCustomer);
       localStorage.setItem('accessToken', newAccessToken);
     } catch (error) {
       console.error('Error fetching profile:', error);
     }
   };
-
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -70,12 +70,11 @@ export default function AddressForm({ onLogout }) {
     city: '',
     zip: '',
     country: '',
-    phone:'',
-    email:''
+    phone: '',
+    email: '',
   });
 
   useEffect(() => {
-    
     setFormData({
       firstName: detailedCustomer.first_name || '',
       lastName: detailedCustomer.last_name || '',
@@ -85,12 +84,11 @@ export default function AddressForm({ onLogout }) {
       state: detailedCustomer.state || '',
       zip: detailedCustomer.postal_code || '',
       country: detailedCustomer.country || '',
-      email:detailedCustomer.email || '',
-      phone:detailedCustomer.phone || ''
+      email: detailedCustomer.email || '',
+      phone: detailedCustomer.phone || '',
     });
   }, [detailedCustomer]);
 
-  // Update form data when form fields change
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -125,12 +123,12 @@ export default function AddressForm({ onLogout }) {
             onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <TextField
             required
             id="email"
             name="email"
-            label="email"
+            label="Email"
             fullWidth
             autoComplete="email"
             variant="standard"
@@ -181,9 +179,9 @@ export default function AddressForm({ onLogout }) {
             required
             id="phone"
             name="phone"
-            label="Telefon Numarası"
+            label="Phone Number"
             fullWidth
-            autoComplete='deneme'
+            autoComplete="tel"
             variant="standard"
             value={formData.phone}
             onChange={handleChange}
@@ -221,7 +219,7 @@ export default function AddressForm({ onLogout }) {
             label="Use this address for payment details"
           />
           <Grid item xs={12}>
-            <NavLink to='/profile/review-order' state={{dataDisplay , totalPrice, formData}}>
+            <NavLink to='/profile/review-order' state={{ dataDisplay, totalPrice, formData }}>
               <Button variant="contained">
                 Sıradaki
               </Button>
@@ -229,7 +227,6 @@ export default function AddressForm({ onLogout }) {
           </Grid>
         </Grid>
       </Grid>
-      
     </React.Fragment>
   );
 }

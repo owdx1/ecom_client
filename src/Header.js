@@ -4,10 +4,10 @@ import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiList from '@mui/material/List';
 import MuiListItem from '@mui/material/ListItem';
-import MuiListItemIcon from '@mui/material/ListItemIcon';
 import MuiListItemText from '@mui/material/ListItemText';
 import MuiBadge from '@mui/material/Badge';
 import { ShoppingCart, Person, Menu } from '@mui/icons-material';
+import { Popover, Button, Box } from '@mui/material';
 import '../src/styles/Header.css';
 
 const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
@@ -15,33 +15,24 @@ const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
   const [isProfileDropdownVisible, setProfileDropdownVisible] = useState(false);
   const navigate = useNavigate();
 
-  const handleHamburgerDropdownEnter = () => {
-    setHamburgerDropdownVisible(true);
+  const handleHamburgerButtonClick = () => {
+    setHamburgerDropdownVisible(!isHamburgerDropdownVisible);
+    setProfileDropdownVisible(false); // Close the profile dropdown if open
   };
 
-  const handleHamburgerDropdownLeave = () => {
+  const handleProfileButtonClick = () => {
+    setProfileDropdownVisible(!isProfileDropdownVisible);
+    setHamburgerDropdownVisible(false); // Close the hamburger dropdown if open
+  };
+
+  const handleCloseDropdowns = () => {
     setHamburgerDropdownVisible(false);
-  };
-
-  const handleProfileDropdownEnter = () => {
-    setProfileDropdownVisible(true);
-  };
-
-  const handleProfileDropdownLeave = () => {
     setProfileDropdownVisible(false);
   };
 
   const handleLogout = () => {
     onLogout();
     navigate('/');
-  };
-
-  const handleHamburgerLinkClick = () => {
-    setHamburgerDropdownVisible(false);
-  };
-
-  const handleProfileLinkClick = () => {
-    setProfileDropdownVisible(false);
   };
 
   const Drawer = styled(MuiDrawer)(({ theme }) => ({
@@ -60,32 +51,80 @@ const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
     </MuiList>
   );
 
+  // Custom Popover component for the hamburger dropdown
+  const HamburgerDropdown = () => (
+    <Popover
+      open={isHamburgerDropdownVisible}
+      onClose={handleCloseDropdowns}
+      anchorReference="anchorEl"
+      anchorEl={document.getElementById('hamburger-icon')}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+    >
+      <Box sx={{ p: 2, minWidth: '12rem' }}>
+        <LinkList
+          links={[
+            { to: '/search?search_parameter=u-flex likrali takim', label: 'u-Flex Likralı Takımlar' },
+            { to: '/search?search_parameter=coro-flex likrali takim', label: 'coro-Flex Likralı Takımlar' },
+            { to: '/search?search_parameter=tek üst', label: 'Tek üst' },
+            { to: '/search?search_parameter=desenli', label: 'Desenli Ürünler' },
+            { to: '/search?search_parameter=tesettür', label: 'Likralı Tesettürler' },
+            { to: '/search?search_parameter=bone', label: 'Boneler' },
+            { to: '/search?search_parameter=terlik', label: 'Terlikler' },
+          ]}
+          onClose={handleCloseDropdowns}
+        />
+      </Box>
+    </Popover>
+  );
+
+  // Custom Popover component for the profile dropdown
+  const ProfileDropdown = () => (
+    <Popover
+      open={isProfileDropdownVisible}
+      onClose={handleCloseDropdowns}
+      anchorReference="anchorEl"
+      anchorEl={document.getElementById('profile-icon')}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+    >
+      <Box sx={{ p: 2, minWidth: '12rem' }}>
+        <LinkList
+          links={[
+            { to: '/profile', label: 'Profilim' },
+            { to: '/profile/orders', label: 'Siparişlerim' },
+            { to: '/profile/cart', label: 'Sepetim' }
+          ]}
+          onClose={handleCloseDropdowns}
+        />
+        <Button className="logout-btn" onClick={handleLogout} fullWidth>
+          Çıkış Yap
+        </Button>
+      </Box>
+    </Popover>
+  );
+
   return (
     <nav>
       <div className="header-left">
-        
         <div
           className="dropdown"
-          onMouseEnter={handleHamburgerDropdownEnter}
-          onMouseLeave={handleHamburgerDropdownLeave}
+          onClick={handleHamburgerButtonClick}
         >
-          <Menu className="hamburger-icon" />
-          {isHamburgerDropdownVisible && (
-            <Drawer anchor="left" open={isHamburgerDropdownVisible} onClose={handleHamburgerDropdownLeave}>
-              <LinkList
-                links={[
-                  { to: '/search?search_parameter=u-flex likrali takim', label: 'u-Flex Likralı Takımlar' },
-                  { to: '/search?search_parameter=coro-flex likrali takim', label: 'coro-Flex Likralı Takımlar' },
-                  { to: '/search?search_parameter=tek üst', label: 'Tek üst' },
-                  { to: '/search?search_parameter=desenli', label: 'Desenli Ürünler' },
-                  { to: '/search?search_parameter=tesettür', label: 'Likralı Tesettürler' },
-                  { to: '/search?search_parameter=bone', label: 'Boneler' },
-                  { to: '/search?search_parameter=terlik', label: 'Terlikler' },
-                ]}
-                onClose={handleHamburgerLinkClick}
-              />
-            </Drawer>
-          )}
+          <Menu id="hamburger-icon" className="hamburger-icon" />
+          {isHamburgerDropdownVisible && <HamburgerDropdown />}
         </div>
         <div className="dropdown">
           <NavLink to="/">Anasayfa</NavLink>
@@ -103,28 +142,12 @@ const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
             </div>
             <div
               className="dropdown"
-              onMouseEnter={handleProfileDropdownEnter}
-              onMouseLeave={handleProfileDropdownLeave}
+              onClick={handleProfileButtonClick}
             >
-              <NavLink to="/profile" className="profile-icon">
+              <NavLink  id="profile-icon" className="profile-icon">
                 <Person />
               </NavLink>
-              {isProfileDropdownVisible && (
-                <Drawer anchor="right" open={isProfileDropdownVisible} onClose={handleProfileDropdownLeave}>
-                  <LinkList
-                    links={[
-                      { to: '/profile' , label: 'Profilim'},
-                      { to: '/profile/orders', label: 'Siparişlerim' },
-                      { to: '/profile/cart', label: 'Sepetim' }
-                      
-                    ]}
-                    onClose={handleProfileLinkClick}
-                  />
-                  <button className="logout-btn" onClick={handleLogout}>
-                    Çıkış Yap
-                  </button>
-                </Drawer>
-              )}
+              {isProfileDropdownVisible && <ProfileDropdown />}
             </div>
           </>
         ) : (
