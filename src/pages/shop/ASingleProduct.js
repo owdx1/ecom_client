@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 
-const ASingleProduct = ({ isLoggedIn }) => {
+const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const navigate = useNavigate();
   const [errorM, setErrorM] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -140,6 +140,7 @@ const ASingleProduct = ({ isLoggedIn }) => {
 
         localStorage.setItem('accessToken', accessToken);
         setAddToCartSuccessfull(message);
+        getNumberOfProductsInCart(accessToken);
 
         toast.success('Ürün sepete eklendi ✔️', {
           position: toast.POSITION.TOP_RIGHT,

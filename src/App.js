@@ -22,6 +22,7 @@ import Dashboard from '../src/pages/admin/Dashboard'
 import Orders from './pages/profile/Orders';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminProductDetails from './pages/admin/AdminProductDetails';
+import ASingleOrder from './pages/profile/ASingleOrder';
 
 
 
@@ -32,6 +33,35 @@ import AdminProductDetails from './pages/admin/AdminProductDetails';
 
     const [isLoggedIn , setIsLoggedIn] = useState(false);
     const [numberOfProductsInCart, setNumberOfProductsInCart] = useState(0);
+
+    const getNumberOfProductsInCart = async (accessToken) => {
+
+      try {
+        const response = await fetch('http://localhost:5000/product-num' , {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        if(response.ok){
+          const allFetch = await response.json();
+          let {productNum} = allFetch;
+          console.log("şuanki urun miktari" , productNum);
+          
+          setNumberOfProductsInCart(productNum);
+          
+  
+        } else if(response.status === 401){
+          handleLogout();
+        }
+        else{
+          console.error("app js in icindeki useeffectte basta bir sorun var anlamadım")
+        }
+  
+        
+      } catch (error) {
+        console.error(error);
+      }
+    }
     
     
     
@@ -45,34 +75,7 @@ import AdminProductDetails from './pages/admin/AdminProductDetails';
       else{
         setIsLoggedIn(true);
       }
-      const getNumberOfProductsInCart = async (accessToken) => {
-
-        try {
-          const response = await fetch('http://localhost:5000/product-num' , {
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            }
-          })
-          if(response.ok){
-            const allFetch = await response.json();
-            let {productNum} = allFetch;
-            console.log("şuanki urun miktari" , productNum);
-            
-            setNumberOfProductsInCart(productNum);
-            
-    
-          } else if(response.status === 401){
-            handleLogout();
-          }
-          else{
-            console.error("app js in icindeki useeffectte basta bir sorun var anlamadım")
-          }
-    
-          
-        } catch (error) {
-          console.error(error);
-        }
-      }
+      
 
       getNumberOfProductsInCart(accessToken);
 
@@ -94,12 +97,13 @@ import AdminProductDetails from './pages/admin/AdminProductDetails';
         <Routes>
           <Route path='/' element={<Shop />}></Route>
           
-          <Route path='/shop/products/:product_id' element={<ASingleProduct isLoggedIn={isLoggedIn} />} />
+          <Route path='/shop/products/:product_id' element={<ASingleProduct isLoggedIn={isLoggedIn} getNumberOfProductsInCart={getNumberOfProductsInCart}/>} />
 
           <Route path='/search' element={<Search />}></Route>
           <Route path='/profile' element={<Profile onLogout={handleLogout}/>}></Route>
-          <Route path='/profile/cart' element={<Cart onLogout={handleLogout}/>}></Route>
+          <Route path='/profile/cart' element={<Cart onLogout={handleLogout} getNumberOfProductsInCart={getNumberOfProductsInCart}/>}></Route>
           <Route path='/profile/orders' element={<Orders  onLogout={handleLogout} />}></Route>
+          <Route path='/profile/orders/:order_id' element={<ASingleOrder  onLogout={handleLogout} />}></Route>
 
           <Route path='/forget-password' element={<ResetPassword onLogout={handleLogout}/>}></Route>
           <Route path='/profile/update' element={<UpdateInfo />}></Route>
@@ -124,7 +128,7 @@ import AdminProductDetails from './pages/admin/AdminProductDetails';
           <Route path='/error' element={<Error />}></Route>
         </Routes>
 
-        <Footer/>
+        {/*<Footer/> Footer şimdilik kaldırıldı, her şey bitince eklenecek*/}
 
       </>
 
