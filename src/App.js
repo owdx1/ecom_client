@@ -23,6 +23,8 @@ import Orders from './pages/profile/Orders';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminProductDetails from './pages/admin/AdminProductDetails';
 import ASingleOrder from './pages/profile/ASingleOrder';
+import AddressForm from './pages/profile/AddressForm';
+import Review from './pages/profile/Review';
 
 
 
@@ -104,6 +106,8 @@ import ASingleOrder from './pages/profile/ASingleOrder';
           <Route path='/profile/cart' element={<Cart onLogout={handleLogout} getNumberOfProductsInCart={getNumberOfProductsInCart}/>}></Route>
           <Route path='/profile/orders' element={<Orders  onLogout={handleLogout} />}></Route>
           <Route path='/profile/orders/:order_id' element={<ASingleOrder  onLogout={handleLogout} />}></Route>
+          <Route path='/profile/address-form' element={<AddressForm  onLogout={handleLogout} />}></Route>
+          <Route path='/profile/review-order' element={<Review  onLogout={handleLogout} getNumberOfProductsInCart={getNumberOfProductsInCart}/>}></Route>
 
           <Route path='/forget-password' element={<ResetPassword onLogout={handleLogout}/>}></Route>
           <Route path='/profile/update' element={<UpdateInfo />}></Route>

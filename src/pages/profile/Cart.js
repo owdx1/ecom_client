@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, NavLink } from 'react-router-dom';
 import dummyImage from '../../images/cat.jpg';
 import { Button, Grid, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -127,34 +127,7 @@ const Cart = ({ onLogout, getNumberOfProductsInCart}) => {
 
   };
 
-  const handleBuy = async () => {
-    const accessToken = localStorage.getItem('accessToken');
-
-    try {
-      const response = await fetch('http://localhost:5000/profile/cart/buy', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        },
-        method: 'POST'
-      });
-
-      const data = await response.json();
-      const message = data.message;
-
-      setBackEndMessage(message);
-
-      if (response.status === 200) {
-
-        localStorage.setItem('accessToken', data.accessToken);
-      } else {
-        throw new Error('Error fetching Cart');
-      }
-
-    } catch (error) {
-      console.error(error);
-    }
-
-  };
+  
 
   return (
     <>
@@ -201,7 +174,8 @@ const Cart = ({ onLogout, getNumberOfProductsInCart}) => {
                       <TableCell>TL{product.price}</TableCell>
                       <TableCell>{product.orderquantity}</TableCell>
                       <TableCell>{product.color}</TableCell>
-                      <TableCell>{product.size}</TableCell>
+                      {product.size && <TableCell>{product.size}</TableCell>}
+                      {product.size_i !== 0 && <TableCell>{product.size_i}</TableCell>}
                       <TableCell>
                         <Button onClick={() => handleDeleteProduct(product.product_id, product.feature_id)} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
                           Delete
@@ -212,26 +186,16 @@ const Cart = ({ onLogout, getNumberOfProductsInCart}) => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <div className="cart-info" style={{ backgroundColor: '#f5f5f5', width: '600px' }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
-                  <div className="user-info">
-                    <Typography variant="h5">User Info</Typography>
-                    <Typography variant="body1">Email: {customer.email}</Typography>
-                    <Typography variant="body1">Address: Dummy Address</Typography>
-                  </div>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <div className="total-price">
-                    <Typography variant="h5">Cart Info</Typography>
-                    <Typography variant="body1">Total Price:{totalPrice} TL</Typography>
-                    <Button onClick={handleBuy} variant="contained" color="primary">
-                      Buy
-                    </Button>
-                  </div>
-                </Grid>
-              </Grid>
-            </div>
+            <Grid item xs={12} md={6}>
+              <div className="total-price">
+                <Typography variant="body1">Total Price:{totalPrice} TL</Typography>
+              </div>
+              <NavLink to='/profile/address-form' state={{customer , dataDisplay, totalPrice}}>
+                <Button variant="contained" color="primary">
+                  Ödemeye geç
+                </Button>
+              </NavLink>
+            </Grid>
           </div>
         </>
       )}
