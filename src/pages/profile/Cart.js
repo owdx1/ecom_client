@@ -159,16 +159,18 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
                     <TableBody>
                       {dataDisplay.map((product) => (
                         <TableRow key={product.product_id}>
-                          <TableCell>
-                            <Grid container alignItems="center" spacing={2}>
+                          <Link to={`/shop/products/${product.product_id}`} state={{ product }}>
+                            <TableCell>
+                              <Grid container alignItems="center" spacing={2}>
                               <Grid item>
                                 <img src={dummyImage} alt="Product" className="product-image" />
                               </Grid>
                               <Grid item>
                                 <Typography variant="body1">{product.product_name}</Typography>
                               </Grid>
-                            </Grid>
-                          </TableCell>
+                              </Grid>
+                            </TableCell>
+                          </Link>
                           <TableCell>{product.color}</TableCell>
                           <TableCell>{product.orderquantity}</TableCell>
                           {product.size && <TableCell>{product.size}</TableCell>}
