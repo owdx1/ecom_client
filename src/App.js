@@ -25,7 +25,7 @@ import AdminProductDetails from './pages/admin/AdminProductDetails';
 import ASingleOrder from './pages/profile/ASingleOrder';
 import AddressForm from './pages/profile/AddressForm';
 import Review from './pages/profile/Review';
-
+import ProductDetails from './pages/shop/ProductDetails';//!
 
 
 
@@ -119,7 +119,7 @@ import Review from './pages/profile/Review';
 
           
           <Route path='/' element={<Shop/>} />
-          
+          <Route path='/foto/photos/:featureId' element={<ProductDetails/>}></Route>
           <Route path='/admin/login' element={<AdminLogin />}></Route>
           <Route path='/admin/add-a-product' element={<AddAProduct />}></Route>
           <Route path='/admin/dashboard' element={<Dash />}></Route>
