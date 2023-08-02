@@ -11,9 +11,7 @@ import {
   Button,
   Grid,
   Card,
-  CardMedia,
   CardContent,
-  IconButton,
   Box,
   CircularProgress,
 } from '@mui/material';
@@ -25,6 +23,8 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [currentFeatureId, setCurrentFeatureId] = useState(0);
+  const [currentProduct , setCurrentProduct] = useState({});
+  
   const slides = [
     { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
     { url: 'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg', title: 'boats' },
@@ -33,9 +33,19 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
     { url: 'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg', title: 'coding' },
   ];
 
+
+
   const location = useLocation();
-  const { product } = location.state;
-  console.log('suanki product', product);
+  useEffect(() => {
+    
+    const { product } = location.state || {};
+    
+    setCurrentProduct(product)
+    console.log('suanki productabi', currentProduct)
+  }, []);
+  
+
+  
 
   const accessToken = localStorage.getItem('accessToken');
   const [quantity, setQuantity] = useState(1);
@@ -46,29 +56,32 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedSize_i, setSelectedSize_i] = useState('');
   const [addToCartSuccessfull, setAddToCartSuccessfull] = useState('');
-  const [totalAmount, setTotalAmount] = useState(quantity * product.price);
+  const [totalAmount, setTotalAmount] = useState(quantity * currentProduct.price);
 
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/shop/products/${product_id}`);
-      if (response.ok) {
-        const { transformedData, SizeIsNotNUll } = await response.json();
-        setTransformedData(transformedData);
-        console.log(transformedData);
-        setSelectedSize(transformedData[0].size);
-        setSelectedSize_i(transformedData[0].size_i);
-        setCurrentFeatureId(transformedData[0].feature_id)
-      } else {
-        throw new Error('An error occurred while fetching the products');
-      }
-    } catch (error) {
-      setErrorMessage('Service unavailable');
-    } finally {
-      setLoading(false);
-    }
-  };
+  
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/shop/products/${product_id}`);
+        if (response.ok) {
+          const { transformedData, SizeIsNotNUll } = await response.json();
+          setTransformedData(transformedData);
+          console.log(transformedData);
+          setSelectedSize(transformedData[0].size);
+          setSelectedSize_i(transformedData[0].size_i);
+          setCurrentFeatureId(transformedData[0].feature_id)
+        } else {
+          throw new Error('An error occurred while fetching the products' , errorM);
+        }
+      } catch (error) {
+        setErrorMessage('Service unavailable');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+
     fetchProducts();
     window.scrollTo(0, 0);
   }, []);
@@ -82,6 +95,14 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
       setQuantity((prevQuantity) => prevQuantity - 1);
     }
   };
+  /*useEffect(() => {
+    if ( product === 'undefined') {
+      
+      return;
+    }
+  
+  
+  }, [product]);*/
 
   useEffect(() => {
     if (errorM !== '') {
@@ -95,8 +116,8 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   }, [errorM]);
 
   useEffect(() => {
-    setTotalAmount(quantity * product.price);
-  }, [quantity, product.price]);
+    setTotalAmount(quantity * currentProduct.price);
+  }, [quantity, currentProduct.price]);
 
   useEffect(() =>{
     console.log('current feature id' , currentFeatureId);
@@ -112,11 +133,11 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
       return; // Stop the function execution if not logged in
     }
 
-    const size = product.category_id === 6 ? selectedSize_i : selectedSize;
-    const product_id = product.product_id;
+    const size = currentProduct.category_id === 6 ? selectedSize_i : selectedSize;
+    const product_id = currentProduct.product_id;
     console.log('suanki feaute id' , currentFeatureId);
-    const color = product.color;
-    const category = product.category_id;
+    const color = currentProduct.color;
+    const category = currentProduct.category_id;
 
 
     try {
@@ -220,17 +241,17 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
               <CardContent>
                 <div className="product-name-container">
                   <Typography variant="h5" gutterBottom>
-                    {product.product_name}
+                    {currentProduct.product_name}
                   </Typography>
                 </div>
                 <Typography variant="body1" gutterBottom>
-                  Renk: {product.color}
+                  Renk: {currentProduct.color}
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                  Desen: {product.fabric}
+                  Desen: {currentProduct.fabric}
                 </Typography>
                 <div className="sizes-container">
-                  {product.category_id !== 6 ? (
+                  {currentProduct.category_id !== 6 ? (
                     transformedData.map((data, index) => (
                       <Button
                         key={index}
@@ -259,11 +280,11 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                   )}
                 </div>
                 <Typography variant="body1" gutterBottom>
-                  Ürün ID'si: {product.product_id}
+                  Ürün ID'si: {currentProduct.product_id}
                 </Typography>
                 
                 <Typography variant="body1" gutterBottom>
-                  Fiyat: {product.price} TL
+                  Fiyat: {currentProduct.price} TL
                 </Typography>
                 <div className="quantity-container">
                   <Button variant="outlined" onClick={decreaseQuantity}>
@@ -275,18 +296,19 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                   </Button>
                 </div>
                 <Typography variant="body1" gutterBottom>
-                  Toplam Fiyat: {quantity * product.price} TL
+                  Toplam Fiyat: {quantity * currentProduct.price} TL
                 </Typography>
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={addToCart}
+                  disabled={addToCartSuccessfull}
                 >
                   Sepete Ekle
                 </Button>
                 <div className="description">
                   <Typography variant="body1" className="product-description">
-                    {product.description}
+                    {currentProduct.description}
                   </Typography>
                 </div>
               </CardContent>

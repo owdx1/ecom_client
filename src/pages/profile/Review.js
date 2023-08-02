@@ -31,6 +31,7 @@ export default function Review({ getNumberOfProductsInCart }) {
 
   const handleBuy = async () => {
     const accessToken = localStorage.getItem('accessToken');
+    
 
     try {
       const response = await fetch('http://localhost:5000/profile/cart/buy', {
