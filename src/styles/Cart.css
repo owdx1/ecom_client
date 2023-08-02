@@ -115,7 +115,7 @@ button:hover {
     height: auto;
   }
 }
-/* Add these styles to your Cart.css or another CSS file */
+
 .cart-container {
   margin-top: 20px;
   padding: 20px;
@@ -142,7 +142,7 @@ button:hover {
   margin-bottom: 10px;
 }
 
-/* Responsive styles for mobile devices */
+
 @media (max-width: 600px) {
   .product-image {
     width: 50px;

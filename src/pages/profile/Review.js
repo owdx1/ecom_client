@@ -37,7 +37,8 @@ export default function Review({ getNumberOfProductsInCart }) {
         headers: {
           Authorization: `Bearer ${accessToken}`
         },
-        method: 'POST'
+        method: 'POST',
+        body: JSON.stringify({totalPrice}),
       });
 
       const data = await response.json();
