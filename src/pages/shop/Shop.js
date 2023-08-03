@@ -6,6 +6,8 @@ import dummyImage from '../../images/cat.jpg';
 import ImageSlider from '../../utils/ImagesSlider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Showcase from './Showcase';
+import MostSaled from './MostSaled';
 
 const slides = [
   { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
@@ -170,6 +172,9 @@ const Shop = () => {
         )}
       </div>
 
+      <Showcase/>
+      <MostSaled/>
+
       <div className="filter-container">
         <button
           className={`filter-button ${activeButton === 'takim' ? 'active' : ''}`}
@@ -219,18 +224,16 @@ const Shop = () => {
           <Grid key={product.product_id} item xs={12} sm={6} md={4}>
             <Link to={`/shop/products/${product.product_id}`} state={{ product }}>
               <Paper className="product-item">
-                <div className="product-image">
+                <div className="product-image-shop">
                   <img src={dummyImage} alt={product.product_id} />
                 </div>
                 <div className="product-details-main">
                   <div className="first-detail">
-                    <Typography variant="body1">{product.product_name}</Typography>
-                    <Typography variant="body1">Renk: {product.color}</Typography>
-                    <Typography variant="body1">İndirim {product.discount}</Typography>
+                    <Typography variant="body1" style={{marginTop:'10px'}}>{product.product_name}</Typography>
                   </div>
                   <div className="product-price-div">
                     <Typography variant="h5" className="product-price">
-                      {product.price} TL
+                    {product.price} TL
                     </Typography>
                   </div>
                 </div>

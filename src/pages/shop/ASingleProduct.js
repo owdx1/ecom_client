@@ -44,7 +44,6 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
     console.log('suanki productabi', currentProduct)
   }, []);
   
-
   
 
   const accessToken = localStorage.getItem('accessToken');

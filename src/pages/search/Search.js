@@ -33,6 +33,17 @@ const Search = () => {
   const navigate = useNavigate();
   const searchParam = new URLSearchParams(location.search).get('search_parameter');
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    // Scroll to top when the component mounts
+    scrollToTop();
+  }, []);
+
+  
+
   const [originalProducts, setOriginalProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -104,7 +115,7 @@ const Search = () => {
         product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredProducts(filtered);
-
+      scrollToTop();
       navigate(`/search?search_parameter=${encodeURIComponent(searchTerm)}`);
     }
   };
@@ -133,6 +144,7 @@ const Search = () => {
     }
 
     const searchParamsString = queryParams.toString();
+    scrollToTop();
     navigate(`/search?${searchParamsString}`);
   };
 
@@ -232,7 +244,7 @@ const Search = () => {
             {filteredProducts.map((product) => (
               <Link key={product.product_id} to={`/shop/products/${product.product_id}`} state={{ product }}>
                 <div className="product-item">
-                  <div className="product-image">
+                  <div className="product-image-search">
                     <img src={dummyImage} alt={product.product_id} />
                   </div>
                   <div className="product-details-main">
