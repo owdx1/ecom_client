@@ -65,7 +65,9 @@ const AdminProducts = () => {
 
       if (response.status === 200) {
         const data = await response.json();
+        console.log(data.products);
         setProducts(data.products);
+        
       } else {
         throw new Error('Failed to fetch products');
       }
