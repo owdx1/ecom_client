@@ -17,8 +17,18 @@ export default function Review({ getNumberOfProductsInCart }) {
   const [backEndMessage, setBackEndMessage] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
+  const [dataDisplay , setDataDisplay] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [formData, setFormData] = useState({});
 
-  const { dataDisplay, totalPrice, formData } = location.state;
+  
+  useEffect(() =>{
+    setDataDisplay(location.state.dataDisplay);
+    setTotalPrice(location.state.totalPrice);
+    setFormData(location.state.formData);
+
+
+  } , [])
   addresses.push(formData.address1, formData.city, formData.country, formData.zip);
 
   useEffect(() => {

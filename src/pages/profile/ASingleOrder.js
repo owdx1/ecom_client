@@ -39,7 +39,7 @@ const ASingleOrder = () => {
   return (
     <div style={{ backgroundColor: '#f0f0f0', padding: '20px', width: '100%', maxWidth: '1000px', marginTop: '20px' }}>
       <Typography variant="h6" component="div" style={{marginBottom:'20px'}}>
-                  Order ID: {order_id}
+                  Sipariş Numarası : {order_id}
       </Typography>
       <Grid container spacing={2} direction="column">
         {singleOrderDisplay.map((orderItem) => (
@@ -49,16 +49,16 @@ const ASingleOrder = () => {
               <CardContent>
                 
                 <Typography variant="body1" color="text.secondary">
-                  Product ID: {orderItem.product_id}
+                  Ürün Kodu  : {orderItem.product_id}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  Quantity: {orderItem.quantity}
+                  Miktar: {orderItem.quantity}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  Size: {orderItem.size}
+                  Beden: {orderItem.size}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  Price: ${orderItem.price}
+                  Fiyat: {orderItem.price}TL
                 </Typography>
                 
               </CardContent>
