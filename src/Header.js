@@ -11,6 +11,7 @@ import { Popover, Button, Box , Badge} from '@mui/material';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import '../src/styles/Header.css';
 import { Link } from 'react-router-dom';
+import logo from './images/logo2.png';
 
 const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
   const [isHamburgerDropdownVisible, setHamburgerDropdownVisible] = useState(false);
@@ -129,7 +130,9 @@ const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
           {isHamburgerDropdownVisible && <HamburgerDropdown />}
         </div>
         <div className="dropdown">
-          <NavLink to="/">Anasayfa</NavLink>
+          <NavLink to="/">
+            <img src={logo} style={{height:'100px'}}></img>
+          </NavLink>
         </div>
       </div>
       <div className="header-right">
