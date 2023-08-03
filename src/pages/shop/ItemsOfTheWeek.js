@@ -3,6 +3,7 @@ import { Paper, Typography, Badge } from '@mui/material';
 import { Link } from 'react-router-dom';
 import dummyImage from '../../images/cat.jpg';
 import { Grid } from '@mui/material';
+import starIcon from '../../images/star-icon.png'
 
 const ItemsOfTheWeek = ({ originalProducts }) => {
   console.log('tum urunler' , originalProducts);
@@ -27,25 +28,20 @@ const ItemsOfTheWeek = ({ originalProducts }) => {
                 />
                 {product.is_product_of_the_week && (
                   <Badge
-                    color="secondary"
                     anchorOrigin={{
                       vertical: 'top',
-                      horizontal: 'left',
+                      horizontal: 'right',
                     }}
-                    badgeContent="Haftanın Ürünü"
-                  >
-                    <div className="product-image-shop">
-                      <img src={dummyImage} alt={product.product_id} />
-                    </div>
-                  </Badge>
+                    badgeContent={<img src={starIcon} alt="Flame Icon" style={{ height: '60px', background: 'transparent' }} />}
+                    style={{ marginRight: '350px' }}
+                    badgeStyle={{ backgroundColor: 'transparent' }}
+                  />
                 )}
 
           
-                {!product.is_product_of_the_week && (
-                  <div className="product-image-shop">
-                    <img src={dummyImage} alt={product.product_id} />
-                  </div>
-                )}
+                <div className="product-image-shop">
+                  <img src={dummyImage} alt={product.product_id} />
+                </div>
                 <div className="product-details-main">
                   <div className="first-detail">
                     <Typography variant="body1" style={{ marginTop: '10px' }}>

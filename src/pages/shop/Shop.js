@@ -10,6 +10,8 @@ import Showcase from './Showcase';
 import MostSaled from './MostSaled';
 import ItemsOfTheWeek from './ItemsOfTheWeek';
 import { Badge } from '@mui/material';
+import flameIcon from '../../images/flame-icon.png';
+import starIcon from '../../images/star-icon.png';
 
 const slides = [
   { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
@@ -175,7 +177,7 @@ const Shop = () => {
       </div>
 
       <Showcase/>
-      <MostSaled/>
+      <MostSaled originalProducts={originalProducts}/>
       <ItemsOfTheWeek originalProducts={originalProducts}/>
 
       <div className="filter-container">
@@ -226,33 +228,38 @@ const Shop = () => {
         {filteredProducts.map((product) => (
           <Grid key={product.product_id} item xs={12} sm={6} md={4}>
             <Link to={`/shop/products/${product.product_id}`} state={{ product }}>
+              
               <Paper className="product-item">
-                {product.is_product_of_the_week && (
+              {product.is_product_of_the_week && (
                   <Badge
-                    style={{paddingRight:'270px' , marginTop:'14px'}}
-                    color="secondary"
                     anchorOrigin={{
                       vertical: 'top',
-                      horizontal: 'left',
+                      horizontal: 'right',
                     }}
-                    badgeContent="Haftanın Ürünü"
-                  >
-                  </Badge>
-                  
+                    badgeContent={<img src={starIcon} alt="Flame Icon" style={{ height: '60px', background: 'transparent' }} />}
+                    style={{ marginRight: '350px' }}
+                    badgeStyle={{ backgroundColor: 'transparent' }}
+                  />
                 )}
                 {product.is_most_saled && (
                   <Badge
-                    
-                    
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  badgeContent='Çok satan Ürün🔥'
-                  
-                />
-
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '60px', background: 'transparent' }} />}
+                    style={{ marginLeft: '350px' }}
+                    badgeStyle={{ backgroundColor: 'transparent' }}
+                  />
                 )}
+
+
+
+                 
+
+
+
+                
 
                 <Badge
                   style={{ paddingRight: '270px', marginTop: '34px' }}
@@ -266,9 +273,10 @@ const Shop = () => {
                 />
           
                   
-
-                  
+                
+                    
                 <div className="product-image-shop">
+
                   <img src={dummyImage} alt={product.product_id} />
                   
                 </div>
@@ -277,6 +285,8 @@ const Shop = () => {
                     <Typography variant="body1" style={{ marginTop: '10px' }}>
                       {product.product_name}
                     </Typography>
+                    
+
                   </div>
                   <div className="product-price-div">
                     <Typography variant="h5" className="product-price">
