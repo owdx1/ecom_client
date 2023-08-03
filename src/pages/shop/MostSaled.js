@@ -31,7 +31,7 @@ const MostSaled = ({ originalProducts }) => {
                       vertical: 'top',
                       horizontal: 'right',
                     }}
-                    badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '60px', background: 'transparent' }} />}
+                    badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '60px', background: 'transparent', marginBottom:'80px' }} />}
                     style={{ marginLeft: '350px' }}
                     badgeStyle={{ backgroundColor: 'transparent' }}
                   />

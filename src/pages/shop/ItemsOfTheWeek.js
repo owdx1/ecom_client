@@ -32,8 +32,8 @@ const ItemsOfTheWeek = ({ originalProducts }) => {
                       vertical: 'top',
                       horizontal: 'right',
                     }}
-                    badgeContent={<img src={starIcon} alt="Flame Icon" style={{ height: '60px', background: 'transparent' }} />}
-                    style={{ marginRight: '350px' }}
+                    badgeContent={<img src={starIcon} alt="Flame Icon" style={{ height: '60px', background: 'transparent' , marginBottom:'80px' }} />}
+                    style={{ marginRight: '370px' }}
                     badgeStyle={{ backgroundColor: 'transparent' }}
                   />
                 )}
