@@ -65,7 +65,7 @@ const Showcase = () => {
             <Card elevation={0} sx={{ ...cartStyle }}>
                 <CardMedia component="img" image={tekUst1} alt="Product 1" style={{ ...imageStyle }} />
                 <Typography variant="subtitle1" sx={{ ...productNameStyle }}>
-                core-flex tek üstler
+                u-flex tek üstler
                 </Typography>
             </Card>
             </Link>

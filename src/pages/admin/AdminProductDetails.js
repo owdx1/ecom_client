@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, NavLink } from 'react-router-dom';
 import { Button, TextField, Typography, Container, Grid, Card, CardMedia, CardContent } from '@mui/material';
 
 const AdminProductDetails = () => {
   const location = useLocation();
-  const { product } = location.state;
+  const [product , setProduct] = useState({});
+  
+
+  useEffect(() =>{
+    setProduct(location.state.product);
+  } , [])
+
+
+
+
+
   const [updatedProduct, setUpdatedProduct] = useState({
     product_name: product.product_name,
     price: product.price,

@@ -7,8 +7,10 @@ import MuiListItem from '@mui/material/ListItem';
 import MuiListItemText from '@mui/material/ListItemText';
 import MuiBadge from '@mui/material/Badge';
 import { ShoppingCart, Person, Menu } from '@mui/icons-material';
-import { Popover, Button, Box } from '@mui/material';
+import { Popover, Button, Box , Badge} from '@mui/material';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import '../src/styles/Header.css';
+import { Link } from 'react-router-dom';
 
 const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
   const [isHamburgerDropdownVisible, setHamburgerDropdownVisible] = useState(false);
@@ -133,6 +135,13 @@ const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
       <div className="header-right">
         {isLoggedIn ? (
           <>
+            <div> İletişime Geçin!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <Link to={'https://wa.me/905322557015'} target="_blank" rel="noopener noreferrer">
+                <Badge color="secondary" variant="dot">
+                  <WhatsAppIcon color="action" />
+                </Badge>
+              </Link>
+            </div>
             <div className="dropdown">
               <NavLink to="/profile/cart" className="basket-icon">
                 <MuiBadge badgeContent={numberOfProductsInCart} color="secondary">
@@ -149,6 +158,9 @@ const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
               </NavLink>
               {isProfileDropdownVisible && <ProfileDropdown />}
             </div>
+            
+
+
           </>
         ) : (
           <div className="dropdown">

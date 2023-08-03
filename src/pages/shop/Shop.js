@@ -8,6 +8,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Showcase from './Showcase';
 import MostSaled from './MostSaled';
+import ItemsOfTheWeek from './ItemsOfTheWeek';
+import { Badge } from '@mui/material';
 
 const slides = [
   { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
@@ -174,6 +176,7 @@ const Shop = () => {
 
       <Showcase/>
       <MostSaled/>
+      <ItemsOfTheWeek originalProducts={originalProducts}/>
 
       <div className="filter-container">
         <button
@@ -224,16 +227,60 @@ const Shop = () => {
           <Grid key={product.product_id} item xs={12} sm={6} md={4}>
             <Link to={`/shop/products/${product.product_id}`} state={{ product }}>
               <Paper className="product-item">
+                {product.is_product_of_the_week && (
+                  <Badge
+                    style={{paddingRight:'270px' , marginTop:'14px'}}
+                    color="secondary"
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'left',
+                    }}
+                    badgeContent="Haftanın Ürünü"
+                  >
+                  </Badge>
+                  
+                )}
+                {product.is_most_saled && (
+                  <Badge
+                    
+                    
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  badgeContent='Çok satan Ürün🔥'
+                  
+                />
+
+                )}
+
+                <Badge
+                  style={{ paddingRight: '270px', marginTop: '34px' }}
+                  color="error"
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  badgeContent={`-${parseFloat(product.discount)}%`}
+                  
+                />
+          
+                  
+
+                  
                 <div className="product-image-shop">
                   <img src={dummyImage} alt={product.product_id} />
+                  
                 </div>
                 <div className="product-details-main">
                   <div className="first-detail">
-                    <Typography variant="body1" style={{marginTop:'10px'}}>{product.product_name}</Typography>
+                    <Typography variant="body1" style={{ marginTop: '10px' }}>
+                      {product.product_name}
+                    </Typography>
                   </div>
                   <div className="product-price-div">
                     <Typography variant="h5" className="product-price">
-                    {product.price} TL
+                      {product.price} TL
                     </Typography>
                   </div>
                 </div>

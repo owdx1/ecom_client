@@ -27,6 +27,8 @@ export default function Review({ getNumberOfProductsInCart }) {
     setTotalPrice(location.state.totalPrice);
     setFormData(location.state.formData);
 
+    console.log('suanki totalPrice', totalPrice);
+
 
   } , [])
   addresses.push(formData.address1, formData.city, formData.country, formData.zip);

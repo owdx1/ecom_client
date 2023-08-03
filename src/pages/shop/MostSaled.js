@@ -125,7 +125,7 @@ const MostSaled = () => {
 
   return (
     <div style={containerStyle}>
-      <h2>En çok satanlar</h2>
+      <h2>En çok satanlar // burası düzenlenecek</h2>
       <Box
         ref={containerRef}
         sx={{ display: 'flex', justifyContent: 'flex-start', flexWrap: 'nowrap', maxWidth: '100%' }}
