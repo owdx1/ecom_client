@@ -17,8 +17,20 @@ export default function Review({ getNumberOfProductsInCart }) {
   const [backEndMessage, setBackEndMessage] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
+  const [dataDisplay , setDataDisplay] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [formData, setFormData] = useState({});
 
-  const { dataDisplay, totalPrice, formData } = location.state;
+  
+  useEffect(() =>{
+    setDataDisplay(location.state.dataDisplay);
+    setTotalPrice(location.state.totalPrice);
+    setFormData(location.state.formData);
+
+    console.log('suanki totalPrice', totalPrice);
+
+
+  } , [])
   addresses.push(formData.address1, formData.city, formData.country, formData.zip);
 
   useEffect(() => {
@@ -31,6 +43,7 @@ export default function Review({ getNumberOfProductsInCart }) {
 
   const handleBuy = async () => {
     const accessToken = localStorage.getItem('accessToken');
+    
 
     try {
       const response = await fetch('http://localhost:5000/profile/cart/buy', {

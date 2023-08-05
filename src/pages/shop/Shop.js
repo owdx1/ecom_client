@@ -6,6 +6,12 @@ import dummyImage from '../../images/cat.jpg';
 import ImageSlider from '../../utils/ImagesSlider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Showcase from './Showcase';
+import MostSaled from './MostSaled';
+import ItemsOfTheWeek from './ItemsOfTheWeek';
+import { Badge } from '@mui/material';
+import flameIcon from '../../images/flame-icon.png';
+import starIcon from '../../images/star-icon.png';
 
 const slides = [
   { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
@@ -162,13 +168,17 @@ const Shop = () => {
             ))}
             {searchResults.length === 5 && (
               <NavLink to={`/search?search_parameter=${searchTerm}`} className="see-all-link">
-                See All Results
+                See All Results  
               </NavLink>
             )}
             {searchResults.length === 0 && <Typography variant="body1">Sonuç bulunamadı</Typography>}
           </Paper>
         )}
       </div>
+
+      <Showcase/>
+      <MostSaled originalProducts={originalProducts}/>
+      <ItemsOfTheWeek originalProducts={originalProducts}/>
 
       <div className="filter-container">
         <button
@@ -218,15 +228,65 @@ const Shop = () => {
         {filteredProducts.map((product) => (
           <Grid key={product.product_id} item xs={12} sm={6} md={4}>
             <Link to={`/shop/products/${product.product_id}`} state={{ product }}>
+              
               <Paper className="product-item">
-                <div className="product-image">
-                  <img src={product.photoUrl} alt={product.product_id} />
+              {product.is_product_of_the_week && (
+                  <Badge
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    badgeContent={<img src={starIcon} alt="Flame Icon" style={{ height: '60px', background: 'transparent' }} />}
+                    style={{ marginRight: '370px' }}
+                    badgeStyle={{ backgroundColor: 'transparent' }}
+                  />
+                )}
+                {product.is_most_saled && (
+                  <Badge
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '60px', background: 'transparent' , marginBottom:'40px'}} />}
+                    style={{ marginLeft: '350px' }}
+                    badgeStyle={{ backgroundColor: 'transparent' }}
+                  />
+                )}
+
+
+
+                 
+
+
+
+                
+
+                <Badge
+                  style={{ paddingRight: '270px', marginTop: '34px' }}
+                  color="error"
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  badgeContent={`-${parseFloat(product.discount)}%`}
+                  
+                />
+          
+                  
+                
+                    
+                <div className="product-image-shop">
+
+                  <img src={dummyImage} alt={product.product_id} />
+                  
                 </div>
                 <div className="product-details-main">
                   <div className="first-detail">
-                    <Typography variant="body1">{product.product_name}</Typography>
-                    <Typography variant="body1">Renk: {product.color}</Typography>
-                    <Typography variant="body1">İndirim {product.discount}</Typography>
+                    <Typography variant="body1" style={{ marginTop: '10px' }}>
+                      {product.product_name}
+                    </Typography>
+                    
+
                   </div>
                   <div className="product-price-div">
                     <Typography variant="h5" className="product-price">

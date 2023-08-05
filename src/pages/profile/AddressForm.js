@@ -17,15 +17,21 @@ const cartContainerStyle = {
   marginTop: '30px',
 };
 
-const addressFieldStyle = {
-  width: '100%',
-};
+
 
 export default function AddressForm({ onLogout }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [detailedCustomer, setDetailedCustomer] = useState({});
-  const { dataDisplay, totalPrice } = location.state;
+  const [dataDisplay, setDataDisplay] = useState([]);
+  const[totalPrice , setTotalPrice] = useState(0)
+
+  useEffect(() =>{
+    setDataDisplay(location.state.dataDisplay);
+    setTotalPrice(location.state.totalPrice);
+  }, [])
+ 
+  
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');

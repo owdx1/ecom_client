@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import { createRoot } from 'react-dom/client'; 
 
 const addViewportMetaTag = () => {
   const meta = document.createElement('meta');
@@ -13,11 +14,12 @@ const addViewportMetaTag = () => {
 
 addViewportMetaTag();
 
-ReactDOM.render(
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement); 
+root.render(
   <BrowserRouter>
-  <div style={{userSelect: 'none'}}>
-    <App />
-  </div>
-  </BrowserRouter>,
-  document.getElementById('root')
+    <div style={{ userSelect: 'none' }}>
+      <App />
+    </div>
+  </BrowserRouter>
 );
