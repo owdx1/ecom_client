@@ -220,7 +220,7 @@ const Shop = () => {
             <Link to={`/shop/products/${product.product_id}`} state={{ product }}>
               <Paper className="product-item">
                 <div className="product-image">
-                  <img src={dummyImage} alt={product.product_id} />
+                  <img src={product.photoUrl} alt={product.product_id} />
                 </div>
                 <div className="product-details-main">
                   <div className="first-detail">
