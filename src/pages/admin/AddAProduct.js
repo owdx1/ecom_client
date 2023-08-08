@@ -20,8 +20,16 @@ const AddAProduct = () => {
   const [error, setError] = useState('');
   const [category, setCategory] = useState('');
   const [message, setMessage] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+
   const [footSole , setFootSole] = useState('');
   const adminToken = localStorage.getItem('adminToken');
+
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
   const categories = {
     'takim': 1,
     'tek-ust': 2,
@@ -47,6 +55,9 @@ const AddAProduct = () => {
   const handleAddProduct = async (event) => {
     const selectedSize = category === 'terlik' ? size_i : size;
     event.preventDefault();
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
 
     try {
       const response = await fetch('http://localhost:5000/admin/add-a-product', {
@@ -81,6 +92,22 @@ const AddAProduct = () => {
     } catch (error) {
       setError(`Failed to add product: ${error.message}`);
     }
+
+      try {
+        const response = await fetch('http://localhost:5000/foto/file', {
+          method: 'POST',
+          body: formData,
+        });
+  
+        if (response.ok) {
+          console.log('File uploaded successfully');
+        } else {
+          console.error('Failed to upload file');
+        }
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+      
   };
 
   const handleImageChange = () => {
@@ -108,7 +135,7 @@ const AddAProduct = () => {
         <h1>Ürün ekle</h1>
         <form className="form" onSubmit={handleAddProduct}>
         <div className="form-group">
-          <input type="file" multiple onChange={handleImageChange} />
+        <input type="file" onChange={handleFileChange} />
         </div>
         <div className="form-group">
             <FormControl style={{width:'300px'}}>
