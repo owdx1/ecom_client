@@ -173,7 +173,7 @@ const Shop = () => {
             ))}
             {searchResults.length === 5 && (
               <NavLink to={`/search?search_parameter=${searchTerm}`} className="see-all-link">
-                See All Results
+                See All Results  
               </NavLink>
             )}
             {searchResults.length === 0 && <Typography variant="body1">Sonuç bulunamadı</Typography>}
