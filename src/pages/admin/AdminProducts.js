@@ -46,8 +46,8 @@ const AdminProducts = () => {
         return sortOrder[columnName] === 'asc' ? a[columnName].localeCompare(b[columnName]) : b[columnName].localeCompare(a[columnName]);
       } else if (columnName === 'is_product_of_the_week') {
         return sortOrder[columnName] === 'asc'
-          ? b[columnName] - a[columnName] // Sorting true first (1 - 0 = 1)
-          : a[columnName] - b[columnName]; // Sorting false first (0 - 1 = -1)
+          ? b[columnName] - a[columnName] 
+          : a[columnName] - b[columnName]; 
       }
       return 0;
     });

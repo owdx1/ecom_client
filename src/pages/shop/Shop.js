@@ -38,6 +38,10 @@ const Shop = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchBarPopupVisible, setSearchBarPopupVisible] = useState(false);
 
+  // const [payloadToDetailedPage , setPayloadToDetailedPage] = useState({});
+
+
+
   const location = useLocation();
   const { toastMessage } = location.state || {};
 
@@ -48,6 +52,7 @@ const Shop = () => {
         if (response.ok) {
           const { data } = await response.json();
           setOriginalProducts(data);
+          
           setFilteredProducts(data);
         } else {
           throw new Error('An error occurred while fetching the products');
@@ -227,10 +232,10 @@ const Shop = () => {
       <Grid container spacing={2}>
         {filteredProducts.map((product) => (
           <Grid key={product.product_id} item xs={12} sm={6} md={4}>
-            <Link to={`/shop/products/${product.product_id}`} state={{ product }}>
+            <Link to={`/shop/products/${product.product_id}`}  state={{ product , originalProducts}}>
               
               <Paper className="product-item">
-              {product.is_product_of_the_week && (
+                {product.is_product_of_the_week && (
                   <Badge
                     anchorOrigin={{
                       vertical: 'top',
@@ -252,15 +257,7 @@ const Shop = () => {
                     badgeStyle={{ backgroundColor: 'transparent' }}
                   />
                 )}
-
-
-
-                 
-
-
-
                 
-
                 <Badge
                   style={{ paddingRight: '270px', marginTop: '34px' }}
                   color="error"
@@ -269,7 +266,6 @@ const Shop = () => {
                     horizontal: 'right',
                   }}
                   badgeContent={`-${parseFloat(product.discount)}%`}
-                  
                 />
           
                   

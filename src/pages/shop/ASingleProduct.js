@@ -24,6 +24,8 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const [loading, setLoading] = useState(true);
   const [currentFeatureId, setCurrentFeatureId] = useState(0);
   const [currentProduct , setCurrentProduct] = useState({});
+  // const [filteredProducts , setFilteredProducts]  = useState([]) aynı kategoriden ürünleri aşşağıya sıralamak için
+ 
   
   const slides = [
     { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
@@ -38,11 +40,14 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const location = useLocation();
   useEffect(() => {
     
-    const { product } = location.state || {};
+    const { product} = location.state || {};
+    setCurrentProduct(product);
     
-    setCurrentProduct(product)
     console.log('suanki productabi', currentProduct)
+    
   }, []);
+
+  
   
   
 
@@ -70,6 +75,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           setSelectedSize(transformedData[0].size);
           setSelectedSize_i(transformedData[0].size_i);
           setCurrentFeatureId(transformedData[0].feature_id)
+          
         } else {
           throw new Error('An error occurred while fetching the products' , errorM);
         }
@@ -102,6 +108,10 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   
   
   }, [product]);*/
+
+  // const sameCategory = filteredProducts.filter((product) => product.category_id === currentProduct.category_id); // databaseden filtrelenmiş ürünler de gelecek. (6-8 tanE
+
+
 
   useEffect(() => {
     if (errorM !== '') {
@@ -315,6 +325,9 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           )}
         </Grid>
       </Grid>
+      {/*sameCategory.map((product) => (
+        <p>{product.product_id}</p>
+      ))  aynı kategoriden ürünleri display etmek için                                            */}
       <ToastContainer position="top-right" autoClose={3000} />
     </Container>
   );

@@ -25,6 +25,7 @@ import AdminProductDetails from './pages/admin/AdminProductDetails';
 import ASingleOrder from './pages/profile/ASingleOrder';
 import AddressForm from './pages/profile/AddressForm';
 import Review from './pages/profile/Review';
+import AdminCustomers from './pages/admin/AdminCustomers';
 
 
 
@@ -126,6 +127,7 @@ import Review from './pages/profile/Review';
           <Route path='/admin/products' element={<AdminProducts />}></Route>
           <Route path='/admin/products/:product_id' element={<AdminProductDetails />}></Route>
           <Route path='/admin/delete-a-product/:product_id' element={<Contact />}></Route>
+          <Route path='/admin/customers' element={<AdminCustomers/>}></Route>
           
           <Route path='/admin/denemeDashboard' element={<Dashboard />}></Route>
 
