@@ -27,6 +27,7 @@ import AddressForm from './pages/profile/AddressForm';
 import Review from './pages/profile/Review';
 import FileUpload from './pages/admin/FileUpload';
 import AdminCustomers from './pages/admin/AdminCustomers'
+import Search2 from './pages/search/Search2';
 
 
 
@@ -103,6 +104,8 @@ import AdminCustomers from './pages/admin/AdminCustomers'
           <Route path='/shop/products/:product_id' element={<ASingleProduct isLoggedIn={isLoggedIn} getNumberOfProductsInCart={getNumberOfProductsInCart}/>} />
 
           <Route path='/search' element={<Search />}></Route>
+          <Route path='/search-trends' element={<Search2 />}></Route>
+
           <Route path='/profile' element={<Profile onLogout={handleLogout}/>}></Route>
           <Route path='/profile/cart' element={<Cart onLogout={handleLogout} getNumberOfProductsInCart={getNumberOfProductsInCart}/>}></Route>
           <Route path='/profile/orders' element={<Orders  onLogout={handleLogout} />}></Route>

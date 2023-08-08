@@ -12,6 +12,7 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import '../src/styles/Header.css';
 import { Link } from 'react-router-dom';
 import logo from './images/logo2.png';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
   const [isHamburgerDropdownVisible, setHamburgerDropdownVisible] = useState(false);
@@ -138,10 +139,17 @@ const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
       <div className="header-right">
         {isLoggedIn ? (
           <>
-            <div> İletişime Geçin!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div style={{marginRight:'35px'}}> İletişime Geçin!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <Link to={'https://wa.me/905322557015'} target="_blank" rel="noopener noreferrer">
                 <Badge color="secondary" variant="dot">
                   <WhatsAppIcon color="action" />
+                </Badge>
+              </Link>
+            </div>
+            <div> 
+              <Link to={'#'} target="_blank" rel="noopener noreferrer">
+                <Badge color="secondary">
+                  <FavoriteIcon/>
                 </Badge>
               </Link>
             </div>
