@@ -56,7 +56,11 @@ const AddAProduct = () => {
     const selectedSize = category === 'terlik' ? size_i : size;
     event.preventDefault();
     const formData = new FormData();
-    formData.append('file', selectedFile);
+
+   
+
+
+
 
 
     try {
@@ -93,6 +97,14 @@ const AddAProduct = () => {
       setError(`Failed to add product: ${error.message}`);
     }
 
+
+    if (selectedFile) {
+      const modifiedFileName = `${categories[category]}-${product_name}-${color}.${selectedFile.type.split('/')[1]}`;
+      const modifiedFile = new File([selectedFile], modifiedFileName, { type: selectedFile.type });
+      
+    
+      formData.append('file', modifiedFile);
+    }
       try {
         const response = await fetch('http://localhost:5000/foto/file', {
           method: 'POST',
