@@ -26,6 +26,8 @@ import ASingleOrder from './pages/profile/ASingleOrder';
 import AddressForm from './pages/profile/AddressForm';
 import Review from './pages/profile/Review';
 import FileUpload from './pages/admin/FileUpload';
+import AdminCustomers from './pages/admin/AdminCustomers'
+import Search2 from './pages/search/Search2';
 
 
 
@@ -102,6 +104,8 @@ import FileUpload from './pages/admin/FileUpload';
           <Route path='/shop/products/:product_id' element={<ASingleProduct isLoggedIn={isLoggedIn} getNumberOfProductsInCart={getNumberOfProductsInCart}/>} />
 
           <Route path='/search' element={<Search />}></Route>
+          <Route path='/search-trends' element={<Search2 />}></Route>
+
           <Route path='/profile' element={<Profile onLogout={handleLogout}/>}></Route>
           <Route path='/profile/cart' element={<Cart onLogout={handleLogout} getNumberOfProductsInCart={getNumberOfProductsInCart}/>}></Route>
           <Route path='/profile/orders' element={<Orders  onLogout={handleLogout} />}></Route>
@@ -126,6 +130,7 @@ import FileUpload from './pages/admin/FileUpload';
           <Route path='/admin/products' element={<AdminProducts />}></Route>
           <Route path='/admin/products/:product_id' element={<AdminProductDetails />}></Route>
           <Route path='/admin/delete-a-product/:product_id' element={<Contact />}></Route>
+          <Route path='/admin/customers' element={<AdminCustomers/>}></Route>
           
           <Route path='/admin/denemeDashboard' element={<Dashboard />}></Route>
 

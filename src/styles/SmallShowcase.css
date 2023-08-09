@@ -1,0 +1,41 @@
+.small-showcase-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 70px;
+}
+
+.small-showcase-link {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.small-showcase-icon-button {
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  padding: 10px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.small-showcase-icon-button:hover {
+  background-color: #e0e0e0; /* Change background color on hover */
+}
+
+.small-showcase-icon {
+  font-size: 24px;
+  color: #00aaff; /* Default color of the icon */
+  transition: color 0.1s ease-in-out; /* Add transition for color change */
+}
+
+.small-showcase-icon-button:hover .small-showcase-icon {
+  color: #ff6f00; /* Change icon color on hover */
+}
+
+.small-showcase-label {
+  margin-top: 5px;
+  font-size: 14px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}

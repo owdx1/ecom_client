@@ -4,10 +4,15 @@ import dummyImage from '../../images/cat.jpg';
 import { Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 
 const ASingleOrder = () => {
+  const [order , setOrder] = useState({});
   const location = useLocation();
-  const { order } = location.state;
+  
   const { order_id } = order;
   const [singleOrderDisplay, setSingleOrderDisplay] = useState([]);
+
+  useEffect(() =>{
+    setOrder(location.state.order);
+  } , [])
 
   useEffect(() => {
     const fetchSingleOrder = async () => {

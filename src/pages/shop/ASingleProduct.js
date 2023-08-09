@@ -5,6 +5,8 @@ import ImageSlider from '../../utils/ImagesSlider';
 import '../../styles/ASingleProduct.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SameCategoryProducts from './SameCategoryProducts';
+
 import {
   Container,
   Typography,
@@ -16,6 +18,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
+import MostSaled from './MostSaled';
 
 const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const navigate = useNavigate();
@@ -24,6 +27,10 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const [loading, setLoading] = useState(true);
   const [currentFeatureId, setCurrentFeatureId] = useState(0);
   const [currentProduct , setCurrentProduct] = useState({});
+  const [originalProducts, setOriginalProducts] = useState([])
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+ 
   
   const slides = [
     { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
@@ -38,11 +45,39 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const location = useLocation();
   useEffect(() => {
     
-    const { product } = location.state || {};
-    
-    setCurrentProduct(product)
+    const {product} = location.state || {};
+    setCurrentProduct(product);
     console.log('suanki productabi', currentProduct)
+    
   }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/shop/');
+        if (response.ok) {
+          const { data } = await response.json();
+          setOriginalProducts(data);
+          const filteredProducts = data.filter((product) => product.category_id === currentProduct.category_id);
+          //filteredProducts = filteredProducts.filter((product) => product.product_id !== currentProduct.product_id)
+          setFilteredProducts(filteredProducts);
+          console.log('FİLTRELENMİŞ ÜRÜN' , filteredProducts);
+          
+        } else {
+          throw new Error('An error occurred while fetching the products');
+        }
+      } catch (error) {
+        setErrorMessage('Service unavailable');
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchProducts();
+  }, []);
+   /* bu yanlış bir method ama eğer çalışmaz ise tekrardan istek yapıp ürünleri detaylı ürün sayfasına da taşımamız gerekli */
+
+  
   
   
 
@@ -70,6 +105,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           setSelectedSize(transformedData[0].size);
           setSelectedSize_i(transformedData[0].size_i);
           setCurrentFeatureId(transformedData[0].feature_id)
+          
         } else {
           throw new Error('An error occurred while fetching the products' , errorM);
         }
@@ -102,6 +138,10 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   
   
   }, [product]);*/
+
+  // const sameCategory = filteredProducts.filter((product) => product.category_id === currentProduct.category_id); // databaseden filtrelenmiş ürünler de gelecek. (6-8 tanE
+
+
 
   useEffect(() => {
     if (errorM !== '') {
@@ -315,7 +355,12 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           )}
         </Grid>
       </Grid>
+      {/*filteredProducts.map((product) => (
+        <p>{product.product_id}</p>
+      )) ürünleri filtere ve samecateogry products a gönder*/}
       <ToastContainer position="top-right" autoClose={3000} />
+      {/*<SameCategoryProducts filteredProducts={filteredProducts}/>*/} {/*bi calısıp bi calısmıyo orpsu cocugu */}
+      <MostSaled originalProducts={originalProducts}/>
     </Container>
   );
 };

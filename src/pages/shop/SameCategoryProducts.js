@@ -1,42 +1,33 @@
-import React from 'react';
-import { Paper, Typography, Badge, Grid, Link as MuiLink, IconButton } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Paper, Typography, Badge } from '@mui/material';
 import { Link } from 'react-router-dom';
 import dummyImage from '../../images/cat.jpg';
-import flameIcon from '../../images/flame-icon.png';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Grid } from '@mui/material';
+import flameIcon from '../../images/flame-icon.png'
+import {useState} from 'react';
 import FavoriteSharpIcon from '@mui/icons-material/FavoriteSharp';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-const MostSaled = ({ originalProducts }) => {
-  console.log('tum urunler', originalProducts);
-  const isMostSaled = originalProducts.filter((product) => product.is_most_saled);
-
-  const displayedProducts = isMostSaled.slice(0, 6);
+const SameCategoryProducts = ({ filteredProducts }) => {
+    
+    const [display, setDisplay] = useState([]);
+    useEffect(() =>{
+      console.log('BANA GELEN FİLTERED PRODUCTS' , filteredProducts);
+      setDisplay(filteredProducts);
+    },[])
+    
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', marginTop: '50px' }}>
-        <IconButton style={{ margin: 0 }}>Çok Satan Ürünler</IconButton>
-        
-        <MuiLink
-          component={Link}
-          to="/your-path-for-all-most-saled-products"
-          style={{ textDecoration: 'none' }}
-        >
-          <IconButton aria-label="Tümünü Gör">Tümünü Gör &nbsp;
-            <ArrowForwardIcon />
-          </IconButton>
-        </MuiLink>
-        
-      </div>
+      <h2>Aynı kategorinin farklı ürünlerine göz atın!</h2>
       <Grid container spacing={2}>
-        {displayedProducts.map((product) => (
+        {filteredProducts.map((product) => (
           <Grid key={product.product_id} item xs={12} sm={6} md={4}>
             <Link to={`/shop/products/${product.product_id}`} state={{ product }}>
               <Paper className="product-item">
-                <Badge
+              <Badge
                   style={{ paddingRight: '270px', marginTop: '34px' }}
-                  
+                  color="error"
                   anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'right',
@@ -49,7 +40,7 @@ const MostSaled = ({ originalProducts }) => {
                       vertical: 'top',
                       horizontal: 'right',
                     }}
-                    badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '30px', background: 'transparent'}} />}
+                    badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '60px', background: 'transparent', marginBottom:'80px' }} />}
                     style={{ marginLeft: '350px' }}
                     badgeStyle={{ backgroundColor: 'transparent' }}
                   />
@@ -79,4 +70,4 @@ const MostSaled = ({ originalProducts }) => {
   );
 };
 
-export default MostSaled;
+export default SameCategoryProducts;

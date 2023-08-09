@@ -140,6 +140,7 @@ export default function AddressForm({ onLogout }) {
             variant="standard"
             value={formData.email}
             onChange={handleChange}
+            disabled={true}
           />
         </Grid>
         <Grid item xs={12}>
@@ -220,10 +221,7 @@ export default function AddressForm({ onLogout }) {
           />
         </Grid>
         <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-            label="Use this address for payment details"
-          />
+          
           <Grid item xs={12}>
             <NavLink to='/profile/review-order' state={{ dataDisplay, totalPrice, formData }}>
               <Button variant="contained">

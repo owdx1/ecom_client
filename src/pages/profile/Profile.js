@@ -124,7 +124,7 @@ const Profile = ({ onLogout }) => {
             </Typography>
             
             <Typography>
-              <span className="label">Soyisim:</span> {customer.email}
+              <span className="label">Email:</span> {customer.email}
             </Typography>
             <Typography>
               <span className="label">Adres:</span> {customer.address}

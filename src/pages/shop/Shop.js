@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { CircularProgress, TextField, Paper, Typography, Container, Grid } from '@mui/material';
+import { CircularProgress, TextField, Paper, Typography, Container, Grid, IconButton } from '@mui/material';
 import '../../styles/Shop.css';
 import dummyImage from '../../images/cat.jpg';
+import dummyImage2 from '../../images/onluk_1.jpg';
 import ImageSlider from '../../utils/ImagesSlider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +13,10 @@ import ItemsOfTheWeek from './ItemsOfTheWeek';
 import { Badge } from '@mui/material';
 import flameIcon from '../../images/flame-icon.png';
 import starIcon from '../../images/star-icon.png';
+import Adversitement from './Adversitement';
+import SmallShowcase from './SmallShowcase';
+import FavoriteSharpIcon from '@mui/icons-material/FavoriteSharp';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const slides = [
   { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
@@ -38,6 +43,10 @@ const Shop = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchBarPopupVisible, setSearchBarPopupVisible] = useState(false);
 
+  // const [payloadToDetailedPage , setPayloadToDetailedPage] = useState({});
+
+
+
   const location = useLocation();
   const { toastMessage } = location.state || {};
 
@@ -48,6 +57,7 @@ const Shop = () => {
         if (response.ok) {
           const { data } = await response.json();
           setOriginalProducts(data);
+          
           setFilteredProducts(data);
         } else {
           throw new Error('An error occurred while fetching the products');
@@ -140,6 +150,7 @@ const Shop = () => {
 
   return (
     <Container>
+      <SmallShowcase/>
       <div style={containerStyles}>
         <ImageSlider slides={slides} />
       </div>
@@ -179,8 +190,9 @@ const Shop = () => {
       <Showcase/>
       <MostSaled originalProducts={originalProducts}/>
       <ItemsOfTheWeek originalProducts={originalProducts}/>
+      <Adversitement/>
 
-      <div className="filter-container">
+      <div className="filter-container" style={{marginTop:'70px'}}>
         <button
           className={`filter-button ${activeButton === 'takim' ? 'active' : ''}`}
           onClick={() => handleButtonClick('takim')}
@@ -219,25 +231,25 @@ const Shop = () => {
         </button>
       </div>
 
-      <div style={{ alignItems: 'center' }}>
-        <Typography variant="h2" style={{ fontWeight: '100', textAlign: 'center' }}>
+      <div style={{ alignItems: 'center'}}>
+        <IconButton variant="h2" style={{ fontWeight: '100', textAlign: 'center', fontSize:'30px'}}>
           Tüm ürünler
-        </Typography>
+        </IconButton>
       </div>
       <Grid container spacing={2}>
         {filteredProducts.map((product) => (
           <Grid key={product.product_id} item xs={12} sm={6} md={4}>
-            <Link to={`/shop/products/${product.product_id}`} state={{ product }}>
+            <Link to={`/shop/products/${product.product_id}`}  state={{ product , originalProducts}}>
               
               <Paper className="product-item">
-              {product.is_product_of_the_week && (
+                {product.is_product_of_the_week && (
                   <Badge
                     anchorOrigin={{
                       vertical: 'top',
                       horizontal: 'right',
                     }}
-                    badgeContent={<img src={starIcon} alt="Flame Icon" style={{ height: '60px', background: 'transparent' }} />}
-                    style={{ marginRight: '370px' }}
+                    badgeContent={<img src={starIcon} alt="Star Icon" style={{ height: '30px', background: 'transparent' }} />}
+                    style={{ marginRight: '330px'}}
                     badgeStyle={{ backgroundColor: 'transparent' }}
                   />
                 )}
@@ -247,29 +259,20 @@ const Shop = () => {
                       vertical: 'top',
                       horizontal: 'right',
                     }}
-                    badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '60px', background: 'transparent' , marginBottom:'40px'}} />}
+                    badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '30px', background: 'transparent'}} />}
                     style={{ marginLeft: '350px' }}
                     badgeStyle={{ backgroundColor: 'transparent' }}
                   />
                 )}
-
-
-
-                 
-
-
-
                 
-
                 <Badge
                   style={{ paddingRight: '270px', marginTop: '34px' }}
-                  color="error"
+                  
                   anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'right',
                   }}
-                  badgeContent={`-${parseFloat(product.discount)}%`}
-                  
+                  badgeContent={<FavoriteBorderIcon/>}
                 />
           
                   
