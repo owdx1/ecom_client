@@ -32,6 +32,7 @@ const Search = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const searchParam = new URLSearchParams(location.search).get('search_parameter');
+  const searchParamTag = new URLSearchParams(location.search).get('tag');
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

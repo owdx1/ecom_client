@@ -137,7 +137,7 @@ import Search2 from './pages/search/Search2';
           <Route path='/error' element={<Error />}></Route>
         </Routes>
 
-        {/*<Footer/> Footer şimdilik kaldırıldı, her şey bitince eklenecek*/}
+        <Footer/>
 
       </>
 
