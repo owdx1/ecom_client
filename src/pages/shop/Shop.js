@@ -17,6 +17,7 @@ import Adversitement from './Adversitement';
 import SmallShowcase from './SmallShowcase';
 import FavoriteSharpIcon from '@mui/icons-material/FavoriteSharp';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import HorizontalSection from './HorizontalSection';
 
 const slides = [
   { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
@@ -189,6 +190,7 @@ const Shop = () => {
 
       <Showcase/>
       <MostSaled originalProducts={originalProducts}/>
+      <HorizontalSection/>
       <ItemsOfTheWeek originalProducts={originalProducts}/>
       <Adversitement/>
 

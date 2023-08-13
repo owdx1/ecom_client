@@ -101,7 +101,8 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
         if (response.ok) {
           const { transformedData, SizeIsNotNUll } = await response.json();
           setTransformedData(transformedData);
-          console.log(transformedData);
+          
+          console.log("deneme", transformedData);
           setSelectedSize(transformedData[0].size);
           setSelectedSize_i(transformedData[0].size_i);
           setCurrentFeatureId(transformedData[0].feature_id)

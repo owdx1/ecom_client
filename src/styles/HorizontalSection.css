@@ -1,0 +1,49 @@
+/* HorizontalSection.css */
+.horizontal-section-container {
+  background-color: #fff;
+  color: #333;
+  padding: 16px;
+  margin-top: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.horizontal-section-link {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.horizontal-section-icon-button {
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  padding: 15px; /* Increased padding for larger icons */
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
+  display: flex; /* Ensure the icon and label align properly */
+  align-items: center; /* Center icon and label */
+}
+
+.horizontal-section-icon-button:hover {
+  background-color: #e0e0e0;
+}
+
+.horizontal-section-icon {
+  font-size: 72px;
+  color: #00aaff;
+  transition: color 0.3s ease-in-out;
+}
+
+.horizontal-section-icon-button:hover .horizontal-section-icon {
+  color: #ff6f00;
+}
+
+.horizontal-section-label {
+  margin-top: 5px;
+  font-size: 14px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  white-space: nowrap; /* Prevent label from wrapping */
+}
