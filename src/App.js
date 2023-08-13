@@ -28,6 +28,8 @@ import Review from './pages/profile/Review';
 import FileUpload from './pages/admin/FileUpload';
 import AdminCustomers from './pages/admin/AdminCustomers'
 import Search2 from './pages/search/Search2';
+import ArdaDeneme from './utils/ArdaDeneme';
+
 
 
 
@@ -122,6 +124,7 @@ import Search2 from './pages/search/Search2';
 
 
           
+          <Route path='/arda' element={<ArdaDeneme/>} />
           <Route path='/' element={<Shop/>} />
           <Route path='/foto/file' element ={<FileUpload/>}></Route>
           <Route path='/admin/login' element={<AdminLogin />}></Route>

@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
+import AccessibilityIcon from '@mui/icons-material/Accessibility';
 
 const theme = createTheme();
 
@@ -36,7 +37,7 @@ const footerColumnStyles = {
   alignItems: 'flex-start', // Align links to the start of the column
 };
 
-export default function Footer() {
+export default function Footer() { 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -61,7 +62,7 @@ export default function Footer() {
                 Sipariş:
               </Typography>
               <Typography variant="body2" style={footerLinkStyles}>
-                <Link href="#">Sipariş</Link>
+                <Link href="#">GHJGJHGJHGJHG</Link>
                 <Link href="#">Teslimat</Link>
                 <Link href="#">İadeler ve Geri Ödemeler</Link>
                 <Link href="#">Sipariş Takip</Link>
@@ -108,6 +109,7 @@ export default function Footer() {
               </Typography>
               <Typography variant="h6" color="text.secondary" style={footerLinkStyles}>
                 Bize Katıl:
+                <AccessibilityIcon></AccessibilityIcon>
               </Typography>
               <Typography variant="body2" style={footerLinkStyles}>
                 <Link href="#">Kariyer</Link>

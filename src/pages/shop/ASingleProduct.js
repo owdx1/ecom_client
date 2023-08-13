@@ -5,7 +5,6 @@ import ImageSlider from '../../utils/ImagesSlider';
 import '../../styles/ASingleProduct.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SameCategoryProducts from './SameCategoryProducts';
 
 import {
   Container,
@@ -29,6 +28,18 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const [currentProduct , setCurrentProduct] = useState({});
   const [originalProducts, setOriginalProducts] = useState([])
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [availableSizes, setAvailableSizes] = useState([]);
+
+
+  const colors = {
+    'beyaz':'#fff', 'acik_mavi':'#add8e6', 'parlament_mavisi':'#0437F2', 'turkuaz':'#30d5c8', 'duman_grisi':'#636969', 'gri':'#ccc', 'lacivert':'"#000080',
+    'petrol_mavisi':'#216477', 'petrol_yesili':'#008080', 'kuf_yesili':'#78866b', 'benetton_yesili':'#009A49', 'ameliyathane_yesili':'00995a',
+    'pembe':'#ffcbdb', 'lila':'#c8a2c8', 'mor':'#660099 ', 'fuchsia':'#ff00ff', 'kirmizi':'#ec5353', 'siyah':'#000000', 'saks_mavisi':'#657f84', 'fistik_yesili':'#dfff00',
+    'bordo':'#800000', 'nar_cicegi':'#6688c1 ', 'fume':'#757a80', 'murdum':'#cc8899', 'acik_petrol_yesili':'#008080', 'avci_yesili':'#355e3b', 'ozel_mor':'#BA55D3',
+    'su_yesili':'#addfad', 'visne':'#800000', 'leylak':'#c8a2c8', 'sari':'#ffff00', 'hardal':'#ffdb58', 'kiremit':'#8a3324', 'gul_kurusu':'#c08081', 'somon':'#fa8072',
+    'haki':'#bdb76b', 'menekse':'#8b00ff', 'kot_mavisi':'#1560BD', 'bej':'#F5F5DC', 'kahverengi':'#964B00', 'kum_rengi':'#f4a460', 'turuncu_turkuaz':'#08e8de',
+    'mint_yesili':'#cfffe5', 'mavi':'#00133d','krem':'#fffdd0','antep_fistigi':'#dfff00'
+  }
 
  
   
@@ -88,23 +99,22 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
 
   const [transformedData, setTransformedData] = useState([]);
   const [selectedSize, setSelectedSize] = useState('');
-  const [selectedSize_i, setSelectedSize_i] = useState('');
   const [addToCartSuccessfull, setAddToCartSuccessfull] = useState('');
   const [totalAmount, setTotalAmount] = useState(quantity * currentProduct.price);
-
+  const [selectedColor , setSelectedColor] = useState('');
   
+
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(`http://localhost:5000/shop/products/${product_id}`);
         if (response.ok) {
-          const { transformedData, SizeIsNotNUll } = await response.json();
+          const { transformedData} = await response.json();
           setTransformedData(transformedData);
           
           console.log("deneme", transformedData);
           setSelectedSize(transformedData[0].size);
-          setSelectedSize_i(transformedData[0].size_i);
           setCurrentFeatureId(transformedData[0].feature_id)
           
         } else {
@@ -173,10 +183,9 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
       return; // Stop the function execution if not logged in
     }
 
-    const size = currentProduct.category_id === 6 ? selectedSize_i : selectedSize;
+    const size = selectedSize;
     const product_id = currentProduct.product_id;
     console.log('suanki feaute id' , currentFeatureId);
-    const color = currentProduct.color;
     const category = currentProduct.category_id;
 
 
@@ -232,16 +241,25 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
       setCurrentFeatureId(feature_id)
     }
   };
-
-  const handleSize_iButtonClick = (size,feature_id) => {
-    if (selectedSize_i === size) {
-      setSelectedSize_i(0);
-      setCurrentFeatureId(0);
+  const handleColorClick = (color) => {
+    if (selectedColor === color) {
+      setSelectedColor('');
+      setAvailableSizes([]); //
     } else {
-      setSelectedSize_i(size);
-      setCurrentFeatureId(feature_id)
+      setSelectedColor(color);
+      
+      const sizesForSelectedColor = transformedData.filter((product) => product.color === color)
+      
+      setAvailableSizes(sizesForSelectedColor);
+      
     }
   };
+
+  useEffect(() => {
+    console.log('suanki available sizeler', availableSizes);
+  }, [availableSizes]);
+  
+
 
   return (
     <Container maxWidth="xl">
@@ -285,14 +303,36 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                   </Typography>
                 </div>
                 <Typography variant="body1" gutterBottom>
-                  Renk: {currentProduct.color}
-                </Typography>
+                  Renk Seçenekleri:
+                </Typography> 
+                {transformedData.map((product) =>(
+                    <Button
+                    className={`color-button ${
+                      selectedColor === product.color ? 'active' : ''
+                    }`}
+                    style={{
+                      backgroundColor: colors[product.color],
+                      width: '30px',
+                      height: '30px',
+                      borderRadius: '20%',
+                      marginLeft: '4px',
+                      boxShadow: selectedColor === product.color ? '2px 2px black' : 'none', 
+                    }}
+                    onClick={() => handleColorClick(product.color)}
+                  >
+                  
+                  </Button>
+                  ))}
+                  <Typography variant="body1" gutterBottom>
+                    {selectedColor}
+                  </Typography>
+                
                 <Typography variant="body1" gutterBottom>
                   Desen: {currentProduct.fabric}
                 </Typography>
                 <div className="sizes-container">
-                  {currentProduct.category_id !== 6 ? (
-                    transformedData.map((data, index) => (
+                  {
+                    availableSizes.map((data, index) => (
                       <Button
                         key={index}
                         variant="outlined"
@@ -304,20 +344,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                         {data.size}
                       </Button>
                     ))
-                  ) : (
-                    transformedData.map((data, index) => (
-                      <Button
-                        key={index}
-                        variant="outlined"
-                        className={`size-button ${
-                          selectedSize_i === data.size_i ? 'active' : ''
-                        }`}
-                        onClick={() => handleSize_iButtonClick(data.size_i , data.feature_id)}
-                      >
-                        {data.size_i}
-                      </Button>
-                    ))
-                  )}
+                  }
                 </div>
                 <Typography variant="body1" gutterBottom>
                   Ürün ID'si: {currentProduct.product_id}
