@@ -174,9 +174,19 @@ const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
 
           </>
         ) : (
-          <div className="dropdown">
-            <NavLink to="/login">Giriş yap</NavLink>
-          </div>
+          <>
+            <div style={{marginRight:'35px'}}> İletişime Geçin!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <Link to={'https://wa.me/905322557015'} target="_blank" rel="noopener noreferrer">
+                <Badge color="secondary" variant="dot">
+                  <WhatsAppIcon color="action" />
+                </Badge>
+              </Link>
+            </div>
+            <div className="dropdown">
+              <NavLink to="/login">Giriş yap</NavLink>
+            </div>
+          </>
+          
         )}
       </div>
     </nav>

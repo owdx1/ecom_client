@@ -1,0 +1,16 @@
+
+  .image-zoom {
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  .image-zoom:active {
+    transform: scale(2);
+    transition: transform 0.3s ease-in-out;
+    
+  }
+
+  .image-zoom:hover {
+    
+    transform: scale(1.8);
+  }

@@ -29,7 +29,7 @@ import FileUpload from './pages/admin/FileUpload';
 import AdminCustomers from './pages/admin/AdminCustomers'
 import Search2 from './pages/search/Search2';
 import ArdaDeneme from './utils/ArdaDeneme';
-
+import Preview from './pages/Preview'
 
 
 
@@ -138,6 +138,8 @@ import ArdaDeneme from './utils/ArdaDeneme';
           <Route path='/admin/denemeDashboard' element={<Dashboard />}></Route>
 
           <Route path='/error' element={<Error />}></Route>
+
+          <Route path='/preview' element={<Preview/>}></Route>
         </Routes>
 
         <Footer/>

@@ -38,10 +38,10 @@ const Adversitement = () => {
         >
           <Link className='guide-style-link' to='/'>
             <img
-              src={dummyImage}
+              src='https://www.classuniforma.com/image/cache/catalog/2023/04/bordokadin1-627x941h.jpg'
               alt='Ad Image'
               className='guide-style-img'
-              style={{ width: '100%', height: 'auto', borderRadius:'30px' }}
+              style={{ width: '60%', height: 'auto', borderRadius:'30px' }}
             />
           </Link>
         </Grid>
@@ -61,7 +61,7 @@ const Adversitement = () => {
             style={{ maxWidth: 500, marginLeft: 40 }}
           >
             <Typography variant='h5' className='title' style={{ marginBottom: '20px' }}>
-              KIRMIZI, BEYAZ VE YENİ
+              KIRMIZI VE YENİ
             </Typography>
             <Typography variant='body1' className='desc'>
               Zamansız renk ve desenlerimizin modern yorumlarıyla tanışın
