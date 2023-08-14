@@ -244,7 +244,7 @@ const Shop = () => {
             <Link to={`/shop/products/${product.product_id}`}  state={{ product , originalProducts}}>
               
               <Paper className="product-item">
-                {product.is_product_of_the_week && (
+                {product.isproductoftheweek && (
                   <Badge
                     anchorOrigin={{
                       vertical: 'top',
@@ -255,7 +255,7 @@ const Shop = () => {
                     badgeStyle={{ backgroundColor: 'transparent' }}
                   />
                 )}
-                {product.is_most_saled && (
+                {product.bestseller >= 10 && (
                   <Badge
                     anchorOrigin={{
                       vertical: 'top',

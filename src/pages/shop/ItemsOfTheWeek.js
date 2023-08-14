@@ -10,7 +10,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 const ItemsOfTheWeek = ({ originalProducts }) => {
   console.log('tum urunler', originalProducts);
   const itemsOfTheWeek = originalProducts.filter(
-    (product) => product.is_product_of_the_week
+    (product) => product.isproductoftheweek
   );
 
   // Restrict to a maximum of 6 products
@@ -46,7 +46,7 @@ const ItemsOfTheWeek = ({ originalProducts }) => {
                   }}
                   badgeContent={<FavoriteBorderIcon/>}
                 />
-                {product.is_product_of_the_week && (
+                {product.isproductoftheweek && (
                   <Badge
                     anchorOrigin={{
                       vertical: 'top',

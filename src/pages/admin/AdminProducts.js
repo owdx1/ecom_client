@@ -13,7 +13,7 @@ const AdminProducts = () => {
     price: 'asc',
     color: 'asc',
     category_id: 'asc',
-    is_product_of_the_week: 'asc'
+    isproductoftheweek: 'asc'
   });
   const categories = {
     1: 'takim',
@@ -44,7 +44,7 @@ const AdminProducts = () => {
         return sortOrder[columnName] === 'asc' ? a[columnName] - b[columnName] : b[columnName] - a[columnName];
       } else if (columnName === 'product_name' || columnName === 'color') {
         return sortOrder[columnName] === 'asc' ? a[columnName].localeCompare(b[columnName]) : b[columnName].localeCompare(a[columnName]);
-      } else if (columnName === 'is_product_of_the_week') {
+      } else if (columnName === 'isproductoftheweek') {
         return sortOrder[columnName] === 'asc'
           ? b[columnName] - a[columnName] 
           : a[columnName] - b[columnName]; 
@@ -111,8 +111,8 @@ const AdminProducts = () => {
                 Kategori {sortOrder.category_id === 'asc' ? ' ▲' : ' ▼'}
               </TableCell>
               <TableCell>Miktar</TableCell>
-              <TableCell onClick={() => handleSort('is_product_of_the_week')} style={{ cursor: 'pointer' }}>
-                Öne Çıkan Ürün {sortOrder.is_product_of_the_week === 'asc' ? ' ▲' : ' ▼'}
+              <TableCell onClick={() => handleSort('isproductoftheweek')} style={{ cursor: 'pointer' }}>
+                Öne Çıkan Ürün {sortOrder.isproductoftheweek === 'asc' ? ' ▲' : ' ▼'}
               </TableCell>
             </TableRow>
           </TableHead>
@@ -132,7 +132,7 @@ const AdminProducts = () => {
                 <TableCell>{categories[product.category_id]}</TableCell>
                 <TableCell>{product.quantity}</TableCell>
                 <TableCell>
-                  {product.is_product_of_the_week ? (
+                  {product.isproductoftheweek ? (
                     <span style={{ color: 'gold' }}>★</span>
                   ) : (
                     <span>☆</span>

@@ -9,7 +9,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const MostSaled = ({ originalProducts }) => {
   console.log('tum urunler', originalProducts);
-  const isMostSaled = originalProducts.filter((product) => product.is_most_saled);
+  const isMostSaled = originalProducts.filter((product) => product.bestseller);
 
   const displayedProducts = isMostSaled.slice(0, 6);
 
@@ -43,7 +43,7 @@ const MostSaled = ({ originalProducts }) => {
                   }}
                   badgeContent={<FavoriteBorderIcon/>}
                 />
-                {product.is_most_saled && (
+                {product.bestseller >= 10 && (
                   <Badge
                     anchorOrigin={{
                       vertical: 'top',

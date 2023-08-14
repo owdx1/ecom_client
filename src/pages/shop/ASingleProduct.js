@@ -5,21 +5,32 @@ import ImageSlider from '../../utils/ImagesSlider';
 import '../../styles/ASingleProduct.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import {
-  Container,
-  Typography,
-  Button,
-  Grid,
-  Card,
-  CardContent,
-  Box,
-  CircularProgress,
-} from '@mui/material';
+import {Container, Typography, Button, Grid, Card, CardContent, Box, CircularProgress} from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import MostSaled from './MostSaled';
 
+const colors = {
+  'beyaz':'#fff', 'acik_mavi':'#add8e6', 'parlament_mavisi':'#0437F2', 'turkuaz':'#30d5c8', 'duman_grisi':'#636969', 'gri':'#ccc', 'lacivert':'"#000080',
+  'petrol_mavisi':'#216477', 'petrol_yesili':'#008080', 'kuf_yesili':'#78866b', 'benetton_yesili':'#009A49', 'ameliyathane_yesili':'00995a',
+  'pembe':'#ffcbdb', 'lila':'#c8a2c8', 'mor':'#660099 ', 'fuchsia':'#ff00ff', 'kirmizi':'#ec5353', 'siyah':'#000000', 'saks_mavisi':'#657f84', 'fistik_yesili':'#dfff00',
+  'bordo':'#800000', 'nar_cicegi':'#6688c1 ', 'fume':'#757a80', 'murdum':'#cc8899', 'acik_petrol_yesili':'#008080', 'avci_yesili':'#355e3b', 'ozel_mor':'#BA55D3',
+  'su_yesili':'#addfad', 'visne':'#800000', 'leylak':'#c8a2c8', 'sari':'#ffff00', 'hardal':'#ffdb58', 'kiremit':'#8a3324', 'gul_kurusu':'#c08081', 'somon':'#fa8072',
+  'haki':'#bdb76b', 'menekse':'#8b00ff', 'kot_mavisi':'#1560BD', 'bej':'#F5F5DC', 'kahverengi':'#964B00', 'kum_rengi':'#f4a460', 'turuncu_turkuaz':'#08e8de',
+  'mint_yesili':'#cfffe5', 'mavi':'#00133d','krem':'#fffdd0','antep_fistigi':'#dfff00'
+}
+
+const slides = [
+  { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
+  { url: 'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg', title: 'boats' },
+  { url: 'https://images.wallpaperscraft.com/image/single/laptop_keyboard_glow_170138_1600x900.jpg', title: 'laptop' },
+  { url: 'https://images.wallpaperscraft.com/image/single/drone_camera_technology_171576_1600x900.jpg', title: 'drone' },
+  { url: 'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg', title: 'coding' },
+];
+
 const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
+
+  
+
   const navigate = useNavigate();
   const [errorM, setErrorM] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -29,36 +40,25 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const [originalProducts, setOriginalProducts] = useState([])
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [availableSizes, setAvailableSizes] = useState([]);
-
-
-  const colors = {
-    'beyaz':'#fff', 'acik_mavi':'#add8e6', 'parlament_mavisi':'#0437F2', 'turkuaz':'#30d5c8', 'duman_grisi':'#636969', 'gri':'#ccc', 'lacivert':'"#000080',
-    'petrol_mavisi':'#216477', 'petrol_yesili':'#008080', 'kuf_yesili':'#78866b', 'benetton_yesili':'#009A49', 'ameliyathane_yesili':'00995a',
-    'pembe':'#ffcbdb', 'lila':'#c8a2c8', 'mor':'#660099 ', 'fuchsia':'#ff00ff', 'kirmizi':'#ec5353', 'siyah':'#000000', 'saks_mavisi':'#657f84', 'fistik_yesili':'#dfff00',
-    'bordo':'#800000', 'nar_cicegi':'#6688c1 ', 'fume':'#757a80', 'murdum':'#cc8899', 'acik_petrol_yesili':'#008080', 'avci_yesili':'#355e3b', 'ozel_mor':'#BA55D3',
-    'su_yesili':'#addfad', 'visne':'#800000', 'leylak':'#c8a2c8', 'sari':'#ffff00', 'hardal':'#ffdb58', 'kiremit':'#8a3324', 'gul_kurusu':'#c08081', 'somon':'#fa8072',
-    'haki':'#bdb76b', 'menekse':'#8b00ff', 'kot_mavisi':'#1560BD', 'bej':'#F5F5DC', 'kahverengi':'#964B00', 'kum_rengi':'#f4a460', 'turuncu_turkuaz':'#08e8de',
-    'mint_yesili':'#cfffe5', 'mavi':'#00133d','krem':'#fffdd0','antep_fistigi':'#dfff00'
-  }
-
- 
-  
-  const slides = [
-    { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
-    { url: 'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg', title: 'boats' },
-    { url: 'https://images.wallpaperscraft.com/image/single/laptop_keyboard_glow_170138_1600x900.jpg', title: 'laptop' },
-    { url: 'https://images.wallpaperscraft.com/image/single/drone_camera_technology_171576_1600x900.jpg', title: 'drone' },
-    { url: 'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg', title: 'coding' },
-  ];
-
-
+  const accessToken = localStorage.getItem('accessToken');
+  const [quantity, setQuantity] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(slides[0].url);
+  const { product_id } = useParams();
+  const [transformedData, setTransformedData] = useState([]);
+  const [selectedSize, setSelectedSize] = useState('');
+  const [addToCartSuccessfull, setAddToCartSuccessfull] = useState('');
+  const [totalAmount, setTotalAmount] = useState(quantity * currentProduct.price);
+  const [selectedColor , setSelectedColor] = useState('');
 
   const location = useLocation();
+
+  
   useEffect(() => {
     
     const {product} = location.state || {};
     setCurrentProduct(product);
-    console.log('suanki productabi', currentProduct)
+    console.log('suanki productabi', currentProduct);
+    
     
   }, []);
 
@@ -92,16 +92,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   
   
 
-  const accessToken = localStorage.getItem('accessToken');
-  const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(slides[0].url);
-  const { product_id } = useParams();
-
-  const [transformedData, setTransformedData] = useState([]);
-  const [selectedSize, setSelectedSize] = useState('');
-  const [addToCartSuccessfull, setAddToCartSuccessfull] = useState('');
-  const [totalAmount, setTotalAmount] = useState(quantity * currentProduct.price);
-  const [selectedColor , setSelectedColor] = useState('');
+  
   
 
 
@@ -114,8 +105,16 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           setTransformedData(transformedData);
           
           console.log("deneme", transformedData);
-          setSelectedSize(transformedData[0].size);
-          setCurrentFeatureId(transformedData[0].feature_id)
+          if (transformedData.length > 0) {
+            const initialColor = transformedData[0].color;
+            const sizesForInitialColor = transformedData.filter((product) => product.color === initialColor);
+
+            
+            setSelectedColor(initialColor);
+            setAvailableSizes(sizesForInitialColor);
+            handleSizeButtonClick(sizesForInitialColor[0].size, sizesForInitialColor[0].feature_id);
+          }
+          
           
         } else {
           throw new Error('An error occurred while fetching the products' , errorM);
@@ -131,6 +130,9 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
     fetchProducts();
     window.scrollTo(0, 0);
   }, []);
+  
+
+
 
   const increaseQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
@@ -151,8 +153,6 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   }, [product]);*/
 
   // const sameCategory = filteredProducts.filter((product) => product.category_id === currentProduct.category_id); // databaseden filtrelenmiş ürünler de gelecek. (6-8 tanE
-
-
 
   useEffect(() => {
     if (errorM !== '') {
@@ -202,7 +202,8 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           product_id,
           category,
           totalAmount,
-          currentFeatureId
+          currentFeatureId,
+          color:selectedColor
         }),
       });
       if (response.ok) {
@@ -244,7 +245,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const handleColorClick = (color) => {
     if (selectedColor === color) {
       setSelectedColor('');
-      setAvailableSizes([]); //
+      setAvailableSizes([]); 
     } else {
       setSelectedColor(color);
       
