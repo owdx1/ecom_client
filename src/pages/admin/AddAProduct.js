@@ -99,7 +99,7 @@ const AddAProduct = () => {
 
 
     if (selectedFile) {
-      const modifiedFileName = `${categories[category]}-${product_name}-${color}.${selectedFile.type.split('/')[1]}`;
+      const modifiedFileName = `${categories[category]}-${product_name}-${color}-${Date.now()}.${selectedFile.type.split('/')[1]}`;
       const modifiedFile = new File([selectedFile], modifiedFileName, { type: selectedFile.type });
       
     
