@@ -38,7 +38,7 @@ const Adversitement = () => {
         >
           <Link className='guide-style-link' to='/'>
             <img
-              src='https://www.classuniforma.com/image/cache/catalog/2023/04/bordokadin1-627x941h.jpg'
+              src='https://www.classuniforma.com/image/cache/catalog/2023/03/fu%C5%9Fya3-627x941h.jpg'
               alt='Ad Image'
               className='guide-style-img'
               style={{ width: '60%', height: 'auto', borderRadius:'30px' }}

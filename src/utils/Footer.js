@@ -34,7 +34,7 @@ const footerContentStyles = {
 
 const footers = [
   {
-    title: 'Firma',
+    title: 'Aydın Forma',
     description: ['Takım', 'Geçmişimiz', 'Bizimle İletişime Geçin', 'Yerlerimiz'],
   },
   {
