@@ -13,9 +13,9 @@ const theme = createTheme();
 
 const footerStyles = {
   display: 'flex',
-  flexDirection: 'row', // Align items horizontally
+  flexDirection: 'row', 
   minHeight: '93vh',
-  justifyContent: 'space-between', // Spread items across the horizontal space
+  justifyContent: 'space-between', 
 
   
 };
@@ -34,26 +34,26 @@ const footerContentStyles = {
 
 const footers = [
   {
-    title: 'Company',
-    description: ['Team', 'History', 'Contact us', 'Locations'],
+    title: 'Firma',
+    description: ['Takım', 'Geçmişimiz', 'Bizimle İletişime Geçin', 'Yerlerimiz'],
   },
   {
-    title: 'Features',
+    title: 'Kurumsal',
     description: [
-      'Cool stuff',
-      'Random feature',
-      'Team feature',
-      'Developer stuff',
-      'Another one',
+      'Bize katıl',
+      'KVKK',
+      'Kullanıcı Sözleşmesi',
+      'Gizlilik Sözleşmesi',
+      
     ],
   },
   {
-    title: 'Resources',
-    description: ['Resource', 'Resource name', 'Another resource', 'Final resource'],
+    title: 'Sipariş',
+    description: ['Sipariş', 'Teslimat', 'İadeler ve Geri Ödemeler', 'Sipariş Takip'],
   },
   {
-    title: 'Legal',
-    description: ['Privacy policy', 'Terms of use'],
+    title: 'Müşteri Hizmetleri',
+    description: ['Bize Ulaşın', 'Beden Tablosu' , 'S.S.S'],
   },
 ];
 

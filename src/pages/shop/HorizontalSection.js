@@ -30,11 +30,11 @@ const HorizontalSection = () => {
     <Paper className="horizontal-section-container">
       <Container>
         <Grid container>
-          {/* Use NavLink to make the icons clickable */}
+          
           <Grid item xs={12} sm={6} md={3} style={itemStyle}>
             <NavLink to="/phone" className="horizontal-section-link">
               <CustomIcon>
-                <PhoneIcon fontSize="inherit" />
+                <PhoneIcon fontSize="inherit"  style={{ fontSize: 100, color:'gray'}} />
               </CustomIcon>
               <Typography variant="body1" className="horizontal-section-label">
                 TELEFONLA DESTEK
@@ -44,7 +44,7 @@ const HorizontalSection = () => {
           <Grid item xs={12} sm={6} md={3} style={itemStyle}>
             <NavLink to="/shipping" className="horizontal-section-link">
               <CustomIcon>
-                <LocalShippingIcon fontSize="inherit" />
+                <LocalShippingIcon fontSize="inherit"  style={{ fontSize: 100, color:'gray'}}/>
               </CustomIcon>
               <Typography variant="body1" className="horizontal-section-label">
                 ÜCRETSİZ KARGO
@@ -54,7 +54,7 @@ const HorizontalSection = () => {
           <Grid item xs={12} sm={6} md={3} style={itemStyle}>
             <NavLink to="/basket" className="horizontal-section-link">
               <CustomIcon>
-                <ShoppingBasketIcon fontSize="inherit" />
+                <ShoppingBasketIcon fontSize="inherit" style={{ fontSize: 100, color:'gray'}}/>
               </CustomIcon>
               <Typography variant="body1" className="horizontal-section-label">
                 İADE
@@ -64,7 +64,7 @@ const HorizontalSection = () => {
           <Grid item xs={12} sm={6} md={3} style={itemStyle}>
             <NavLink to="/warranty" className="horizontal-section-link">
               <CustomIcon>
-                <LooksIcon fontSize="inherit" />
+                <LooksIcon fontSize="inherit"  style={{ fontSize: 100, color:'gray'}}/>
               </CustomIcon>
               <Typography variant="body1" className="horizontal-section-label">
                 ÜRÜN GARANTİSİ

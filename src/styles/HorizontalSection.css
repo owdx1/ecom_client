@@ -14,6 +14,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 }
 
 .horizontal-section-icon-button {
@@ -42,7 +43,7 @@
 
 .horizontal-section-label {
   margin-top: 5px;
-  font-size: 14px;
+  font-size: 20px;
   font-family: 'Arial', sans-serif;
   color: #333;
   white-space: nowrap; /* Prevent label from wrapping */

@@ -70,7 +70,7 @@ const Adversitement = () => {
           <div style={{ marginTop: 20 }}>
             <Button
               variant='contained'
-              color='secondary'
+              color='primary'
               style={{ marginLeft: '35px' }}
             >
               Yeni gelenleri keşfet

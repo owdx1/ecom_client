@@ -17,6 +17,10 @@ import dummyImage from '../images/tomy1.jpg'
 import Adversitement from './shop/Adversitement';
 import '../styles/Preview.css'
 import { useState } from 'react';
+import { WhatsApp } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+import HorizontalSection from './shop/HorizontalSection';
+
 
 const tiers = [
   {
@@ -273,6 +277,13 @@ Aydın Forma ailesi olarak, sağlık sektöründeki kıymetli çalışmalarını
 
 Medikal formaların öncü markası olarak, Aydın Forma olarak amacımız, siz sağlık çalışanlarının günlük zorluklarını en iyi şekilde aşmanıza yardımcı olmaktır. Bu sebeple, sendika üyelerimize özel indirimler sunmaktan büyük mutluluk duyuyoruz. Sizlere en kaliteli ürünleri en uygun fiyatlarla sunarak, çalışma ortamınızı daha rahat ve konforlu hale getirmeyi amaçlıyoruz.
         </Typography>
+        <Link to={`https://wa.me/905322557015?text=Hello%20there%2C%20I%20have%20a%20pre-made%20message%20for%20you!`} target="_blank" rel="noopener noreferrer">
+          <Typography variant="h5" align="center" color="text.secondary" component="p" style={{marginTop:'20px'}}>
+            <WhatsApp style={{ fontSize: 100, color:'green'}} />
+            WhatsApp'tan iletişime geçin!
+          </Typography>
+        </Link>
+        
       </Container>
       
       <Container maxWidth="md" component="main">
@@ -355,6 +366,7 @@ Medikal formaların öncü markası olarak, Aydın Forma olarak amacımız, siz 
           ))}
         </Grid>
       </Container>
+      <HorizontalSection/>
       <Adversitement/>
       
       
