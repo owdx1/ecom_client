@@ -30,7 +30,7 @@ export default function Review({ getNumberOfProductsInCart }) {
     console.log('suanki totalPrice', totalPrice);
 
 
-  } , [])
+  } , [totalPrice])
   addresses.push(formData.address1, formData.city, formData.country, formData.zip);
 
   useEffect(() => {
@@ -48,12 +48,13 @@ export default function Review({ getNumberOfProductsInCart }) {
     try {
       const response = await fetch('http://localhost:5000/profile/cart/buy', {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`
         },
         method: 'POST',
         body: JSON.stringify({totalPrice}),
       });
-
+      console.log('tptalprice',totalPrice);
       const data = await response.json();
       const message = data.message;
 
