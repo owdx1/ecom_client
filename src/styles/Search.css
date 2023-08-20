@@ -127,6 +127,7 @@
   font-size: 14px;
   width: 100%;
   max-width: 400px;
+  border: none;
 }
 
 .search-container input[type="text"]::placeholder {

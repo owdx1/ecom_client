@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Container, Grid, Typography } from '@mui/material';
 import dummyImage from '../../images/tomy1.jpg';
 import '../../styles/Adversitement.css';
+import { SendRounded } from '@mui/icons-material';
 
 const Adversitement = () => {
   return (
@@ -70,8 +71,9 @@ const Adversitement = () => {
           <div style={{ marginTop: 20 }}>
             <Button
               variant='contained'
-              color='primary'
+              color='secondary'
               style={{ marginLeft: '35px' }}
+              endIcon={<SendRounded />}
             >
               Yeni gelenleri keşfet
             </Button>

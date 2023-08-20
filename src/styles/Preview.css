@@ -1,16 +1,11 @@
+.image-container {
+    display: inline-block;
+    overflow: hidden;
+    transition: transform 0.9s ease-in-out;
+}
 
-  .image-zoom {
-    transition: transform 0.3s ease-in-out;
+.image-container.hovered {
+    transform: scale(1.1); /* You can adjust the scale value for zoom effect */
     cursor: pointer;
-  }
+}
 
-  .image-zoom:active {
-    transform: scale(2);
-    transition: transform 0.3s ease-in-out;
-    
-  }
-
-  .image-zoom:hover {
-    
-    transform: scale(1.8);
-  }

@@ -8,8 +8,15 @@ import SearchIcon from '@mui/icons-material/Search';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-
+import {Grid} from '@mui/material';
+import { Container } from '@mui/material';
+import {CardHeader} from '@mui/material';
+import {CardContent} from '@mui/material';
+import {Typography} from '@mui/material';
+import {Box} from '@mui/material';
 import '../../styles/Search.css';
+import {Card} from '@mui/material';
+
 
 const SearchContainer = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -241,27 +248,90 @@ const Search = () => {
       )}
       {
         filteredProducts.length > 0 ?
-          <div className="shop-container">
-            {filteredProducts.map((product) => (
-              <Link key={product.product_id} to={`/shop/products/${product.product_id}`} state={{ product }}>
-                <div className="product-item">
-                  <div className="product-image-search">
-                    <img src={dummyImage} alt={product.product_id} />
-                  </div>
-                  <div className="product-details-main">
-                    <div className="first-detail">
-                      <p>{product.product_name}</p>
-                    </div>
-                    {product.quantity <= 4 && product.quantity !== 0 ? <p>Son {product.quantity} ürün!</p> : null}
-                    {product.quantity > 0 ? <p>Stokta ✔️</p> : <p>Stokta değil ❌</p>}
-                    <div className="product-price-div">
-                      <p className="product-price">{product.price} TL</p>
-                    </div>
-                  </div>
-                </div>
+        <Container maxWidth="md" component="main">
+        <Grid container spacing={5} alignItems="flex-end">
+          {filteredProducts.map((product , index) => (
+            
+            <Grid
+              item
+              key={product.title}
+              xs={12}
+              sm={product.title === 'Enterprise' ? 12 : 6}
+              md={4}
+            >
+              <Link to={`/shop/products/${product.product_id}`}  state={{ product , originalProducts}}>
+              <Card>
+                {/*{product.isproductoftheweek && (
+                    <Badge
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      badgeContent={<img src={starIcon} alt="Star Icon" style={{ height: '30px', background: 'transparent' }} />}
+                      style={{ marginRight: '330px' , paddingTop:'70px'}}
+                      badgeStyle={{ backgroundColor: 'transparent' }}
+                    />
+                  )}
+                  {product.bestseller >= 10 && (
+                    <Badge
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '30px', background: 'transparent'}} />}
+                      style={{ marginLeft: '350px' }}
+                      badgeStyle={{ backgroundColor: 'transparent' }}
+                    />
+                    )}*/}
+                <img 
+                src='https://i.ibb.co/tbRJ8N9/id-15.jpg'
+                style={{width:'300px'}}
+                className='image-zoom'
+                alt={product.id}
+                
+                />
+                
+
+                
+
+                <CardHeader
+                  title={product.product_name}
+                  
+                  titleTypographyProps={{ align: 'center' }}
+                  sx={{
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === 'light'
+                        ? theme.palette.grey[200]
+                        : theme.palette.grey[700],
+                  }}
+                />
+                <CardContent>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'baseline',
+                      gap: '8px',
+                      mb: 2,
+                    }}
+                  >
+                    
+                    <Typography variant="h6" color="text.secondary">
+                      <span style={{ color: 'crimson', textDecoration: 'line-through' }}>{`529.99`}</span>
+                    </Typography>
+                    <Typography component="h2" variant="h5" color="text.primary">
+                      {product.price} TL
+                    </Typography>
+                  </Box>
+                  
+                </CardContent>
+                
+              </Card>
               </Link>
-            ))}
-          </div>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
           :
           <h1>ürün bulunamadi</h1>
       }

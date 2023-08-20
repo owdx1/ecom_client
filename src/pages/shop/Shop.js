@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { CircularProgress, TextField, Paper, Typography, Container, Grid, IconButton } from '@mui/material';
 import '../../styles/Shop.css';
+import '../../styles/Preview.css'
 import dummyImage from '../../images/cat.jpg';
 import dummyImage2 from '../../images/onluk_1.jpg';
 import ImageSlider from '../../utils/ImagesSlider';
@@ -18,6 +19,11 @@ import SmallShowcase from './SmallShowcase';
 import FavoriteSharpIcon from '@mui/icons-material/FavoriteSharp';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import HorizontalSection from './HorizontalSection';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Box from '@mui/material/Box';
+
 
 const slides = [
   { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
@@ -39,7 +45,14 @@ const Shop = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [activeButton, setActiveButton] = useState('');
+  const [hoveredImageIndex, setHoveredImageIndex] = useState(0); // image hoverde foto değiştirmesi için kullanılıyor
+  const handleImageHover = (index) => {
+    setHoveredImageIndex(index);
+  };
 
+  const handleImageLeave = () => {
+    setHoveredImageIndex(null);
+  };
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searchBarPopupVisible, setSearchBarPopupVisible] = useState(false);
@@ -158,7 +171,7 @@ const Shop = () => {
       <div className="search-container">
         <TextField
           type="text"
-          placeholder="Search..."
+          placeholder="Neye ihtiyacınız var?"
           value={searchTerm}
           onChange={handleSearchChange}
           fullWidth
@@ -238,72 +251,95 @@ const Shop = () => {
           Tüm ürünler
         </IconButton>
       </div>
-      <Grid container spacing={2}>
-        {filteredProducts.map((product) => (
-          <Grid key={product.product_id} item xs={12} sm={6} md={4}>
-            <Link to={`/shop/products/${product.product_id}`}  state={{ product , originalProducts}}>
-              
-              <Paper className="product-item">
-                {product.isproductoftheweek && (
-                  <Badge
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    badgeContent={<img src={starIcon} alt="Star Icon" style={{ height: '30px', background: 'transparent' }} />}
-                    style={{ marginRight: '330px'}}
-                    badgeStyle={{ backgroundColor: 'transparent' }}
-                  />
-                )}
-                {product.bestseller >= 10 && (
-                  <Badge
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '30px', background: 'transparent'}} />}
-                    style={{ marginLeft: '350px' }}
-                    badgeStyle={{ backgroundColor: 'transparent' }}
-                  />
-                )}
-                
-                <Badge
-                  style={{ paddingRight: '270px', marginTop: '34px' }}
-                  
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
+      <Container maxWidth="md" component="main">
+        <Grid container spacing={5} alignItems="flex-end">
+          {filteredProducts.map((product , index) => (
+            
+            <Grid
+              item
+              key={product.title}
+              xs={12}
+              sm={product.title === 'Enterprise' ? 12 : 6}
+              md={4}
+            >
+              <Link to={`/shop/products/${product.product_id}`}  state={{ product , originalProducts}}>
+              <Card>
+                {/*{product.isproductoftheweek && (
+                    <Badge
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      badgeContent={<img src={starIcon} alt="Star Icon" style={{ height: '30px', background: 'transparent' }} />}
+                      style={{ marginRight: '330px' , paddingTop:'70px'}}
+                      badgeStyle={{ backgroundColor: 'transparent' }}
+                    />
+                  )}
+                  {product.bestseller >= 10 && (
+                    <Badge
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '30px', background: 'transparent'}} />}
+                      style={{ marginLeft: '350px' }}
+                      badgeStyle={{ backgroundColor: 'transparent' }}
+                    />
+                    )}*/}
+                <img 
+                  src={hoveredImageIndex === index ? `https://www.classuniforma.com/image/cache/catalog/urunler/likralitakimlar/murdum/murd-627x941w.jpg` : `https://www.classuniforma.com/image/cache/catalog/2023/03/murdum-627x941h.jpg`}
+                  style={{
+                      width: '300px',
+                      transition: 'transform 0.9s ease-in-out' 
+                      
                   }}
-                  badgeContent={<FavoriteBorderIcon/>}
+                  className='image-zoom'
+                  alt={product.id}
+                  onMouseEnter={() => handleImageHover(index)} 
+                  onMouseLeave={handleImageLeave}
                 />
-          
-                  
                 
-                    
-                <div className="product-image-shop">
 
-                  <img src={dummyImage} alt={product.product_id} />
+                
+
+                <CardHeader
+                  title={product.product_name}
                   
-                </div>
-                <div className="product-details-main">
-                  <div className="first-detail">
-                    <Typography variant="body1" style={{ marginTop: '10px' }}>
-                      {product.product_name}
-                    </Typography>
+                  titleTypographyProps={{ align: 'center' }}
+                  sx={{
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === 'light'
+                        ? theme.palette.grey[200]
+                        : theme.palette.grey[700],
+                  }}
+                />
+                <CardContent>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'baseline',
+                      gap: '8px',
+                      mb: 2,
+                    }}
+                  >
                     
-
-                  </div>
-                  <div className="product-price-div">
-                    <Typography variant="h5" className="product-price">
+                    <Typography variant="h6" color="text.secondary">
+                      <span style={{ color: 'crimson', textDecoration: 'line-through' }}>{`529.99`}</span>
+                    </Typography>
+                    <Typography component="h2" variant="h5" color="text.primary">
                       {product.price} TL
                     </Typography>
-                  </div>
-                </div>
-              </Paper>
-            </Link>
-          </Grid>
-        ))}
-      </Grid>
+                  </Box>
+                  
+                </CardContent>
+                
+              </Card>
+              </Link>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
       <ToastContainer position="top-right" autoClose={3000} />
     </Container>
   );

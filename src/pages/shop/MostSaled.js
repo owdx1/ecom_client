@@ -6,6 +6,11 @@ import flameIcon from '../../images/flame-icon.png';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FavoriteSharpIcon from '@mui/icons-material/FavoriteSharp';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import {Container} from '@mui/material';
 
 const MostSaled = ({ originalProducts }) => {
   console.log('tum urunler', originalProducts);
@@ -20,7 +25,7 @@ const MostSaled = ({ originalProducts }) => {
         
         <MuiLink
           component={Link}
-          to="/your-path-for-all-most-saled-products"
+          to="#"
           style={{ textDecoration: 'none' }}
         >
           <IconButton aria-label="Tümünü Gör">Tümünü Gör &nbsp;
@@ -29,52 +34,90 @@ const MostSaled = ({ originalProducts }) => {
         </MuiLink>
         
       </div>
-      <Grid container spacing={2}>
-        {displayedProducts.map((product) => (
-          <Grid key={product.product_id} item xs={12} sm={6} md={4}>
-            <Link to={`/shop/products/${product.product_id}`} state={{ product }}>
-              <Paper className="product-item">
-                <Badge
-                  style={{ paddingRight: '270px', marginTop: '34px' }}
-                  
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  badgeContent={<FavoriteBorderIcon/>}
+      <Container maxWidth="md" component="main">
+        <Grid container spacing={5} alignItems="flex-end">
+          {displayedProducts.map((product , index) => (
+            
+            <Grid
+              item
+              key={product.title}
+              xs={12}
+              sm={product.title === 'Enterprise' ? 12 : 6}
+              md={4}
+            >
+              <Link to={`/shop/products/${product.product_id}`}  state={{ product , originalProducts}}>
+              <Card>
+                {/*{product.isproductoftheweek && (
+                    <Badge
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      badgeContent={<img src={starIcon} alt="Star Icon" style={{ height: '30px', background: 'transparent' }} />}
+                      style={{ marginRight: '330px' , paddingTop:'70px'}}
+                      badgeStyle={{ backgroundColor: 'transparent' }}
+                    />
+                  )}
+                  {product.bestseller >= 10 && (
+                    <Badge
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '30px', background: 'transparent'}} />}
+                      style={{ marginLeft: '350px' }}
+                      badgeStyle={{ backgroundColor: 'transparent' }}
+                    />
+                    )}*/}
+                <img 
+                src='https://i.ibb.co/tbRJ8N9/id-15.jpg'
+                style={{width:'300px'}}
+                className='image-zoom'
+                alt={product.id}
+                
                 />
-                {product.bestseller >= 10 && (
-                  <Badge
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '30px', background: 'transparent'}} />}
-                    style={{ marginLeft: '350px' }}
-                    badgeStyle={{ backgroundColor: 'transparent' }}
-                  />
-                )}
+                
 
-                <div className="product-image-shop">
-                  <img src={dummyImage} alt={product.product_id} />
-                </div>
-                <div className="product-details-main">
-                  <div className="first-detail">
-                    <Typography variant="body1" style={{ marginTop: '10px' }}>
-                      {product.product_name}
+                
+
+                <CardHeader
+                  title={product.product_name}
+                  
+                  titleTypographyProps={{ align: 'center' }}
+                  sx={{
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === 'light'
+                        ? theme.palette.grey[200]
+                        : theme.palette.grey[700],
+                  }}
+                />
+                <CardContent>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'baseline',
+                      gap: '8px',
+                      mb: 2,
+                    }}
+                  >
+                    
+                    <Typography variant="h6" color="text.secondary">
+                      <span style={{ color: 'crimson', textDecoration: 'line-through' }}>{`529.99`}</span>
                     </Typography>
-                  </div>
-                  <div className="product-price-div">
-                    <Typography variant="h5" className="product-price">
+                    <Typography component="h2" variant="h5" color="text.primary">
                       {product.price} TL
                     </Typography>
-                  </div>
-                </div>
-              </Paper>
-            </Link>
-          </Grid>
-        ))}
-      </Grid>
+                  </Box>
+                  
+                </CardContent>
+                
+              </Card>
+              </Link>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     </div>
   );
 };
