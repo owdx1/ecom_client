@@ -105,7 +105,7 @@ export default function Footer() {
             </Grid>
           ))}
         </Grid>
-        <Copyright sx={{ mt: 5 }} />
+        <Copyright sx={{ mt: 5 }}  />
       </Container>
     </ThemeProvider>
   );

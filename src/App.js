@@ -30,6 +30,8 @@ import AdminCustomers from './pages/admin/AdminCustomers'
 import Search2 from './pages/search/Search2';
 import ArdaDeneme from './utils/ArdaDeneme';
 import Preview from './pages/Preview'
+import AdminOrders from './pages/admin/AdminOrders';
+import AdminOrderDetails from './pages/admin/AdminOrderDetails';
 
 
 
@@ -134,7 +136,8 @@ import Preview from './pages/Preview'
           <Route path='/admin/products/:product_id' element={<AdminProductDetails />}></Route>
           <Route path='/admin/delete-a-product/:product_id' element={<Contact />}></Route>
           <Route path='/admin/customers' element={<AdminCustomers/>}></Route>
-          
+          <Route path='/admin/orders' element={<AdminOrders />}></Route>
+          <Route path='/admin/getOrders/:order_id' element={<AdminOrderDetails />}></Route>
           <Route path='/admin/denemeDashboard' element={<Dashboard />}></Route>
 
           <Route path='/error' element={<Error />}></Route>

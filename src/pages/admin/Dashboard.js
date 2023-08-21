@@ -95,25 +95,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const defaultTheme = createTheme();
 
-// "Tüm Siparişler" (All Orders) page component
-function AllOrdersPage() {
-  return (
-    <div>
-      <h1>All Orders Page</h1>
-      {/* Your content for "Tüm Siparişler" page */}
-    </div>
-  );
-}
 
-// "Müşteriler" (Customers) page component
-function CustomersPage() {
-  return (
-    <div>
-      <h1>Customers Page</h1>
-      {/* Your content for "Müşteriler" page */}
-    </div>
-  );
-}
 
 export default function Dashboard() {
   const [open, setOpen] = React.useState(true);
@@ -225,12 +207,7 @@ export default function Dashboard() {
               <Route exact path="/admin/products">
                 {/* Your "Products" page content */} 
               </Route>
-              <Route path="/admin/orders">
-                <AllOrdersPage />
-              </Route>
-              <Route path="/admin/customers">
-                <CustomersPage />
-              </Route>
+              
             </Switch>
             
             <Grid container spacing={3}>
