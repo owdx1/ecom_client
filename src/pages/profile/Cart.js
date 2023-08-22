@@ -173,8 +173,8 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
                           </Link>
                           <TableCell>{product.color}</TableCell>
                           <TableCell>{product.orderquantity}</TableCell>
-                          {product.size && <TableCell>{product.size}</TableCell>}
-                          {product.size_i !== 0 && <TableCell>{product.size_i}</TableCell>}
+                          <TableCell>{product.size}</TableCell>
+                          
                           <TableCell>TL {product.price}</TableCell>
                           
                           <TableCell>
