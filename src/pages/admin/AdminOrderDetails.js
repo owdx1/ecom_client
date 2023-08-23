@@ -26,7 +26,8 @@ const AdminOrderDetails = () => {
     first_name:'',
     last_name:'',
     phone:'',
-    postal_code:''
+    postal_code:'',
+    customer_id:''
   });
   const [orderDetails, setOrderDetails] = useState({
     total_amount: '',
@@ -58,6 +59,7 @@ const AdminOrderDetails = () => {
           last_name: orderFeature[0].last_name,
           phone: orderFeature[0].phone,
           postal_code: orderFeature[0].postal_code,
+          customer_id:orderFeature[0].customer_id
         })
         setOrderDetails({
           total_amount:orderFeature[0].total_amount,
@@ -83,16 +85,17 @@ const AdminOrderDetails = () => {
 
   return (
     <>
-      <div>
-        <h1 style={{fontWeight:'300'}}> Sipariş Numarası: {orderDetails.order_id}</h1>
-        <h1 style={{fontWeight:'100'}}> Toplam Fiyat: {orderDetails.total_amount} TL</h1>
+      <div style={{display:'flex', justifyContent:'center' ,alignItems:'center' , flexDirection:'column'}}>
+        <h2 style={{fontWeight:'300' , margin:'0', marginTop:'30px'}}> Sipariş Numarası: {orderDetails.order_id}</h2>
+        <h2 style={{fontWeight:'100'}}> Toplam Fiyat: {orderDetails.total_amount} TL</h2>
         <Button>Alıcıyla İletişime Geç</Button>
       </div>
       
 
       <div>
         <Typography variant="h4">Kullanıcı Bilgileri</Typography>
-        <Typography variant="h6">İsim: {userDetails.first_name}</Typography>
+        <Typography variant="h5">Kullanıcı ID : {userDetails.customer_id}</Typography>
+        <Typography variant="h5">İsim: {userDetails.first_name}</Typography>
         <Typography variant="h5">Soyisim: {userDetails.last_name}</Typography>
         <Typography variant="h5">Adres: {userDetails.address}</Typography>
         <Typography variant="h5">Şehir: {userDetails.city}</Typography>
@@ -102,7 +105,7 @@ const AdminOrderDetails = () => {
         <Typography variant="h5">Tel No: {userDetails.phone}</Typography>
        
       </div>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{width:'1400px' , margin:'50px auto'}}>
         <Table>
           <TableHead>
             <TableRow>
@@ -114,7 +117,7 @@ const AdminOrderDetails = () => {
               <TableCell>Beden</TableCell>
               <TableCell>Adet</TableCell>
               <TableCell>Fiyat</TableCell>
-              <TableCell>Müşteri ID</TableCell>
+              
               <TableCell>Order Item ID</TableCell>
               
               
@@ -136,7 +139,7 @@ const AdminOrderDetails = () => {
                 <TableCell>{detail.size}</TableCell>
                 <TableCell>{detail.quantity}</TableCell>
                 <TableCell>{detail.price}</TableCell>
-                <TableCell>{detail.customer_id}</TableCell>
+                
                 
                 <TableCell>{detail.order_item_id}</TableCell>
                 

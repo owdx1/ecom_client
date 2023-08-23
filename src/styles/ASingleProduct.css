@@ -72,7 +72,7 @@
 }
 
 .size-button.active {
-  background-color: #dd63ed;
+  background: linear-gradient(45deg, #FA6B8B 30%, #FF8E53 90%);
   color: #fff;
 }
 

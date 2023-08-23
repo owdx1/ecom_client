@@ -122,17 +122,12 @@ const AdminOrders = () => {
     }
   }, []);
 
-  
-
-
-
-
 
 
     return (
       <>
 
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} style={{width:'1400px' , margin: '20px auto'}}>
             <Table>
                 <TableHead>
                     <TableRow>
