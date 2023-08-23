@@ -42,7 +42,7 @@ export default function Orders() {
           const data = await response.json();
 
           const sortedOrders = data.orders.sort((a, b) => {
-            // Assuming order_data is a date or timestamp field, you can compare them like this
+            
             return new Date(b.order_date) - new Date(a.order_date);
           });
 

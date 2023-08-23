@@ -121,7 +121,15 @@ const Header = ({ isLoggedIn, onLogout, numberOfProductsInCart }) => {
   );
 
   return (
-    <nav>
+    <nav style={{
+                
+      background: 'linear-gradient(45deg, #BCDEAF 10%, #ABCDEF 90%)',
+      borderRadius: '10px',
+      
+      color: 'white',
+      transition: 'background 0.3s ease-in-out, transform 0.2s ease',
+      border: 'none',
+    }}>
       <div className="header-left">
         <div
           className="dropdown"

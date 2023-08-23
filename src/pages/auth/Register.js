@@ -101,7 +101,16 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1 , width:'100px', height:'100px'}}
+          style={{
+                
+            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+            borderRadius: '10px',
+            boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+            color: 'white',
+            transition: 'background 0.3s ease-in-out, transform 0.2s ease',
+            border: 'none',
+          }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -244,7 +253,16 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}
+            style={{
+                
+              background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+              borderRadius: '10px',
+              boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+              color: 'white',
+              transition: 'background 0.3s ease-in-out, transform 0.2s ease',
+              border: 'none',
+            }}>
               Kayıt ol
             </Button>
             <Grid container justifyContent="flex-end">

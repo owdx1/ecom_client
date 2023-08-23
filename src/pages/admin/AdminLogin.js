@@ -1,5 +1,7 @@
+import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import {Container , Typography , Grid , TextField} from '@mui/material';
 
 function AdminLogin() {
   const [username, setUsername] = useState('');
@@ -42,27 +44,54 @@ function AdminLogin() {
   };
   
   if (isLoggedIn) {
-    return <Navigate to="/admin/dashboard" />;
+    return <Navigate to="/admin/denemedashboard" />;
   }
 
   return (
-    <div>
-      <h1>Login</h1>
-      {errorMessage && <p>{errorMessage}</p>}
+    <Container maxWidth="sm" style={{ marginTop: '30px' }}>
+      <Typography variant="h4" align="center" gutterBottom>
+        Admin Giriş
+      </Typography>
+      {errorMessage && (
+        <Typography variant="body2" color="error" align="center">
+          {errorMessage}
+        </Typography>
+      )}
       <form onSubmit={handleLogin}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input type="text" id="username" value={username} onChange={handleUsernameChange} />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" value={password} onChange={handlePasswordChange} />
-        </div>
-        <button type="submit" onClick={handleLogin}>
-          Login
-        </button>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="username"
+              label="Username"
+              variant="outlined"
+              value={username}
+              onChange={handleUsernameChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="password"
+              label="Password"
+              type="password"
+              variant="outlined"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+          </Grid>
+        </Grid>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          style={{ marginTop: '20px' }}
+        >
+          Giriş Yap
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 }
 
