@@ -29,6 +29,11 @@ const AddAProduct = () => {
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
+  useEffect(()=>{
+    console.log(selectedFile);
+  } , [selectedFile])
+
+  
 
   const categories = {
     'takim': 1,

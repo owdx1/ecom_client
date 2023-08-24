@@ -134,19 +134,18 @@ button:hover {
 
 .total-price {
   margin-top: 20px;
-  text-align: right;
+  margin-bottom: 20px;
 }
 
 .empty-cart-button {
-  text-align: right;
+  text-align: left;
   margin-bottom: 10px;
 }
 
 
 @media (max-width: 600px) {
   .product-image {
-    width: 50px;
-    height: 50px;
+    width: 160px;
   }
 
   .cart-container {

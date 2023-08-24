@@ -12,7 +12,9 @@ function preventDefault(event) {
 export default function Deposits() {
 
   const navigate = useNavigate();
-  const [totalMoney , setTotalMoney] = useState(0.0);
+  let totalMoney = 0.0;
+  const [currentOrders , setCurrentOrders] = useState([]);
+  const [totalAmount , setTotalAmount] = useState(0.0);
 
   const fetchAdminOrders = async () => {
       try {
@@ -29,9 +31,16 @@ export default function Deposits() {
 
           
           const {orders} = data;
-          orders.map((order) => {
-            setTotalMoney(totalMoney + parseFloat(order.total_amount));
+          setCurrentOrders(orders);
+          
+          orders.map((order) =>{
+            console.log('suanki para' , order.total_amount);
+            if(order.total_amount === null) {return;}
+            totalMoney += parseFloat(order.total_amount);
+            console.log('eklendikten sonraki total miktar' , totalMoney);
           })
+          setTotalAmount(totalMoney);
+
           
           
         } else {
@@ -62,18 +71,19 @@ export default function Deposits() {
 
 
 
+
   return (
     <React.Fragment>
-      <Title>Recent Deposits</Title>
+      <Title>Toplam Satım</Title>
       <Typography component="p" variant="h4">
-        {totalMoney} TL
+        {totalAmount} TL
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        on 15 March, 2019
+        Burası kullanılabilir
       </Typography>
       <div>
         <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
+          Burasi kullanılabilir 
         </Link>
       </div>
     </React.Fragment>

@@ -87,7 +87,7 @@ export default function Dashboard() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={defaultTheme} >
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         
@@ -154,12 +154,7 @@ export default function Dashboard() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Switch>
-              <Route exact path="/admin/products">
-                 
-              </Route>
-              
-            </Switch>
+            
             
             <Grid container spacing={3}>
               
@@ -190,7 +185,7 @@ export default function Dashboard() {
               </Grid>
               
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', width:'780px'}}>
                   <Orders />
                 </Paper>
               </Grid>

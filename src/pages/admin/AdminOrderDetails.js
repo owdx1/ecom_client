@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
 import {Button} from '@mui/material';
+import { NavLink } from 'react-router-dom';
 
 
 const AdminOrderDetails = () => {
@@ -84,7 +85,15 @@ const AdminOrderDetails = () => {
   }, []);
 
   return (
-    <>
+    <div style={{width:'1400px' , margin:'30px auto'}}>
+      <div style={{ margin: '10px'}}>
+        <NavLink to='/admin/orders'>
+          <Button variant="contained" color="primary">
+            Tüm Siparişler 
+          </Button>
+        </NavLink>
+
+      </div>
       <div style={{display:'flex', justifyContent:'center' ,alignItems:'center' , flexDirection:'column'}}>
         <h2 style={{fontWeight:'300' , margin:'0', marginTop:'30px'}}> Sipariş Numarası: {orderDetails.order_id}</h2>
         <h2 style={{fontWeight:'100'}}> Toplam Fiyat: {orderDetails.total_amount} TL</h2>
@@ -150,7 +159,7 @@ const AdminOrderDetails = () => {
         </Table>
       </TableContainer>
       
-    </>
+    </div>
   );
 };
 

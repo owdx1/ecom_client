@@ -126,8 +126,17 @@ const AdminOrders = () => {
 
     return (
       <>
+          
 
           <TableContainer component={Paper} style={{width:'1400px' , margin: '20px auto'}}>
+          <div style={{ margin: '10px' }}>
+            <NavLink to='/admin/denemeDashboard'>
+              <Button variant="contained" color="primary">
+                Admin Anasayfa
+              </Button>
+            </NavLink>
+
+          </div>
             <Table>
                 <TableHead>
                     <TableRow>

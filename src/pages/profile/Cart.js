@@ -138,7 +138,7 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
       ) : (
         <>
           
-          <div className="cart-container">
+          <div className="cart-container" style={{margin:'30px auto'}}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TableContainer component={Paper}>
@@ -159,7 +159,7 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
                             <TableCell>
                               <Grid container alignItems="center" spacing={2}>
                               <Grid item>
-                                <img src='https://i.ibb.co/tbRJ8N9/id-15.jpg' alt="Product" className="product-image" style={{maxWidth:'100%'}}/>
+                                <img src='https://i.ibb.co/tbRJ8N9/id-15.jpg' alt="Product" className="product-image"/>
                               </Grid>
                               <Grid item>
                                 <Typography variant="h5" style={{fontWeight:'100'}}>{product.product_name}</Typography>
