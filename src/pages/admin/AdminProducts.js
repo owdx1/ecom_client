@@ -104,13 +104,11 @@ const AdminProducts = () => {
               <TableCell onClick={() => handleSort('price')} style={{ cursor: 'pointer' }}>
                 Fiyat {sortOrder.price === 'asc' ? ' ▲' : ' ▼'}
               </TableCell>
-              <TableCell onClick={() => handleSort('color')} style={{ cursor: 'pointer' }}>
-                Renk {sortOrder.color === 'asc' ? ' ▲' : ' ▼'}
-              </TableCell>
+              
               <TableCell onClick={() => handleSort('category_id')} style={{ cursor: 'pointer' }}>
                 Kategori {sortOrder.category_id === 'asc' ? ' ▲' : ' ▼'}
               </TableCell>
-              <TableCell>Miktar</TableCell>
+              
               <TableCell onClick={() => handleSort('isproductoftheweek')} style={{ cursor: 'pointer' }}>
                 Öne Çıkan Ürün {sortOrder.isproductoftheweek === 'asc' ? ' ▲' : ' ▼'}
               </TableCell>
@@ -128,9 +126,9 @@ const AdminProducts = () => {
                 <TableCell>{product.product_name}</TableCell>
                 <TableCell>{product.product_id}</TableCell>
                 <TableCell>{product.price}</TableCell>
-                <TableCell>{product.color}</TableCell>
+                
                 <TableCell>{categories[product.category_id]}</TableCell>
-                <TableCell>{product.quantity}</TableCell>
+                
                 <TableCell>
                   {product.isproductoftheweek ? (
                     <span style={{ color: 'gold' }}>★</span>

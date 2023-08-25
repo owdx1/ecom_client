@@ -7,6 +7,8 @@ const styles = {
   tableContainer: {
     marginTop: '20px',
     padding: '10px',
+    width:'1200px',
+    margin:'0 auto'
   },
   tableHeader: {
     display: 'flex',
@@ -24,6 +26,13 @@ const styles = {
     color: 'inherit',
   },
 };
+
+const status = {
+  1:'siparis-alindi',
+  2:'yolda',
+  3:'teslim-edildi',
+  4:'iptal-edildi'
+}
 
 const Orders = ({ onLogout }) => {
   const navigate = useNavigate();
@@ -59,7 +68,11 @@ const Orders = ({ onLogout }) => {
 
       const data = await response.json();
       const { accessToken: newAccessToken, oldOrders } = data;
-      setDisplayOrders(oldOrders);
+      const sortedOrders = oldOrders.sort((a, b) => {
+          
+        return new Date(b.order_date) - new Date(a.order_date);
+      });
+      setDisplayOrders(sortedOrders);
       localStorage.setItem('accessToken', newAccessToken);
       console.log('New accessToken', newAccessToken);
       console.log('Current orders', oldOrders);
@@ -72,15 +85,17 @@ const Orders = ({ onLogout }) => {
     <div>
       <Paper style={styles.tableContainer}>
         <div style={styles.tableHeader}>
-          <Typography>Sipariş Numarası</Typography>
-          <Typography>Tarih</Typography>
-          <Typography>Toplam Miktar</Typography>
+          <Typography style={{ width: '7000px' }}>Sipariş Numarası</Typography>
+          <Typography style={{ width: '7000px' }}>Tarih</Typography>
+          <Typography style={{ width: '7000px' }}>Toplam Fiyat</Typography>
+          <Typography style={{ width: '7000px' }}>Sipariş Durumu</Typography>
         </div>
         {displayOrders.map((order) => (
           <Link to={`/profile/orders/${order.order_id}`} style={styles.tableRow} state={{ order }} key={order.order_id}>
-            <Typography>{order.order_id}</Typography>
-            <Typography>{order.order_date}</Typography>
-            <Typography>{order.total_amount}</Typography>
+            <Typography style={{ width: '7000px' }}>{order.order_id}</Typography>
+            <Typography style={{ width: '7000px' }}>{order.order_date}</Typography>
+            <Typography style={{ width: '7000px' }}>{order.total_amount} TL </Typography>
+            <Typography style={{ width: '7000px' }}  className={`${status[order.orderstatus]}`}>{status[order.orderstatus]}</Typography>
           </Link>
         ))}
       </Paper>

@@ -19,6 +19,8 @@ import { useLocation } from 'react-router-dom';
 import dummyImage from '../../images/tomy1.jpg';
 import dummyImage2 from '../../images/tek-alt_1.jpg';
 import dummyImage3 from '../../images/tesettur_1.jpg';
+import { NavLink } from 'react-router-dom';
+import '../../styles/AdminProductDetails.css';
 
 const AdminProductDetails = () => {
   const location = useLocation();
@@ -30,7 +32,7 @@ const AdminProductDetails = () => {
     dummyImage3,
   ]);
   
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const categories = {
     1: 'takim',
@@ -74,7 +76,7 @@ const AdminProductDetails = () => {
     });
   };
 
-  /**************************************************************  UPDATE FEATURE BLOCK */
+  /**************************************************************  UPDATE FETURE BLOCK */
 
   const handleUpdateFeatureChange = (event) => {
     const {name , value} = event.target;
@@ -148,7 +150,7 @@ const AdminProductDetails = () => {
 
   };
 
-  /******************************************************************************* */
+/******************************************************************************* */
    
    
 
@@ -161,7 +163,56 @@ const AdminProductDetails = () => {
 
 
 
+/******file upload */
 
+  const handleFileChange = (event) => {
+    const imageFile = event.target.files[0];
+
+    if(imageFile){
+      setSelectedFile(imageFile);
+    }
+    
+  };
+  useEffect(()=>{
+    console.log(selectedFile);
+  } , [selectedFile])
+
+
+  const handleAddImage = async () =>{
+    const formData = new FormData();
+
+    if (selectedFile) {
+      const modifiedFileName = `${currentProduct.category_id}-${currentProduct.product_name}-${selectedColorForSizes}-${Date.now()}.${selectedFile.type.split('/')[1]}`;
+      console.log('suanki modified file name:' , modifiedFileName);
+      const modifiedFile = new File([selectedFile], modifiedFileName, { type: selectedFile.type });
+      
+    
+      formData.append('file', modifiedFile);
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/foto/file', {
+      method: 'POST',
+      body: formData,
+      });
+
+      if (response.ok) {
+        console.log('File uploaded successfully');
+      } else {
+        console.error('Failed to upload file');
+      }
+    } 
+    catch (error) {
+      console.error('Error uploading file:', error);
+    }
+
+
+  }
+
+
+
+
+/*********** */
 
 
 
@@ -172,11 +223,58 @@ const AdminProductDetails = () => {
 
   
   const [selectedColorForSizes, setSelectedColorForSizes] = useState('');
+  const [currentDetails, setCurrentDetails] = useState([]);
+  const [currentPhotos, setCurrentPhotos] = useState([]);
+  const [photoToDelete, setPhotoToDelete] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
  
-  const filteredSizes = productDetails.filter(
-    (product) => product.color === selectedColorForSizes
-  );
+  
+
+
+  useEffect(() => {
+    const filteredSizes = productDetails.filter(
+      (product) => product.color === selectedColorForSizes
+    );
+  
+    
+    if (filteredSizes.length > 0) {
+      const selectedPhotoUrls = filteredSizes[0].photoUrls;
+  
+      console.log('suanki filteredsize', filteredSizes);
+      setCurrentDetails(filteredSizes);
+  
+      setCurrentPhotos(selectedPhotoUrls);
+  
+      console.log('suanki current photos', currentPhotos);
+    }
+    else if (filteredSizes.length === 0){
+      setUpdateFeature({
+        size36:0,
+        size37:0,
+        size38:0,
+        size39:0,
+        size40:0,
+        size41:0,
+        size42:0,
+        size43:0,
+        size44:0,
+        size45:0,
+        XXS:0,
+        XS:0,
+        S:0,
+        M:0,
+        L:0,
+        XL:0,
+        XXL:0,
+      })
+
+      setCurrentDetails(filteredSizes);
+      setCurrentPhotos([]);
+
+    }
+  }, [selectedColorForSizes]);
+
   
 
   
@@ -191,6 +289,20 @@ const AdminProductDetails = () => {
     console.log(updatedProduct);
   };
 
+  const handleDeleteClick = (photoIndex) => {
+    setPhotoToDelete(photoIndex);
+    setShowModal(true);
+  };
+
+  const handleConfirmation = (confirmed) => {
+    if (confirmed) {
+      
+      const updatedPhotos = currentPhotos.filter((_, index) => index !== photoToDelete);
+      setCurrentPhotos(updatedPhotos);
+    }
+    setShowModal(false);
+    setPhotoToDelete(null);
+  };
   
 
 
@@ -218,7 +330,7 @@ const AdminProductDetails = () => {
         if (response.ok) {
           const data = await response.json();
           setProductDetails(data.productDetails);
-          console.log('suanki details' , productDetails);
+          console.log('suanki details' , data.productDetails);
         } else {
           throw new Error('An error occurred while fetching the products');
         }
@@ -231,58 +343,18 @@ const AdminProductDetails = () => {
     fetchAdminDetailedProduct();
   }, [location.state]);
 
-  const handleImageSelect = (event) => {
-    const imageFile = event.target.files[0];
-    if (imageFile) {
-      setSelectedImage(imageFile);
-    }
-  };
-
-  const handleAddImage = () => {
-    if (selectedImage) {
-      const imageUrl = URL.createObjectURL(selectedImage);
-      setCurrentProductImages([...currentProductImages, imageUrl]);
-      setSelectedImage(null);
-    }
-  };
 
   return (
     <Container>
-      <div className="product-main-features">
-        <div className='image-container' style={{display:'flex' , gap:'10px' , alignItems:'flex-start'}}>
-          {currentProductImages.map((image, index) => (
-            <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-              <img src={image} alt={index} style={{ maxWidth: '200px', marginRight: '10px' }} />
-              <IconButton
-                onClick={() => {
-                  const updatedImages = currentProductImages.filter((_, i) => i !== index);
-                  setCurrentProductImages(updatedImages);
-                }}
-                aria-label="delete"
-              >
-                <DeleteIcon />
-              </IconButton>
-            </div>
-          ))}
-        </div>
-        <input type="file" accept="image/*" onChange={handleImageSelect} style={{ display: 'none' }} id="image-input" />
-        <label htmlFor="image-input">
-          <Button variant="contained" component="span">
-            Resim Seç
-          </Button>
-        </label>
-        <Button variant="contained" onClick={handleAddImage}>
-          Seçtiğin Resimi ekle  
-        </Button>
-
-        <p>ürün id: {currentProduct.product_id}</p>
-        <p>ürün isim: {currentProduct.product_name}</p>
-        <p>ürün kategorisi: {categories[currentProduct.category_id]}</p>
-        <p>ürün fiyat: {currentProduct.price}</p>
-        <p>ürünün indirimi: {currentProduct.discount}</p>
-        <p>toplam satılan miktar: {currentProduct.bestseller}</p>
-        <p>ürün açıklaması: {currentProduct.description}</p>
-        <p>haftanın ürünü mü?: {currentProduct.isproductoftheweek}</p>
+      
+      <div>
+        <Typography variant="h3">Ürün ID: {currentProduct.product_id}</Typography>
+        <Typography variant="h3">Ürün İsmi: {currentProduct.product_name}</Typography>
+        <Typography variant="h5">Ürün Kategorisi: {categories[currentProduct.category_id]}</Typography>
+        <Typography variant="h5">Ürün Fiyatı: {currentProduct.price}</Typography>
+        <Typography variant="h5">Ürünün İndirimi: {currentProduct.discount}</Typography>
+        <Typography variant="h5">Toplam Satılan Miktar: {currentProduct.bestseller}</Typography>
+        <Typography variant="h5">Ürün Açıklaması: {currentProduct.description}</Typography>
       </div>
 
       <div>
@@ -349,6 +421,7 @@ const AdminProductDetails = () => {
         </form>
 
         <div className='color-container'>
+          
         
         {Object.keys(colors).map((color) => (
           <Button
@@ -365,42 +438,97 @@ const AdminProductDetails = () => {
               marginLeft: '10px',
               marginTop:'10px',
               boxShadow:
-                selectedColorForSizes === color ? '2px 2px black' : 'none',
+              selectedColorForSizes === color ? '2px 2px black' : 'none',
               border:'none'
               
             }}
             onClick={() => handleColorClick(color)}
           ></Button>
         ))}
-        
-        <div>
-          <Typography variant="body1" gutterBottom>
-            Şuanki renk: {selectedColorForSizes} , bu renk için yeni bir beden ekleyin
+
+        <div style={{margin:'30px'}}>
+          <Typography variant="h4" gutterBottom>
+            Şuanki renk: {selectedColorForSizes}
           </Typography>
+          <Typography variant='h3'> Bu renge ait fotoğraflar</Typography>
+          {currentPhotos.map((photoUrl, index) => (
+            <div>
+              <img
+                key={index} 
+                src={`${photoUrl.url}`}
+                
+                alt={`Product ${index + 1}`}
+                style={{width:'350px' , borderRadius:'20px', margin:'10px'}}
+              />
+              <DeleteIcon
+              style={{cursor:'pointer'}}
+              onClick={() => handleDeleteClick(index)}
+              >
+              </DeleteIcon>
+
+              {showModal && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <Typography variant='h4'>Fotoğrafı silmek istediğinizden emin misiniz?</Typography>
+                    <div className="modal-button-container">
+                      <Button  onClick={() => handleConfirmation(true)}>EVET</Button>
+                      <Button  onClick={() => handleConfirmation(false)}>HAYIR</Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          ))}
+        </div>
+
+
+        <div>
+          
+          
+          {selectedColorForSizes && (
+            <div>
+              <Typography>
+                Bu renk için fotoğraf yükleyiniz
+              </Typography>
+
+              <input
+                  type="file"
+                  name={`photo1`}
+                  style={{marginLeft:'40px' , marginTop:'25px'}}
+                  onChange={handleFileChange}
+                  
+                />
+                <Button onClick={handleAddImage}>Bu resimi yükle</Button>
+            </div>
+          )}
+
 
           <div>
             <Select
               value={selectedSizeForNewFeature}
               onChange={handleSizeChange}
               displayEmpty
+              style={{margin:'30px auto'}}
             >
               <MenuItem value="" disabled>
-                Select a size
+                Beden Seçiniz
               </MenuItem>
               {sizes.map((size) => (
                 <MenuItem key={size} value={size}>
                   {size}
                 </MenuItem>
+
               ))}
             </Select>
-            <Button variant="contained" onClick={handleAddFeature}>
+            <Button variant="contained" onClick={handleAddFeature} style={{marginLeft:'35px'}}>
               Özellik Ekle
             </Button>
           </div>
 
         <div>
           <TextField
-            label="Quantity"
+            label="Adet"
             type="number"
             value={quantityForNewFeature}
             onChange={handleQuantityChange}
@@ -413,26 +541,28 @@ const AdminProductDetails = () => {
       </div>
       <div>
         
-        <Typography variant="body1" gutterBottom style={{marginTop:'40px'}}>
-          Bedenler:
+        
+        <Typography variant="h5" gutterBottom style={{marginTop:'40px'}}>
+          Bedenler
         </Typography>
-        {filteredSizes.map((product) => (
-          
+
+        
+        {currentDetails.length > 0 && currentDetails.map((product) => (
+        
           <div key={product.feature_id}> 
             <form key={product.feature_id} variant="outlined">
               <p>{product.size}</p>
               <TextField
-                  
                   name={product.size}
                   placeholder={product.quantity}
                   value={updateFeature.size}
                   onChange={handleUpdateFeatureChange}
                   margin="normal"
-                />
+                />               
               
             </form>
-            <Button onClick={() => handleUpdateFeature(selectedColorForSizes, product.size , updateFeature[product.size])}>Update</Button>
-        </div>
+            <Button onClick={() => handleUpdateFeature(selectedColorForSizes, product.size , updateFeature[product.size])}>Bedeni Güncelle</Button>
+          </div>
         ))}
         
       </div>

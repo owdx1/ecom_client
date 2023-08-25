@@ -26,11 +26,11 @@ import Box from '@mui/material/Box';
 
 
 const slides = [
-  { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
-  { url: 'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg', title: 'boats' },
-  { url: 'https://images.wallpaperscraft.com/image/single/laptop_keyboard_glow_170138_1600x900.jpg', title: 'laptop' },
-  { url: 'https://images.wallpaperscraft.com/image/single/drone_camera_technology_171576_1600x900.jpg', title: 'drone' },
-  { url: 'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg', title: 'coding' },
+  'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg',
+  'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg', 
+  'https://images.wallpaperscraft.com/image/single/laptop_keyboard_glow_170138_1600x900.jpg', 
+  'https://images.wallpaperscraft.com/image/single/drone_camera_technology_171576_1600x900.jpg',
+  'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg',
 ];
 
 const containerStyles = {
@@ -253,7 +253,26 @@ const Shop = () => {
       </div>
       <Container maxWidth="md" component="main">
         <Grid container spacing={5} alignItems="flex-end">
-          {filteredProducts.map((product , index) => (
+          {filteredProducts.map((product , index) => {
+            let url1 = '';
+            let url2 = '';
+            const photoUrls = product.photoUrls; 
+            const singleArrayOne = photoUrls[0];
+            const singleArrayTwo = photoUrls[1];
+
+            if(singleArrayOne === undefined){
+              url1 = 'https://i.ibb.co/tbRJ8N9/id-15.jpg'
+            } else{
+              url1 = singleArrayOne.url
+            }
+            if(singleArrayTwo === undefined){
+              url2 = 'https://www.classuniforma.com/image/cache/catalog/2023/03/murdum-627x941h.jpg'
+            } else {
+              url2 = singleArrayTwo.url
+            }
+            
+          
+          return (
             
             <Grid
               item
@@ -262,32 +281,11 @@ const Shop = () => {
               sm={product.title === 'Enterprise' ? 12 : 6}
               md={4}
             >
+              {product.photoUrls[0] && console.log('suanki her produtcutn photoURL', product.photoUrls[0].url)}
               <Link to={`/shop/products/${product.product_id}`}  state={{ product , originalProducts}}>
               <Card>
-                {/*{product.isproductoftheweek && (
-                    <Badge
-                      anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                      }}
-                      badgeContent={<img src={starIcon} alt="Star Icon" style={{ height: '30px', background: 'transparent' }} />}
-                      style={{ marginRight: '330px' , paddingTop:'70px'}}
-                      badgeStyle={{ backgroundColor: 'transparent' }}
-                    />
-                  )}
-                  {product.bestseller >= 10 && (
-                    <Badge
-                      anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                      }}
-                      badgeContent={<img src={flameIcon} alt="Flame Icon" style={{ height: '30px', background: 'transparent'}} />}
-                      style={{ marginLeft: '350px' }}
-                      badgeStyle={{ backgroundColor: 'transparent' }}
-                    />
-                    )}*/}
                 <img 
-                  src={hoveredImageIndex === index ? `https://www.classuniforma.com/image/cache/catalog/urunler/likralitakimlar/murdum/murd-627x941w.jpg` : `https://www.classuniforma.com/image/cache/catalog/2023/03/murdum-627x941h.jpg`}
+                  src={hoveredImageIndex === index ? url1 : url2}
                   style={{
                       width: '300px',
                       transition: 'transform 0.9s ease-in-out' 
@@ -337,7 +335,7 @@ const Shop = () => {
               </Card>
               </Link>
             </Grid>
-          ))}
+          )})}
         </Grid>
       </Container>
       <ToastContainer position="top-right" autoClose={3000} />

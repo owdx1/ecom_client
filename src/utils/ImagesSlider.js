@@ -55,7 +55,7 @@ const ImageSlider = ({ slides, selectedImage }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const selectedIndex = slides.findIndex((slide) => slide.url === selectedImage);
+    const selectedIndex = slides.findIndex((slide) => slide === selectedImage);
     setCurrentIndex(selectedIndex >= 0 ? selectedIndex : 0);
   }, [selectedImage, slides]);
 
@@ -77,7 +77,7 @@ const ImageSlider = ({ slides, selectedImage }) => {
 
   const slideStylesWidthBackground = {
     ...slideStyles,
-    backgroundImage: `url(${slides[currentIndex].url})`,
+    backgroundImage: `url(${slides[currentIndex]})`,
   };
 
   return (

@@ -19,18 +19,18 @@ const colors = {
   'mint_yesili':'#cfffe5', 'mavi':'#00133d','krem':'#fffdd0','antep_fistigi':'#dfff00'
 }
 
-const slides = [
-  { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
-  { url: 'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg', title: 'boats' },
-  { url: 'https://images.wallpaperscraft.com/image/single/laptop_keyboard_glow_170138_1600x900.jpg', title: 'laptop' },
-  { url: 'https://images.wallpaperscraft.com/image/single/drone_camera_technology_171576_1600x900.jpg', title: 'drone' },
-  { url: 'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg', title: 'coding' },
+const fakeSlides = [
+  'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg',
+  'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg',
+  'https://images.wallpaperscraft.com/image/single/laptop_keyboard_glow_170138_1600x900.jpg',
+  'https://images.wallpaperscraft.com/image/single/drone_camera_technology_171576_1600x900.jpg',
+  'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg',
 ];
 
 const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
 
   
-
+  const [slides , setSlides] = useState([]);
   const navigate = useNavigate();
   const [errorM, setErrorM] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -42,13 +42,16 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const [availableSizes, setAvailableSizes] = useState([]);
   const accessToken = localStorage.getItem('accessToken');
   const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(slides[0].url);
+  const [selectedImage, setSelectedImage] = useState('');
   const { product_id } = useParams();
   const [transformedData, setTransformedData] = useState([]);
+  const [transformedDataTwo, setTransformedDataTwo] = useState([]);
+
   const [selectedSize, setSelectedSize] = useState('');
   const [addToCartSuccessfull, setAddToCartSuccessfull] = useState('');
   const [totalAmount, setTotalAmount] = useState(quantity * currentProduct.price);
   const [selectedColor , setSelectedColor] = useState('');
+  const [currentUniqueColors, setCurrentUniqueColors] = useState([]);
 
   const location = useLocation();
 
@@ -86,16 +89,9 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   
     fetchProducts();
   }, []);
-   /* bu yanlış bir method ama eğer çalışmaz ise tekrardan istek yapıp ürünleri detaylı ürün sayfasına da taşımamız gerekli */
-
-  
-  
-  
-
-  
-  
 
 
+  
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -103,14 +99,30 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
         if (response.ok) {
           const { transformedData} = await response.json();
           setTransformedData(transformedData);
+          setTransformedDataTwo(transformedData);
           
           console.log("deneme", transformedData);
           if (transformedData.length > 0) {
             const initialColor = transformedData[0].color;
+            console.log('suanki initial color' , initialColor);
             const sizesForInitialColor = transformedData.filter((product) => product.color === initialColor);
 
+            const uniqueColors = [];
+
+            transformedData.map((item) => {
+              if (!uniqueColors.includes(item.color)) {
+                uniqueColors.push(item.color);
+              }
+            });
+
+            console.log('suanki unique colors ' , uniqueColors);
+            setCurrentUniqueColors(uniqueColors);
+
             
-            setSelectedColor(initialColor);
+
+            
+            
+            handleColorClick(initialColor);
             setAvailableSizes(sizesForInitialColor);
             handleSizeButtonClick(sizesForInitialColor[0].size, sizesForInitialColor[0].feature_id);
           }
@@ -129,6 +141,19 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
 
     fetchProducts();
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() =>{
+    let colors = [];
+    console.log('transformed DATA 2222222222222222222222222222222222222222222' , transformedDataTwo);
+    transformedDataTwo.map((item) =>{
+      console.log('suanki itemmmmmmmmmmmmmmmmmmmmm' , item);
+      colors.push(item.color);
+
+    })
+
+    console.log('RENKLEERRRRRRRRRRRRRRRRRRRR' , colors);
+    handleColorClick(colors[0])
   }, []);
   
 
@@ -242,15 +267,42 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
       setCurrentFeatureId(feature_id)
     }
   };
+
+
   const handleColorClick = (color) => {
+    console.log('icine girdim mi?????????????????????????????????????');
     if (selectedColor === color) {
+      console.log('deneme 11111111111111111111111111111111111111111111111111111111');
       setSelectedColor('');
-      setAvailableSizes([]); 
+      setAvailableSizes([]);
+      setSlides([]); 
     } else {
+      setSlides([]); 
+      console.log('deneme 22222222222222222222222222222222222222222222');
       setSelectedColor(color);
-      
-      const sizesForSelectedColor = transformedData.filter((product) => product.color === color)
-      
+      const tempSlides = [];
+      const sizesForSelectedColor = transformedDataTwo.filter((product) => product.color === color)
+      console.log('bundan sonrakine giriyor musun');
+      if(sizesForSelectedColor.length > 0){
+        console.log('buraya?????????????????????');
+        const selectedPhotoUrls = sizesForSelectedColor[0].photoUrls;
+        console.log('suanki secilen photoUrlleri');
+        selectedPhotoUrls.map((photoUrl) =>{
+          tempSlides.push(photoUrl.url);
+        })
+
+        if(tempSlides.length > 0) {
+          console.log('suanki tempSlides' , tempSlides);
+          setSelectedImage(tempSlides[0]);
+          setSlides(tempSlides);
+          console.log('suanki temp slides' , tempSlides);
+        }
+        else{console.log('tempSlides da length yok');}
+
+        
+
+
+      }
       setAvailableSizes(sizesForSelectedColor);
       
     }
@@ -269,6 +321,15 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           variant="outlined"
           startIcon={<ArrowBack />}
           onClick={() => navigate('/')}
+          style={{
+            marginLeft:'30px',
+            background: 'linear-gradient(45deg, #AB6B8B 30%, #FF8E53 90%)',
+            borderRadius: '10px',
+            boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+            color: 'white',
+            transition: 'background 0.3s ease-in-out, transform 0.2s ease',
+            border: 'none',
+          }}
         >
           Anasayfa
         </Button>
@@ -279,15 +340,17 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
             {slides.map((slide, index) => (
               <img
                 key={index}
-                src={slide.url}
+                src={slide}
                 alt={slide.title}
                 className={`thumbnail-image ${
-                  slide.url === selectedImage ? 'active' : ''
+                  slide === selectedImage ? 'active' : ''
                 }`}
-                onClick={() => handleThumbnailClick(slide.url)}
+                onClick={() => handleThumbnailClick(slide)}
+                style={{width:'200px' , height:'300px' , objectFit:'contain'}}
               />
             ))}
           </div>
+          {slides.length === 0 && <p>uzunluk yok amun oğly</p>}
         </Grid>
         <Grid item xs={12} md={8}>
           <div className="image-slider-container">
@@ -306,20 +369,20 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                 <Typography variant="body1" gutterBottom>
                   Renk Seçenekleri:
                 </Typography> 
-                {transformedData.map((product) =>(
+                {currentUniqueColors.map((color) =>(
                     <Button
                     className={`color-button ${
-                      selectedColor === product.color ? 'active' : ''
+                      selectedColor === color ? 'active' : ''
                     }`}
                     style={{
-                      backgroundColor: colors[product.color],
+                      backgroundColor: colors[color],
                       width: '30px',
                       height: '30px',
                       borderRadius: '20%',
                       marginLeft: '4px',
-                      boxShadow: selectedColor === product.color ? '2px 2px black' : 'none', 
+                      boxShadow: selectedColor === color ? '2px 2px black' : 'none', 
                     }}
-                    onClick={() => handleColorClick(product.color)}
+                    onClick={() => handleColorClick(color)}
                   >
                   
                   </Button>
@@ -371,6 +434,15 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                   color="primary"
                   onClick={addToCart}
                   disabled={addToCartSuccessfull}
+                  style={{
+                    marginTop:'30px',
+                    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                    borderRadius: '10px',
+                    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                    color: 'white',
+                    transition: 'background 0.3s ease-in-out, transform 0.2s ease',
+                    border: 'none',
+                  }}
                 >
                   Sepete Ekle
                 </Button>

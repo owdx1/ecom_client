@@ -137,12 +137,8 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
         </div>
       ) : (
         <>
-          <div className="empty-cart-button">
-            <Button onClick={handleEmptyCart} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
-              Sepeti Boşalt 
-            </Button>
-          </div>
-          <div className="cart-container">
+          
+          <div className="cart-container" style={{margin:'30px auto'}}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TableContainer component={Paper}>
@@ -157,43 +153,89 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {dataDisplay.map((product) => (
+                      {dataDisplay.map((product) =>{
+                        const photoUrls =  product.photoUrls;
+                        const url = photoUrls[0].url;
+                        
+                        if(url === undefined){
+                          url = 'https://i.ibb.co/tbRJ8N9/id-15.jpg'
+                        }
+                        
+                      return (
                         <TableRow key={product.product_id}>
                           <Link to={`/shop/products/${product.product_id}`} state={{ product }}>
                             <TableCell>
                               <Grid container alignItems="center" spacing={2}>
                               <Grid item>
-                                <img src={dummyImage} alt="Product" className="product-image" />
+                                <img src={url} alt="Product" className="product-image"/>
                               </Grid>
                               <Grid item>
-                                <Typography variant="body1">{product.product_name}</Typography>
+                                <Typography variant="h5" style={{fontWeight:'100'}}>{product.product_name}</Typography>
                               </Grid>
                               </Grid>
                             </TableCell>
                           </Link>
                           <TableCell>{product.color}</TableCell>
                           <TableCell>{product.orderquantity}</TableCell>
-                          {product.size && <TableCell>{product.size}</TableCell>}
-                          {product.size_i !== 0 && <TableCell>{product.size_i}</TableCell>}
-                          <TableCell>TL {product.price}</TableCell>
+                          <TableCell>{product.size}</TableCell>
+                          
+                          <TableCell>{product.price} TL</TableCell>
                           
                           <TableCell>
-                            <Button onClick={() => handleDeleteProduct(product.product_id, product.feature_id)} variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+                            <Button onClick={() => handleDeleteProduct(product.product_id, product.feature_id)} variant="contained" color="secondary" startIcon={<DeleteIcon />}
+                              style={{
+                                marginLeft: '35px',
+                                background: 'linear-gradient(45deg, #FE6B00 30%, #FF8ECC 90%)',
+                                borderRadius: '10px',
+                                boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                                color: 'white',
+                                transition: 'background 0.3s ease-in-out, transform 0.2s ease',
+                                border: 'none',
+                              }}
+                            >
                               Sepetten çıkar
                             </Button>
                           </TableCell>
                         </TableRow>
-                      ))}
+                      )})}
                     </TableBody>
                   </Table>
                 </TableContainer>
+                <div className="empty-cart-button">
+                  <Button onClick={handleEmptyCart} variant="contained" color="secondary" startIcon={<DeleteIcon />}
+                  style={{
+                    marginLeft: '35px',
+                    background: 'linear-gradient(45deg, #CF6AAB 60%, #FC8E00 90%)',
+                    borderRadius: '10px',
+                    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                    color: 'white',
+                    transition: 'background 0.3s ease-in-out, transform 0.2s ease',
+                    border: 'none',
+                    
+                  }}
+                  >
+                    Sepeti Boşalt 
+                  </Button>
+                </div>
               </Grid>
               <Grid item xs={12} md={6}>
                 <div className="total-price">
-                  <Typography variant="body1" >Toplam Fiyat: {totalPrice} TL</Typography>
+                  <Typography variant="h4">Toplam Fiyat: {totalPrice} TL</Typography>
                 </div>
                 <NavLink to='/profile/address-form' state={{ customer, dataDisplay, totalPrice }}>
-                  <Button variant="contained" color="primary">
+                <Button
+                  style={{
+                    marginLeft: '35px',
+                    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                    borderRadius: '10px',
+                    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                    color: 'white',
+                    transition: 'background 0.3s ease-in-out, transform 0.2s ease',
+                    border: 'none',
+                    width:'200px'
+                  }}
+                  
+                >
                     Ödemeye geç
                   </Button>
                 </NavLink>

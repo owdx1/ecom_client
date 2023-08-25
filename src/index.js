@@ -18,7 +18,7 @@ const rootElement = document.getElementById('root');
 const root = createRoot(rootElement); 
 root.render(
   <BrowserRouter>
-    <div style={{ userSelect: 'none' }}>
+    <div>
       <App />
     </div>
   </BrowserRouter>

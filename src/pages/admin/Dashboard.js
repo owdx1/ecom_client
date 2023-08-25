@@ -21,7 +21,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person'; 
 import { Link as RouterLink,Route } from 'react-router-dom';
 import { Switch } from '@mui/material';
-
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
@@ -38,8 +39,8 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="/">
+        Aydın Forma Medikal
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -49,23 +50,6 @@ function Copyright(props) {
 
 const drawerWidth = 240;
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -98,49 +82,29 @@ const defaultTheme = createTheme();
 
 
 export default function Dashboard() {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken || adminToken === 'undefined') {
+      navigate('/admin/login');
+    } 
+  }, []);
+
+
+
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={defaultTheme} >
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
-          <Toolbar
-            sx={{
-              pr: '24px', 
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              Dashboard
-            </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+        
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
@@ -153,6 +117,7 @@ export default function Dashboard() {
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>
+            
           </Toolbar>
           <Divider />
 
@@ -203,12 +168,7 @@ export default function Dashboard() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Switch>
-              <Route exact path="/admin/products">
-                {/* Your "Products" page content */} 
-              </Route>
-              
-            </Switch>
+            
             
             <Grid container spacing={3}>
               
@@ -239,7 +199,7 @@ export default function Dashboard() {
               </Grid>
               
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', width:'780px'}}>
                   <Orders />
                 </Paper>
               </Grid>

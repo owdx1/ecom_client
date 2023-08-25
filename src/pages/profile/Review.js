@@ -80,33 +80,47 @@ export default function Review({ getNumberOfProductsInCart }) {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', border: '1px solid #ccc', borderRadius: '5px', marginTop: '30px' }}>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h4" gutterBottom style={{color:'gray'}}>
         Sipariş Özeti
       </Typography>
       <List disablePadding>
-        {dataDisplay.map((product) => (
-          <ListItem key={product.product_id} style={{ marginBottom: '20px', display: 'flex', alignItems: 'center' }}>
-            <img src={dummyImage} alt="Dummy Product" style={{ width: '100px', height: '100px', marginRight: '20px' }} />
+        {dataDisplay.map((product) => {
+
+          let url = '';
+          const photoUrls = product.photoUrls;
+          const singleArray = photoUrls[0];
+          console.log('single array' , singleArray);
+          if(singleArray === undefined){
+            url = 'https://i.ibb.co/tbRJ8N9/id-15.jpg'
+          } else{
+            url = singleArray.url;
+          }
+
+
+
+        return (
+          <ListItem key={product.product_id} style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap:'20px'}}>
+            <img src={url} alt="Dummy Product" style={{ width: '140px',  marginRight: '20px', borderRadius:'10px' }} />
             <div>
-              <ListItemText primary={product.product_name} secondary={product.description} />
+              <ListItemText primary={product.product_name} secondary={product.description}/>
+              <Typography>{product.color}</Typography>
               <ListItemText primary={`Miktar: ${product.orderquantity}`} />
-              {product.size && <Typography variant="body2" style={{ backgroundColor: '#f0f0f0', padding: '4px 8px', borderRadius: '4px', margin: '0.5rem 0.2rem' }}>Beden: {product.size}</Typography>}
-              {product.size_i !== 0 && <Typography variant="body2" style={{ backgroundColor: '#f0f0f0', padding: '4px 8px', borderRadius: '4px', margin: '0.5rem 0.2rem' }}>Beden: {product.size_i}</Typography>}
-              <Typography variant="body2">{`Fiyat: ${product.price} TL`}</Typography>
+              <ListItemText variant="body2" style={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', padding: '4px 8px', borderRadius: '4px' , color:'white'}}>Beden: {product.size}</ListItemText>
+              
             </div>
           </ListItem>
-        ))}
+        )})}
       </List>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom>
+        <Grid item xs={12} sm={6} style={{marginTop:'20px'}}>
+          <Typography variant="h4" gutterBottom>
             Teslimat
           </Typography>
           <Typography gutterBottom>{formData.name}</Typography>
           <Typography gutterBottom>{addresses.join(', ')}</Typography>
         </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom>
+        <Grid item container direction="column" xs={12} sm={6} style={{marginTop:'20px'}}>
+          <Typography variant="h4" gutterBottom>
             Alıcı Bilgileri
           </Typography>
           <Grid container>
@@ -120,18 +134,26 @@ export default function Review({ getNumberOfProductsInCart }) {
               <Grid item xs={6}>
                 <Typography gutterBottom>{formData.phone}</Typography>
               </Grid>
-              <Typography variant="subtitle1" style={{ fontWeight: 1000, fontSize: '18px', marginTop: '10px' }}>
+              <Typography variant="subtitle1" style={{ fontWeight: 100, fontSize: '24px', marginTop: '10px' }}>
                 {`Toplam Fiyat: ${totalPrice} TL`}
               </Typography>
             </React.Fragment>
           </Grid>
         </Grid>
         <Button
-          variant="contained"
+          
           color="primary"
           onClick={handleBuy}
           disabled={buttonClicked}
-          style={{ margin: '20px 0', alignSelf: 'flex-start' }}
+          style={{
+            marginLeft:'30px',
+            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+            borderRadius: '10px',
+            boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+            color: 'white',
+            transition: 'background 0.3s ease-in-out, transform 0.2s ease',
+            border: 'none',
+          }}
         >
           Siparişi Tamamla
         </Button>
