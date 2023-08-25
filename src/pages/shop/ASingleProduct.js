@@ -45,6 +45,8 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const [selectedImage, setSelectedImage] = useState('');
   const { product_id } = useParams();
   const [transformedData, setTransformedData] = useState([]);
+  const [transformedDataTwo, setTransformedDataTwo] = useState([]);
+
   const [selectedSize, setSelectedSize] = useState('');
   const [addToCartSuccessfull, setAddToCartSuccessfull] = useState('');
   const [totalAmount, setTotalAmount] = useState(quantity * currentProduct.price);
@@ -87,16 +89,9 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   
     fetchProducts();
   }, []);
-   /* bu yanlış bir method ama eğer çalışmaz ise tekrardan istek yapıp ürünleri detaylı ürün sayfasına da taşımamız gerekli */
-
-  
-  
-  
-
-  
-  
 
 
+  
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -104,10 +99,12 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
         if (response.ok) {
           const { transformedData} = await response.json();
           setTransformedData(transformedData);
+          setTransformedDataTwo(transformedData);
           
           console.log("deneme", transformedData);
           if (transformedData.length > 0) {
             const initialColor = transformedData[0].color;
+            console.log('suanki initial color' , initialColor);
             const sizesForInitialColor = transformedData.filter((product) => product.color === initialColor);
 
             const uniqueColors = [];
@@ -144,6 +141,19 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
 
     fetchProducts();
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() =>{
+    let colors = [];
+    console.log('transformed DATA 2222222222222222222222222222222222222222222' , transformedDataTwo);
+    transformedDataTwo.map((item) =>{
+      console.log('suanki itemmmmmmmmmmmmmmmmmmmmm' , item);
+      colors.push(item.color);
+
+    })
+
+    console.log('RENKLEERRRRRRRRRRRRRRRRRRRR' , colors);
+    handleColorClick(colors[0])
   }, []);
   
 
@@ -260,16 +270,20 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
 
 
   const handleColorClick = (color) => {
+    console.log('icine girdim mi?????????????????????????????????????');
     if (selectedColor === color) {
+      console.log('deneme 11111111111111111111111111111111111111111111111111111111');
       setSelectedColor('');
       setAvailableSizes([]);
       setSlides([]); 
     } else {
-      setSlides([]);
+      console.log('deneme 22222222222222222222222222222222222222222222');
       setSelectedColor(color);
       const tempSlides = [];
-      const sizesForSelectedColor = transformedData.filter((product) => product.color === color)
+      const sizesForSelectedColor = transformedDataTwo.filter((product) => product.color === color)
+      console.log('bundan sonrakine giriyor musun');
       if(sizesForSelectedColor.length > 0){
+        console.log('buraya?????????????????????');
         const selectedPhotoUrls = sizesForSelectedColor[0].photoUrls;
         console.log('suanki secilen photoUrlleri');
         selectedPhotoUrls.map((photoUrl) =>{
@@ -279,8 +293,10 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
         if(tempSlides.length > 0) {
           console.log('suanki tempSlides' , tempSlides);
           setSelectedImage(tempSlides[0]);
-          setSlides(tempSlides)
+          setSlides(tempSlides);
+          console.log('suanki temp slides' , tempSlides);
         }
+        else{console.log('tempSlides da length yok');}
 
         
 
@@ -332,20 +348,8 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                 style={{width:'200px' , height:'300px' , objectFit:'contain'}}
               />
             ))}
-
-            {slides.length === 0 && fakeSlides.map ((slide , index) => (
-              <img
-              key={index}
-              src={slide}
-              alt={slide.title}
-              className={`thumbnail-image ${
-                slide === selectedImage ? 'active' : ''
-              }`}
-              onClick={() => handleThumbnailClick(slide)}
-              style={{width:'200px' , height:'300px' , objectFit:'contain'}}
-            />
-            ))}
           </div>
+          {slides.length === 0 && <p>uzunluk yok amun oğly</p>}
         </Grid>
         <Grid item xs={12} md={8}>
           <div className="image-slider-container">
