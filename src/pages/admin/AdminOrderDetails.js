@@ -9,7 +9,7 @@ const AdminOrderDetails = () => {
     const { order_id } = useParams();
     const [details, setDetails] = useState([]);
     console.log('suanki order id' , order_id);
-  
+    
   
   const fetchAdminOrderDetails = async () => {
     try {
