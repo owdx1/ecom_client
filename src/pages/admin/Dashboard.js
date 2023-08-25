@@ -21,7 +21,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person'; 
 import { Link as RouterLink,Route } from 'react-router-dom';
 import { Switch } from '@mui/material';
-
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
@@ -81,6 +82,19 @@ const defaultTheme = createTheme();
 
 
 export default function Dashboard() {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken || adminToken === 'undefined') {
+      navigate('/admin/login');
+    } 
+  }, []);
+
+
+
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);

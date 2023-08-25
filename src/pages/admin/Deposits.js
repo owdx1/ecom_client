@@ -48,6 +48,8 @@ export default function Deposits() {
         }
       } catch (error) {
         console.error(error);
+        localStorage.removeItem('adminToken');
+        navigate('/admin/login');
       }
     };
 
