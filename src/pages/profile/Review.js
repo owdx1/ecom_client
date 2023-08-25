@@ -84,17 +84,32 @@ export default function Review({ getNumberOfProductsInCart }) {
         Sipariş Özeti
       </Typography>
       <List disablePadding>
-        {dataDisplay.map((product) => (
+        {dataDisplay.map((product) => {
+
+          let url = '';
+          const photoUrls = product.photoUrls;
+          const singleArray = photoUrls[0];
+          console.log('single array' , singleArray);
+          if(singleArray === undefined){
+            url = 'https://i.ibb.co/tbRJ8N9/id-15.jpg'
+          } else{
+            url = singleArray.url;
+          }
+
+
+
+        return (
           <ListItem key={product.product_id} style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap:'20px'}}>
-            <img src='https://i.ibb.co/tbRJ8N9/id-15.jpg' alt="Dummy Product" style={{ width: '140px',  marginRight: '20px', borderRadius:'10px' }} />
+            <img src={url} alt="Dummy Product" style={{ width: '140px',  marginRight: '20px', borderRadius:'10px' }} />
             <div>
               <ListItemText primary={product.product_name} secondary={product.description}/>
+              <Typography>{product.color}</Typography>
               <ListItemText primary={`Miktar: ${product.orderquantity}`} />
               <ListItemText variant="body2" style={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', padding: '4px 8px', borderRadius: '4px' , color:'white'}}>Beden: {product.size}</ListItemText>
               
             </div>
           </ListItem>
-        ))}
+        )})}
       </List>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} style={{marginTop:'20px'}}>

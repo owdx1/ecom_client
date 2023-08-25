@@ -61,10 +61,25 @@ const ASingleOrder = () => {
         </Typography>
       </div>
       <Grid container spacing={2} direction="column">
-        {singleOrderDisplay.map((orderItem) => (
+        {singleOrderDisplay.map((orderItem) => {
+          let url = '';
+          const photoUrls = orderItem.photoUrls;
+          const singleArray = photoUrls[0];
+          console.log('single array' , singleArray);
+          if(singleArray === undefined){
+            url = 'https://i.ibb.co/tbRJ8N9/id-15.jpg'
+          } else{
+            url = singleArray.url;
+          }
+
+
+
+        
+        return (
           <Grid item key={orderItem.order_item_id}>
             <Card style={{ display: 'flex' }}>
-              <CardMedia component="img" image='https://i.ibb.co/tbRJ8N9/id-15.jpg' alt="Dummy" style={{ width: '150px', borderRadius:'10px' , margin:'20px'}} />
+              <img src={url} alt='img' style={{ width: '150px', borderRadius:'10px' , margin:'20px'}}></img>
+              
               <CardContent>
 
                 <Typography variant="h4" color="text.secondary" style={{marginBottom:'20px'}}>
@@ -90,7 +105,7 @@ const ASingleOrder = () => {
               </CardContent>
             </Card>
           </Grid>
-        ))}
+        )})}
       </Grid>
       <Typography variant="body1" color="text.primary" style={{marginTop:'20px'}}>
                   Toplam Fiyat: {order.total_amount} TL

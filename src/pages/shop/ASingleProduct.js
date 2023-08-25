@@ -19,18 +19,18 @@ const colors = {
   'mint_yesili':'#cfffe5', 'mavi':'#00133d','krem':'#fffdd0','antep_fistigi':'#dfff00'
 }
 
-const slides = [
-  { url: 'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg', title: 'lion' },
-  { url: 'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg', title: 'boats' },
-  { url: 'https://images.wallpaperscraft.com/image/single/laptop_keyboard_glow_170138_1600x900.jpg', title: 'laptop' },
-  { url: 'https://images.wallpaperscraft.com/image/single/drone_camera_technology_171576_1600x900.jpg', title: 'drone' },
-  { url: 'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg', title: 'coding' },
+const fakeSlides = [
+  'https://images.wallpaperscraft.com/image/single/lion_art_colorful_122044_1600x900.jpg',
+  'https://images.wallpaperscraft.com/image/single/boat_mountains_lake_135258_1920x1080.jpg',
+  'https://images.wallpaperscraft.com/image/single/laptop_keyboard_glow_170138_1600x900.jpg',
+  'https://images.wallpaperscraft.com/image/single/drone_camera_technology_171576_1600x900.jpg',
+  'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg',
 ];
 
 const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
 
   
-
+  const [slides , setSlides] = useState([]);
   const navigate = useNavigate();
   const [errorM, setErrorM] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -42,13 +42,14 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const [availableSizes, setAvailableSizes] = useState([]);
   const accessToken = localStorage.getItem('accessToken');
   const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(slides[0].url);
+  const [selectedImage, setSelectedImage] = useState('');
   const { product_id } = useParams();
   const [transformedData, setTransformedData] = useState([]);
   const [selectedSize, setSelectedSize] = useState('');
   const [addToCartSuccessfull, setAddToCartSuccessfull] = useState('');
   const [totalAmount, setTotalAmount] = useState(quantity * currentProduct.price);
   const [selectedColor , setSelectedColor] = useState('');
+  const [currentUniqueColors, setCurrentUniqueColors] = useState([]);
 
   const location = useLocation();
 
@@ -109,8 +110,22 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
             const initialColor = transformedData[0].color;
             const sizesForInitialColor = transformedData.filter((product) => product.color === initialColor);
 
+            const uniqueColors = [];
+
+            transformedData.map((item) => {
+              if (!uniqueColors.includes(item.color)) {
+                uniqueColors.push(item.color);
+              }
+            });
+
+            console.log('suanki unique colors ' , uniqueColors);
+            setCurrentUniqueColors(uniqueColors);
+
             
-            setSelectedColor(initialColor);
+
+            
+            
+            handleColorClick(initialColor);
             setAvailableSizes(sizesForInitialColor);
             handleSizeButtonClick(sizesForInitialColor[0].size, sizesForInitialColor[0].feature_id);
           }
@@ -242,15 +257,35 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
       setCurrentFeatureId(feature_id)
     }
   };
+
+
   const handleColorClick = (color) => {
     if (selectedColor === color) {
       setSelectedColor('');
-      setAvailableSizes([]); 
+      setAvailableSizes([]);
+      setSlides([]); 
     } else {
+      setSlides([]);
       setSelectedColor(color);
-      
+      const tempSlides = [];
       const sizesForSelectedColor = transformedData.filter((product) => product.color === color)
-      
+      if(sizesForSelectedColor.length > 0){
+        const selectedPhotoUrls = sizesForSelectedColor[0].photoUrls;
+        console.log('suanki secilen photoUrlleri');
+        selectedPhotoUrls.map((photoUrl) =>{
+          tempSlides.push(photoUrl.url);
+        })
+
+        if(tempSlides.length > 0) {
+          console.log('suanki tempSlides' , tempSlides);
+          setSelectedImage(tempSlides[0]);
+          setSlides(tempSlides)
+        }
+
+        
+
+
+      }
       setAvailableSizes(sizesForSelectedColor);
       
     }
@@ -288,13 +323,27 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
             {slides.map((slide, index) => (
               <img
                 key={index}
-                src={slide.url}
+                src={slide}
                 alt={slide.title}
                 className={`thumbnail-image ${
-                  slide.url === selectedImage ? 'active' : ''
+                  slide === selectedImage ? 'active' : ''
                 }`}
-                onClick={() => handleThumbnailClick(slide.url)}
+                onClick={() => handleThumbnailClick(slide)}
+                style={{width:'200px' , height:'300px' , objectFit:'contain'}}
               />
+            ))}
+
+            {slides.length === 0 && fakeSlides.map ((slide , index) => (
+              <img
+              key={index}
+              src={slide}
+              alt={slide.title}
+              className={`thumbnail-image ${
+                slide === selectedImage ? 'active' : ''
+              }`}
+              onClick={() => handleThumbnailClick(slide)}
+              style={{width:'200px' , height:'300px' , objectFit:'contain'}}
+            />
             ))}
           </div>
         </Grid>
@@ -315,20 +364,20 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                 <Typography variant="body1" gutterBottom>
                   Renk Seçenekleri:
                 </Typography> 
-                {transformedData.map((product) =>(
+                {currentUniqueColors.map((color) =>(
                     <Button
                     className={`color-button ${
-                      selectedColor === product.color ? 'active' : ''
+                      selectedColor === color ? 'active' : ''
                     }`}
                     style={{
-                      backgroundColor: colors[product.color],
+                      backgroundColor: colors[color],
                       width: '30px',
                       height: '30px',
                       borderRadius: '20%',
                       marginLeft: '4px',
-                      boxShadow: selectedColor === product.color ? '2px 2px black' : 'none', 
+                      boxShadow: selectedColor === color ? '2px 2px black' : 'none', 
                     }}
-                    onClick={() => handleColorClick(product.color)}
+                    onClick={() => handleColorClick(color)}
                   >
                   
                   </Button>

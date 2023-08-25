@@ -153,13 +153,21 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {dataDisplay.map((product) => (
+                      {dataDisplay.map((product) =>{
+                        const photoUrls =  product.photoUrls;
+                        const url = photoUrls[0].url;
+                        
+                        if(url === undefined){
+                          url = 'https://i.ibb.co/tbRJ8N9/id-15.jpg'
+                        }
+                        
+                      return (
                         <TableRow key={product.product_id}>
                           <Link to={`/shop/products/${product.product_id}`} state={{ product }}>
                             <TableCell>
                               <Grid container alignItems="center" spacing={2}>
                               <Grid item>
-                                <img src='https://i.ibb.co/tbRJ8N9/id-15.jpg' alt="Product" className="product-image"/>
+                                <img src={url} alt="Product" className="product-image"/>
                               </Grid>
                               <Grid item>
                                 <Typography variant="h5" style={{fontWeight:'100'}}>{product.product_name}</Typography>
@@ -189,7 +197,7 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
                             </Button>
                           </TableCell>
                         </TableRow>
-                      ))}
+                      )})}
                     </TableBody>
                   </Table>
                 </TableContainer>

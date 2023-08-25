@@ -138,23 +138,47 @@ const AdminOrderDetails = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {details.map((detail, index) => (
+            {details.map((detail, index) => {
+              const currentColor = detail.color;
+              const allUrls = []; 
+              const matchingUrls = [];
+
+              {detail.photoUrls.map((item) =>{
+                allUrls.push(item.url);
+              })}
+
+              allUrls.map((url) =>{
+                const parts = url.split('-');
+                const urlColor = parts[2];
+                
+                if(urlColor === currentColor){
+                  matchingUrls.push(url);
+                }
+
+              })
+
+              console.log('gecerli urller' , matchingUrls);
+              if(matchingUrls.length === 0){
+                matchingUrls.push('https://i.ibb.co/tbRJ8N9/id-15.jpg')
+              }
+
               
-              <TableRow key={index}>
-                <TableCell><img src='https://i.ibb.co/tbRJ8N9/id-15.jpg' style={{width:'120px' , borderRadius:'10px'}}></img></TableCell>
-                <TableCell>{detail.product_name}</TableCell>
-                <TableCell>{detail.product_id}</TableCell>
-                <TableCell>{detail.color}</TableCell>
-                <TableCell>{detail.size}</TableCell>
-                <TableCell>{detail.quantity}</TableCell>
-                <TableCell>{detail.price}</TableCell>
-                
-                
-                <TableCell>{detail.order_item_id}</TableCell>
-                
-                
-              </TableRow>
-            ))}
+
+              
+
+              return (
+                <TableRow key={index}>
+                  <TableCell><img src={`${matchingUrls[0]}`} style={{width:'120px' , borderRadius:'10px'}}></img></TableCell>
+                  <TableCell>{detail.product_name}</TableCell>
+                  <TableCell>{detail.product_id}</TableCell>
+                  <TableCell>{detail.color}</TableCell> 
+                  <TableCell>{detail.size}</TableCell>
+                  <TableCell>{detail.quantity}</TableCell>
+                  <TableCell>{detail.price}</TableCell>
+                  <TableCell>{detail.order_item_id}</TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>

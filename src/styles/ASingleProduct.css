@@ -27,8 +27,8 @@
 }
 
 .image-slider-container {
-  width: 900px;
-  height: 500px;
+  width: 630px;
+  height: 940px;
 }
 
 .product-details {
@@ -146,17 +146,17 @@
   }
 
   .thumbnail-gallery {
-    justify-content: flex-start;
+    
   }
 
   .thumbnail-image {
-    width: 90px;
-    height: 70px;
+    width: 160px;
+    
   }
 
   .image-slider-container {
     width: 100%;
-    height: 400px;
+    height: 700px;
   }
 
   .quantity-container {

@@ -20,6 +20,7 @@ import dummyImage from '../../images/tomy1.jpg';
 import dummyImage2 from '../../images/tek-alt_1.jpg';
 import dummyImage3 from '../../images/tesettur_1.jpg';
 import { NavLink } from 'react-router-dom';
+import '../../styles/AdminProductDetails.css';
 
 const AdminProductDetails = () => {
   const location = useLocation();
@@ -31,7 +32,7 @@ const AdminProductDetails = () => {
     dummyImage3,
   ]);
   
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const categories = {
     1: 'takim',
@@ -164,12 +165,49 @@ const AdminProductDetails = () => {
 
 /******file upload */
 
-  function handleFileUpload(event) {
-    const file = event.target.files[0];
-    setSelectedImage(file);
-    console.log('suanki selected image', selectedImage);
-    console.log('secildiği beden' , selectedColorForSizes);
-  } 
+  const handleFileChange = (event) => {
+    const imageFile = event.target.files[0];
+
+    if(imageFile){
+      setSelectedFile(imageFile);
+    }
+    
+  };
+  useEffect(()=>{
+    console.log(selectedFile);
+  } , [selectedFile])
+
+
+  const handleAddImage = async () =>{
+    const formData = new FormData();
+
+    if (selectedFile) {
+      const modifiedFileName = `${currentProduct.category_id}-${currentProduct.product_name}-${selectedColorForSizes}-${Date.now()}.${selectedFile.type.split('/')[1]}`;
+      console.log('suanki modified file name:' , modifiedFileName);
+      const modifiedFile = new File([selectedFile], modifiedFileName, { type: selectedFile.type });
+      
+    
+      formData.append('file', modifiedFile);
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/foto/file', {
+      method: 'POST',
+      body: formData,
+      });
+
+      if (response.ok) {
+        console.log('File uploaded successfully');
+      } else {
+        console.error('Failed to upload file');
+      }
+    } 
+    catch (error) {
+      console.error('Error uploading file:', error);
+    }
+
+
+  }
 
 
 
@@ -187,23 +225,55 @@ const AdminProductDetails = () => {
   const [selectedColorForSizes, setSelectedColorForSizes] = useState('');
   const [currentDetails, setCurrentDetails] = useState([]);
   const [currentPhotos, setCurrentPhotos] = useState([]);
+  const [photoToDelete, setPhotoToDelete] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
  
   
 
 
-  useEffect(() =>{
+  useEffect(() => {
     const filteredSizes = productDetails.filter(
       (product) => product.color === selectedColorForSizes
     );
-    console.log('suanki filteredsize' , filteredSizes);
+  
+    
+    if (filteredSizes.length > 0) {
+      const selectedPhotoUrls = filteredSizes[0].photoUrls;
+  
+      console.log('suanki filteredsize', filteredSizes);
+      setCurrentDetails(filteredSizes);
+  
+      setCurrentPhotos(selectedPhotoUrls);
+  
+      console.log('suanki current photos', currentPhotos);
+    }
+    else if (filteredSizes.length === 0){
+      setUpdateFeature({
+        size36:0,
+        size37:0,
+        size38:0,
+        size39:0,
+        size40:0,
+        size41:0,
+        size42:0,
+        size43:0,
+        size44:0,
+        size45:0,
+        XXS:0,
+        XS:0,
+        S:0,
+        M:0,
+        L:0,
+        XL:0,
+        XXL:0,
+      })
 
-    setCurrentDetails(filteredSizes);
-    setCurrentPhotos(filteredSizes.photoUrls);
+      setCurrentDetails(filteredSizes);
+      setCurrentPhotos([]);
 
-    console.log('suanki current photos' , currentPhotos);
-
-  },[selectedColorForSizes])
+    }
+  }, [selectedColorForSizes]);
 
   
 
@@ -219,6 +289,20 @@ const AdminProductDetails = () => {
     console.log(updatedProduct);
   };
 
+  const handleDeleteClick = (photoIndex) => {
+    setPhotoToDelete(photoIndex);
+    setShowModal(true);
+  };
+
+  const handleConfirmation = (confirmed) => {
+    if (confirmed) {
+      
+      const updatedPhotos = currentPhotos.filter((_, index) => index !== photoToDelete);
+      setCurrentPhotos(updatedPhotos);
+    }
+    setShowModal(false);
+    setPhotoToDelete(null);
+  };
   
 
 
@@ -259,20 +343,6 @@ const AdminProductDetails = () => {
     fetchAdminDetailedProduct();
   }, [location.state]);
 
-  const handleImageSelect = (event) => {
-    const imageFile = event.target.files[0];
-    if (imageFile) {
-      setSelectedImage(imageFile);
-    }
-  };
-
-  const handleAddImage = () => {
-    if (selectedImage) {
-      const imageUrl = URL.createObjectURL(selectedImage);
-      setCurrentProductImages([...currentProductImages, imageUrl]);
-      setSelectedImage(null);
-    }
-  };
 
   return (
     <Container>
@@ -351,6 +421,7 @@ const AdminProductDetails = () => {
         </form>
 
         <div className='color-container'>
+          
         
         {Object.keys(colors).map((color) => (
           <Button
@@ -374,25 +445,63 @@ const AdminProductDetails = () => {
             onClick={() => handleColorClick(color)}
           ></Button>
         ))}
-        
-        <div>
+
+        <div style={{margin:'30px'}}>
           <Typography variant="h4" gutterBottom>
             Şuanki renk: {selectedColorForSizes}
           </Typography>
-          
-          {selectedColorForSizes && (<div>
-            <Typography>
-              Bu renk için fotoğraf yükleyiniz
-            </Typography>
-
-            <input
-                type="file"
-                name={`photo1`}
-                style={{marginLeft:'40px' , marginTop:'25px'}}
-                onChange={handleFileUpload}
+          <Typography variant='h3'> Bu renge ait fotoğraflar</Typography>
+          {currentPhotos.map((photoUrl, index) => (
+            <div>
+              <img
+                key={index} 
+                src={`${photoUrl.url}`}
                 
+                alt={`Product ${index + 1}`}
+                style={{width:'350px' , borderRadius:'20px', margin:'10px'}}
               />
-          </div>)}
+              <DeleteIcon
+              style={{cursor:'pointer'}}
+              onClick={() => handleDeleteClick(index)}
+              >
+              </DeleteIcon>
+
+              {showModal && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <Typography variant='h4'>Fotoğrafı silmek istediğinizden emin misiniz?</Typography>
+                    <div className="modal-button-container">
+                      <Button  onClick={() => handleConfirmation(true)}>EVET</Button>
+                      <Button  onClick={() => handleConfirmation(false)}>HAYIR</Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          ))}
+        </div>
+
+
+        <div>
+          
+          
+          {selectedColorForSizes && (
+            <div>
+              <Typography>
+                Bu renk için fotoğraf yükleyiniz
+              </Typography>
+
+              <input
+                  type="file"
+                  name={`photo1`}
+                  style={{marginLeft:'40px' , marginTop:'25px'}}
+                  onChange={handleFileChange}
+                  
+                />
+                <Button onClick={handleAddImage}>Bu resimi yükle</Button>
+            </div>
+          )}
 
 
           <div>
@@ -432,15 +541,13 @@ const AdminProductDetails = () => {
       </div>
       <div>
         
+        
         <Typography variant="h5" gutterBottom style={{marginTop:'40px'}}>
           Bedenler
         </Typography>
 
-        {/*currentPhotos.map((photo) => (
-          <img src={`${photo.url}`}></img>
-        ))*/}
         
-        {currentDetails.map((product) => (
+        {currentDetails.length > 0 && currentDetails.map((product) => (
         
           <div key={product.feature_id}> 
             <form key={product.feature_id} variant="outlined">
