@@ -277,6 +277,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
       setAvailableSizes([]);
       setSlides([]); 
     } else {
+      setSlides([]); 
       console.log('deneme 22222222222222222222222222222222222222222222');
       setSelectedColor(color);
       const tempSlides = [];
