@@ -89,7 +89,7 @@ const AdminProductDetails = () => {
 
   /**************************************************************  UPDATE FETURE BLOCK */
 
-  const handleUpdateFeatureChange = (event) => {
+  const handleUpdateFeatureChange =  (event) => {
     const {name , value} = event.target;
     setUpdateFeature({
       ...updateFeature,
@@ -97,9 +97,41 @@ const AdminProductDetails = () => {
     });
   };
 
-  const handleUpdateFeature = (color , size , quantity) => {
+  const handleUpdateFeature = async (color , size , quantity) => {
+    
     console.log('renk:' , color , 'size' , size , 'quantity' , quantity);
+    const product_id = currentProduct.product_id;
 
+    try {
+      const adminToken = localStorage.getItem('adminToken')
+      const response = await fetch(`http://localhost:5000/admin/update-feature` , {
+      method:'POST',
+      body: JSON.stringify({color , size , quantity , product_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${adminToken}`
+      }
+    })
+
+    const data = await response.json();
+
+    if (response.status === 200){
+      const {message} =  data;
+      console.log(message);
+      toast.success(message);
+
+    } else {
+      const {message} = data;
+      toast.error(message);
+      console.log(message);
+    }
+
+
+      
+    } catch (error) {
+      console.error(error)
+    }
+      
   }
 
 
@@ -153,12 +185,43 @@ const AdminProductDetails = () => {
     setQuantityForNewFeature(event.target.value);
   };
 
-  const handleAddFeature = () => {
+  const handleAddFeature = async () => {
     
     console.log("Selected Size:", selectedSizeForNewFeature);
     console.log("Quantity:", quantityForNewFeature);
-    console.log('Color:' , selectedColorForSizes);
+    console.log('Color:' , selectedColorForSizes );
 
+    const adminToken = localStorage.getItem('adminToken');
+
+    const product_id = updatedProduct.product_id;
+
+    try {
+      const response = await fetch(`http://localhost:5000/admin/add-feature/` , {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        body: JSON.stringify({product_id , quantity:quantityForNewFeature, color:selectedColorForSizes,  size:selectedSizeForNewFeature}),
+      })
+
+      const data = await response.json();
+      const {message} = data;
+
+      if(response.status === 200) {
+        toast.success(message);
+        console.log(message);
+      } else{
+        toast.warn(message);
+        console.log(message);
+      }
+
+
+    } 
+    
+    catch (error) {
+      console.error(error)
+    }
   };
 
 /******************************************************************************* */
@@ -209,8 +272,10 @@ const AdminProductDetails = () => {
 
       if (response.ok) {
         console.log('File uploaded successfully');
+        toast.success('File uploaded successfully')
       } else {
         console.error('Failed to upload file');
+        toast.error('Failed to upload file')
       }
     } 
     catch (error) {
@@ -247,6 +312,7 @@ const AdminProductDetails = () => {
     const filteredSizes = productDetails.filter(
       (product) => product.color === selectedColorForSizes
     );
+
   
     
     if (filteredSizes.length > 0) {
@@ -296,8 +362,47 @@ const AdminProductDetails = () => {
 
 
 
-  const updateProduct = () => {
+  const updateProduct = async () => {
+    const adminToken = localStorage.getItem('adminToken');
     console.log(updatedProduct);
+    const productId = updatedProduct.product_id;
+    const product_name = updatedProduct.product_name;
+    const isproductoftheweek = updatedProduct.isproductoftheweek;
+    const price = updatedProduct.price;
+    const description = updatedProduct.description;
+    const discount = updatedProduct.discount;
+
+    try {
+      const response = await fetch(`http://localhost:5000/admin/update-product/${productId}` , {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        body: JSON.stringify({ product_name, isproductoftheweek, price , description, discount }),
+      })
+
+      const data = await response.json();
+      const {message} = data;
+
+      if(response.status === 200) {
+        toast.success(message);
+        console.log(message);
+      } else{
+        toast.warn(message);
+        console.log(message);
+      }
+
+
+    } 
+
+
+    
+    
+    
+    catch (error) {
+      console.error(error)
+    }
   };
 
   const handleDeleteClick = (photoIndex) => {
@@ -501,7 +606,7 @@ const AdminProductDetails = () => {
           {currentPhotos.map((photoUrl, index) => {
 
             const name = photoUrl.name;
-            console.log('suanki name' , name);
+            
           
           
           return (
@@ -527,11 +632,11 @@ const AdminProductDetails = () => {
                     left: '0',
                     width: '100%',
                     height: '100%',
-                    background: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+                    background: 'rgba(0, 0, 0, 0.5)', 
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    zIndex: '999', // Ensure the modal is on top
+                    zIndex: '999', 
                   }}
                 >
                   <div
@@ -539,7 +644,7 @@ const AdminProductDetails = () => {
                       background: 'white',
                       padding: '20px',
                       borderRadius: '10px',
-                      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)', // Add a shadow
+                      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)', 
                     }}
                   >
                     <Typography variant='h4'>Fotoğrafı silmek istediğinizden emin misiniz?</Typography>
