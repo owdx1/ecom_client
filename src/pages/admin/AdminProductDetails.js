@@ -21,18 +21,29 @@ import dummyImage2 from '../../images/tek-alt_1.jpg';
 import dummyImage3 from '../../images/tesettur_1.jpg';
 import { NavLink } from 'react-router-dom';
 import '../../styles/AdminProductDetails.css';
+import { AttachEmail, DateRange } from '@mui/icons-material';
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const AdminProductDetails = () => {
+
   const location = useLocation();
   const [currentProduct, setCurrentProduct] = useState({});
   const [productDetails, setProductDetails] = useState([]);
-  const [currentProductImages, setCurrentProductImages] = useState([
-    dummyImage,
-    dummyImage2,
-    dummyImage3,
-  ]);
   
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken || adminToken === 'undefined') {
+      navigate('/admin/login');
+    } 
+  }, []);
+
+
+
 
   const categories = {
     1: 'takim',
@@ -294,11 +305,46 @@ const AdminProductDetails = () => {
     setShowModal(true);
   };
 
-  const handleConfirmation = (confirmed) => {
+  const handleConfirmation = async (confirmed , photoName , category_id) => {
     if (confirmed) {
       
       const updatedPhotos = currentPhotos.filter((_, index) => index !== photoToDelete);
       setCurrentPhotos(updatedPhotos);
+
+      try {
+        const adminToken = localStorage.getItem('adminToken')
+        const response = await fetch(`http://localhost:5000/admin/delete-photo` , {
+        method:'DELETE',
+        body: JSON.stringify({photoName , category_id}),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        }
+      })
+
+      const data = await response.json();
+
+      if (response.status === 200){
+        const {message} =  data;
+        console.log(message);
+        toast.success(message);
+
+      } else {
+        const {message} = data;
+        toast.error(message);
+        console.log(message);
+      }
+
+
+        
+      } catch (error) {
+        console.error(error)
+      }
+
+
+      
+
+      
     }
     setShowModal(false);
     setPhotoToDelete(null);
@@ -451,7 +497,14 @@ const AdminProductDetails = () => {
             Şuanki renk: {selectedColorForSizes}
           </Typography>
           <Typography variant='h3'> Bu renge ait fotoğraflar</Typography>
-          {currentPhotos.map((photoUrl, index) => (
+          
+          {currentPhotos.map((photoUrl, index) => {
+
+            const name = photoUrl.name;
+            console.log('suanki name' , name);
+          
+          
+          return (
             <div>
               <img
                 key={index} 
@@ -467,19 +520,40 @@ const AdminProductDetails = () => {
               </DeleteIcon>
 
               {showModal && (
-                <div className="modal">
-                  <div className="modal-content">
+                <div
+                  style={{
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    background: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: '999', // Ensure the modal is on top
+                  }}
+                >
+                  <div
+                    style={{
+                      background: 'white',
+                      padding: '20px',
+                      borderRadius: '10px',
+                      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)', // Add a shadow
+                    }}
+                  >
                     <Typography variant='h4'>Fotoğrafı silmek istediğinizden emin misiniz?</Typography>
                     <div className="modal-button-container">
-                      <Button  onClick={() => handleConfirmation(true)}>EVET</Button>
-                      <Button  onClick={() => handleConfirmation(false)}>HAYIR</Button>
+                      <Button onClick={() => handleConfirmation(true, name, currentProduct.category_id)}>EVET</Button>
+                      <Button onClick={() => handleConfirmation(false)}>HAYIR</Button>
                     </div>
                   </div>
                 </div>
               )}
 
+
             </div>
-          ))}
+          )})}
         </div>
 
 
@@ -568,6 +642,7 @@ const AdminProductDetails = () => {
       </div>
         
       </div>
+      <ToastContainer/>
     </Container>
   );
 };
