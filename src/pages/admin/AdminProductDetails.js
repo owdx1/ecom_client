@@ -190,6 +190,20 @@ const AdminProductDetails = () => {
     console.log("Selected Size:", selectedSizeForNewFeature);
     console.log("Quantity:", quantityForNewFeature);
     console.log('Color:' , selectedColorForSizes );
+    let sizeExists = false;
+
+    currentDetails.map((product) => {
+      if(product.size === selectedSizeForNewFeature){
+        toast.warn('Bu beden bulunuyor.');
+        sizeExists = true;
+      }
+    })
+
+    if (sizeExists){
+      return;
+    }
+
+
 
     const adminToken = localStorage.getItem('adminToken');
 
