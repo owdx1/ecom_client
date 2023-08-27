@@ -8,7 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import {Container, Typography, Button, Grid, Card, CardContent, Box, CircularProgress} from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import MostSaled from './MostSaled';
-
+import {Paper} from '@mui/material';
+import {Rating} from '@mui/material';
 const colors = {
   'beyaz':'#fff', 'acik_mavi':'#add8e6', 'parlament_mavisi':'#0437F2', 'turkuaz':'#30d5c8', 'duman_grisi':'#636969', 'gri':'#ccc', 'lacivert':'"#000080',
   'petrol_mavisi':'#216477', 'petrol_yesili':'#008080', 'kuf_yesili':'#78866b', 'benetton_yesili':'#009A49', 'ameliyathane_yesili':'00995a',
@@ -26,6 +27,27 @@ const fakeSlides = [
   'https://images.wallpaperscraft.com/image/single/drone_camera_technology_171576_1600x900.jpg',
   'https://images.wallpaperscraft.com/image/single/code_programming_text_140050_1600x900.jpg',
 ];
+
+const messages = [
+  {
+    first_name: 'Can',
+    stars: 4, 
+    message: 'cok güzel bir ürün'
+  },
+  {
+    first_name: 'İrem',
+    stars: 4, 
+    message: 'cok kötü bir ürün'
+  },
+  {
+    first_name: 'Vural',
+    stars: 1, 
+    message: 'bu ne ammuğa goim'
+  },
+]
+
+
+
 
 const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
 
@@ -359,7 +381,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           {loading ? (
             <CircularProgress />
           ) : (
-            <Card>
+            <Card style={{marginTop:'30px'}}>
               <CardContent>
                 <div className="product-name-container">
                   <Typography variant="h5" gutterBottom>
@@ -456,6 +478,46 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           )}
         </Grid>
       </Grid>
+      <div className='message-container' style={{marginTop:'40px' , maxHeight:'700px' , overflowY:'auto'}}>
+      {messages.map((message, index) => (
+        <Paper
+          key={index}
+          style={{
+            padding: '16px',
+            marginBottom: '16px',
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+            borderRadius: '8px',
+          }}
+        >
+          <Typography
+            variant="h6"
+            style={{
+              fontWeight: 'bold',
+              marginBottom: '8px',
+            }}
+          >
+            {message.first_name}
+          </Typography>
+          <Rating
+            value={message.stars}
+            readOnly
+            style={{
+              marginTop: '8px',
+              color: '#FFD700', // Yellow color for stars
+            }}
+          />
+          <Typography
+            variant="body1"
+            style={{
+              fontSize: '1rem',
+            }}
+          >
+            {message.message}
+          </Typography>
+        </Paper>
+      ))}
+    </div>
+
       {/*filteredProducts.map((product) => (
         <p>{product.product_id}</p>
       )) ürünleri filtere ve samecateogry products a gönder*/}

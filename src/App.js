@@ -84,8 +84,10 @@ import AdminOrderDetails from './pages/admin/AdminOrderDetails';
         setIsLoggedIn(true);
       }
       
-
-      getNumberOfProductsInCart(accessToken);
+      if(isLoggedIn){
+        getNumberOfProductsInCart(accessToken);
+      }
+      
 
     }, [])
 

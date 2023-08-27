@@ -104,9 +104,9 @@ const AdminProductDetails = () => {
 
     try {
       const adminToken = localStorage.getItem('adminToken')
-      const response = await fetch(`http://localhost:5000/admin/update-feature` , {
-      method:'POST',
-      body: JSON.stringify({color , size , quantity , product_id}),
+      const response = await fetch(`http://localhost:5000/admin/update-product/${product_id}` , {
+      method:'PUT',
+      body: JSON.stringify({color , size , quantity}),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${adminToken}`
@@ -367,19 +367,19 @@ const AdminProductDetails = () => {
     console.log(updatedProduct);
     const productId = updatedProduct.product_id;
     const product_name = updatedProduct.product_name;
-    const isproductoftheweek = updatedProduct.isproductoftheweek;
+    const isProductOfTheWeek = updatedProduct.isproductoftheweek;
     const price = updatedProduct.price;
     const description = updatedProduct.description;
     const discount = updatedProduct.discount;
 
     try {
-      const response = await fetch(`http://localhost:5000/admin/update-product/${productId}` , {
+      const response = await fetch(`http://localhost:5000/admin/products/${productId}` , {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${adminToken}`
         },
-        body: JSON.stringify({ product_name, isproductoftheweek, price , description, discount }),
+        body: JSON.stringify({ product_name, isProductOfTheWeek, price , description, discount }),
       })
 
       const data = await response.json();
@@ -497,23 +497,40 @@ const AdminProductDetails = () => {
 
   return (
     <Container>
-      
-      <div>
-        <Typography variant="h3">Ürün ID: {currentProduct.product_id}</Typography>
-        <Typography variant="h3">Ürün İsmi: {currentProduct.product_name}</Typography>
-        <Typography variant="h5">Ürün Kategorisi: {categories[currentProduct.category_id]}</Typography>
-        <Typography variant="h5">Ürün Fiyatı: {currentProduct.price}</Typography>
-        <Typography variant="h5">Ürünün İndirimi: {currentProduct.discount}</Typography>
-        <Typography variant="h5">Toplam Satılan Miktar: {currentProduct.bestseller}</Typography>
-        <Typography variant="h5">Ürün Açıklaması: {currentProduct.description}</Typography>
-      </div>
 
       <div>
-        <h2>Ana bilgiler</h2>
-        <form>
-          <Paper elevation={3} sx={{ padding: '16px' }}>
+        
+        <form style={{marginTop:'30px' , marginBottom:'50px'}}>
+          <Paper elevation={3} sx={{ padding: '16px'}}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
+              <TextField
+                  label="product_id"
+                  name="product_id"
+                  value={currentProduct.product_id}
+                  disabled={true}
+                  fullWidth
+                  margin="normal"
+                  
+                />
+                <TextField
+                  label="Kategori"
+                  name="category"
+                  value={categories[currentProduct.category_id]}
+                  disabled={true}
+                  fullWidth
+                  margin="normal"
+                  
+                />
+                <TextField
+                  label="Toplam Satılan miktar"
+                  name="total_sold"
+                  value={currentProduct.bestseller}
+                  disabled={true}
+                  fullWidth
+                  margin="normal"
+                  
+                />
                 <TextField
                   label="Ürün İsmi"
                   name="product_name"
@@ -521,6 +538,7 @@ const AdminProductDetails = () => {
                   onChange={handleInputChange}
                   fullWidth
                   margin="normal"
+                  
                 />
                 <TextField
                   label="Fiyat"
@@ -548,7 +566,7 @@ const AdminProductDetails = () => {
                   fullWidth
                   margin="normal"
                   multiline
-                  rows={4}
+                  rows={13}
                 />
                 <FormGroup>
                   <FormControlLabel
@@ -596,12 +614,13 @@ const AdminProductDetails = () => {
             onClick={() => handleColorClick(color)}
           ></Button>
         ))}
-
-        <div style={{margin:'30px'}}>
           <Typography variant="h4" gutterBottom>
             Şuanki renk: {selectedColorForSizes}
           </Typography>
           <Typography variant='h3'> Bu renge ait fotoğraflar</Typography>
+
+        <div style={{margin:'30px', display:'flex' , flexWrap:'wrap', justifyContent:'center'}}>
+          
           
           {currentPhotos.map((photoUrl, index) => {
 
