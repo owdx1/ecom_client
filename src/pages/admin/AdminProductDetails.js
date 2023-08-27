@@ -104,9 +104,9 @@ const AdminProductDetails = () => {
 
     try {
       const adminToken = localStorage.getItem('adminToken')
-      const response = await fetch(`http://localhost:5000/admin/update-feature` , {
+      const response = await fetch(`http://localhost:5000/admin/update-product/${product_id}` , {
       method:'POST',
-      body: JSON.stringify({color , size , quantity , product_id}),
+      body: JSON.stringify({color , size , quantity }),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${adminToken}`
@@ -373,7 +373,7 @@ const AdminProductDetails = () => {
     const discount = updatedProduct.discount;
 
     try {
-      const response = await fetch(`http://localhost:5000/admin/update-product/${productId}` , {
+      const response = await fetch(`http://localhost:5000/admin/products/${productId}` , {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
