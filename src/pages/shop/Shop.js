@@ -257,8 +257,8 @@ const Shop = () => {
             let url1 = '';
             let url2 = '';
             const photoUrls = product.photoUrls; 
-            const singleArrayOne = photoUrls[0];
-            const singleArrayTwo = photoUrls[1];
+            const singleArrayOne = photoUrls[filteredProducts.length - 1];
+            const singleArrayTwo = photoUrls[filteredProducts.length - 2];
 
             if(singleArrayOne === undefined){
               url1 = 'https://i.ibb.co/tbRJ8N9/id-15.jpg'

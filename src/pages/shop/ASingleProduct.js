@@ -6,12 +6,12 @@ import '../../styles/ASingleProduct.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Container, Typography, Button, Grid, Card, CardContent, Box, CircularProgress} from '@mui/material';
-import { ArrowBack } from '@mui/icons-material';
 import MostSaled from './MostSaled';
 import {Paper} from '@mui/material';
 import {Rating} from '@mui/material';
 import ItemsOfTheWeek from './ItemsOfTheWeek';
-import Adversitement from './Adversitement';
+import SameCategoryProducts from './SameCategoryProducts'
+
 const colors = {
   'beyaz':'#fff', 'acik_mavi':'#add8e6', 'parlament_mavisi':'#0437F2', 'turkuaz':'#30d5c8', 'duman_grisi':'#636969', 'gri':'#ccc', 'lacivert':'"#000080',
   'petrol_mavisi':'#216477', 'petrol_yesili':'#008080', 'kuf_yesili':'#78866b', 'benetton_yesili':'#009A49', 'ameliyathane_yesili':'00995a',
@@ -78,16 +78,21 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const [currentUniqueColors, setCurrentUniqueColors] = useState([]);
 
   const location = useLocation();
-
-  
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  //product hakkındaki genel bilgileri state'den al
   useEffect(() => {
-    
     const {product} = location.state || {};
     setCurrentProduct(product);
-    console.log('suanki productabi', currentProduct);
-    
-    
+    console.log('suanki productabi', product);
   }, []);
+  useEffect(() => {
+    const {product} = location.state || {};
+    setCurrentProduct(product);
+    console.log('suanki productabi', product);
+    scrollToTop();
+  }, [location.state]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -96,10 +101,11 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
         if (response.ok) {
           const { data } = await response.json();
           setOriginalProducts(data);
-          const filteredProducts = data.filter((product) => product.category_id === currentProduct.category_id);
-          //filteredProducts = filteredProducts.filter((product) => product.product_id !== currentProduct.product_id)
-          setFilteredProducts(filteredProducts);
-          console.log('FİLTRELENMİŞ ÜRÜN' , filteredProducts);
+          
+          const filteredTempProducts = data.filter((product) => product.category_id === currentProduct.category_id);
+
+          setFilteredProducts(filteredTempProducts);
+          console.log('FİLTRELENMİŞ ÜRÜN' , filteredTempProducts);
           
         } else {
           throw new Error('An error occurred while fetching the products');
@@ -165,7 +171,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
 
     fetchProducts();
     window.scrollTo(0, 0);
-  }, []);
+  }, [location.state]);
 
   useEffect(() =>{
     let colors = [];
@@ -525,6 +531,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
         <p>{product.product_id}</p>
       )) ürünleri filtere ve samecateogry products a gönder*/}
       <ToastContainer position="top-right" autoClose={3000} />
+      <SameCategoryProducts filteredProducts={filteredProducts}/>
       <ItemsOfTheWeek originalProducts={originalProducts}/>
       <MostSaled originalProducts={originalProducts}/>
     </Container>
