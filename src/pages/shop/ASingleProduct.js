@@ -291,7 +291,9 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           navigate('/');
         }, 3000);   buna gerek var mı yok mu tam emin değilim                 */ 
       } else {
+        localStorage.removeItem('accessToken');
         throw new Error(`HTTP error, status = ${response.status}`);
+        
       }
     } catch (error) {
       setErrorM(`Failed to log in: ${error.message}`);
@@ -323,7 +325,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
       setSlides([]); 
     } else {
       setSlides([]); 
-      
+      setSelectedSize('');
       setSelectedColor(color);
       const tempSlides = [];
       const sizesForSelectedColor = transformedDataTwo.filter((product) => product.color === color)
@@ -411,6 +413,12 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                     {currentProduct.product_name} <Typography variant='h4'>{selectedColor}</Typography>
                   </Typography>
                 </div>
+                <Typography variant="h5" gutterBottom style={{color:'lightgray', fontFamily:'sans-serif'}}>
+                  Ürün Kodu: {currentProduct.product_id}
+                </Typography>
+                <Typography variant="h5" gutterBottom>
+                  Fiyat: {currentProduct.price} TL
+                </Typography>
                 <Typography variant="h6" gutterBottom style={{color:'gray'}}>
                   RENK SEÇENEKLERİ
                 </Typography> 
@@ -456,9 +464,17 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                   Desen: {currentProduct.fabric}
                   </Typography>*/}
                   
-                <div className="sizes-container">
+                <div className="sizes-container" style={{marginBottom:'30xp', marginTop:'30px'}}>
                   {
-                    availableSizes.map((data, index) => (
+                    availableSizes.map((data, index) => {
+                      let displayQuick = false;
+                      console.log('suan seçili beden' , selectedSize);
+                      if(selectedSize === data.size){
+                        displayQuick = true;
+                      }
+
+
+                    return (
                       <div style={{display:'block'}}>
                         <Button
                           key={index}
@@ -479,21 +495,17 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                         >
                           {data.size}
                         </Button>
-                        <Typography variant='h6' style={{color:'gray'}}>{(data.quantity <= 3 && data.quantity !== 0) && <p> // son {data.quantity} ürün!</p>}</Typography>
+                        <Typography variant='h6' style={{color:'red'}}>{(data.quantity <= 3 && data.quantity !== 0 && displayQuick) && <p> Son {data.quantity} ürün!</p>}</Typography>
                       
                       </div>
                       
-                    ))
+                    )})
                   }
                 </div>
-                <Typography variant="body1" gutterBottom>
-                  Ürün ID'si: {currentProduct.product_id}
-                </Typography>
                 
-                <Typography variant="body1" gutterBottom>
-                  Fiyat: {currentProduct.price} TL
-                </Typography>
-                <div className="quantity-container">
+                
+                
+                <div className="quantity-container" style={{margin:'30px 0'}}>
                   <Button variant="outlined" onClick={decreaseQuantity}>
                     -
                   </Button>
@@ -502,7 +514,10 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                     +
                   </Button>
                 </div>
-                <Typography variant="body1" gutterBottom>
+                <Typography variant="h6" gutterBottom style={{color:'greenyellow'}}>
+                  Kargo Bedava
+                </Typography>
+                <Typography variant="h4" gutterBottom>
                   Toplam Fiyat: {quantity * currentProduct.price} TL
                 </Typography>
                 <Button

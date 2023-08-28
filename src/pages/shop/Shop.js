@@ -62,7 +62,7 @@ const Shop = () => {
 
 
   const location = useLocation();
-  const { toastMessage } = location.state || {};
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -141,14 +141,7 @@ const Shop = () => {
     }
   };
 
-  useEffect(() => {
-    if (toastMessage) {
-      toast.info(toastMessage, {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 3000,
-      });
-    }
-  }, [toastMessage]);
+  
 
   if (loading) {
     return (
