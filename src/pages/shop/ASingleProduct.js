@@ -10,6 +10,8 @@ import { ArrowBack } from '@mui/icons-material';
 import MostSaled from './MostSaled';
 import {Paper} from '@mui/material';
 import {Rating} from '@mui/material';
+import ItemsOfTheWeek from './ItemsOfTheWeek';
+import Adversitement from './Adversitement';
 const colors = {
   'beyaz':'#fff', 'acik_mavi':'#add8e6', 'parlament_mavisi':'#0437F2', 'turkuaz':'#30d5c8', 'duman_grisi':'#636969', 'gri':'#ccc', 'lacivert':'"#000080',
   'petrol_mavisi':'#216477', 'petrol_yesili':'#008080', 'kuf_yesili':'#78866b', 'benetton_yesili':'#009A49', 'ameliyathane_yesili':'00995a',
@@ -226,8 +228,8 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
       return;
     }
     if (!isLoggedIn) {
-      navigate('/login');
-      return; // Stop the function execution if not logged in
+      toast.warn('Ürünü sepete eklemek için giriş yapın')
+      return; 
     }
 
     const size = selectedSize;
@@ -257,7 +259,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
         const { accessToken, message } = await response.json();
 
         localStorage.setItem('accessToken', accessToken);
-        setAddToCartSuccessfull(message);
+        setAddToCartSuccessfull(message); // bu kaldırılabilir
         getNumberOfProductsInCart(accessToken);
 
         toast.success('Ürün sepete eklendi ✔️', {
@@ -337,8 +339,8 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
 
 
   return (
-    <Container maxWidth="xl">
-      <Box mt={2}>
+    <Container maxWidth="xl" style={{margin:'30px auto' , padding:'0px'}}>
+      {/*<Box mt={2}>
         <Button
           variant="outlined"
           startIcon={<ArrowBack />}
@@ -355,8 +357,8 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
         >
           Anasayfa
         </Button>
-      </Box>
-      <Grid container spacing={2} mt={3}>
+        </Box>*/}
+      <Grid container spacing={3} style={{display:'flex-wrap' , flexWrap:'wrap'}}>
         <Grid item xs={12} md={4}>
           <div className="thumbnail-gallery">
             {slides.map((slide, index) => (
@@ -374,7 +376,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           </div>
           {slides.length === 0 && <p>uzunluk yok amun oğly</p>}
         </Grid>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={8} style={{display:'flex', flexWrap:'wrap', gap:'50px'}}>
           <div className="image-slider-container">
             <ImageSlider slides={slides} selectedImage={selectedImage} />
           </div>
@@ -384,38 +386,38 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
             <Card style={{marginTop:'30px'}}>
               <CardContent>
                 <div className="product-name-container">
-                  <Typography variant="h5" gutterBottom>
-                    {currentProduct.product_name}
+                  <Typography variant="h3" gutterBottom>
+                    {currentProduct.product_name} <Typography variant='h4'>{selectedColor}</Typography>
                   </Typography>
                 </div>
-                <Typography variant="body1" gutterBottom>
-                  Renk Seçenekleri:
+                <Typography variant="h6" gutterBottom style={{color:'gray'}}>
+                  RENK
                 </Typography> 
-                {currentUniqueColors.map((color) =>(
-                    <Button
-                    className={`color-button ${
-                      selectedColor === color ? 'active' : ''
-                    }`}
-                    style={{
-                      backgroundColor: colors[color],
-                      width: '30px',
-                      height: '30px',
-                      borderRadius: '20%',
-                      marginLeft: '4px',
-                      boxShadow: selectedColor === color ? '2px 2px black' : 'none', 
-                    }}
-                    onClick={() => handleColorClick(color)}
-                  >
+                <div className='color-container' style={{marginBottom:'20px'}}>
+                  {currentUniqueColors.map((color) =>(
+                      <Button
+                      className={`color-button ${
+                        selectedColor === color ? 'active' : ''
+                      }`}
+                      style={{
+                        backgroundColor: colors[color],
+                        width: '30px',
+                        height: '30px',
+                        borderRadius: '20%',
+                        marginLeft: '4px',
+                        boxShadow: selectedColor === color ? '2px 2px black' : 'none', 
+                      }}
+                      onClick={() => handleColorClick(color)}
+                    >
+                    
+                    </Button>
+                    ))}
+                  </div>
                   
-                  </Button>
-                  ))}
-                  <Typography variant="body1" gutterBottom>
-                    {selectedColor}
-                  </Typography>
                 
-                <Typography variant="body1" gutterBottom>
+                {/*<Typography variant="body1" gutterBottom>
                   Desen: {currentProduct.fabric}
-                </Typography>
+                  </Typography>*/}
                 <div className="sizes-container">
                   {
                     availableSizes.map((data, index) => (
@@ -478,6 +480,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           )}
         </Grid>
       </Grid>
+      
       <div className='message-container' style={{marginTop:'40px' , maxHeight:'700px' , overflowY:'auto'}}>
       {messages.map((message, index) => (
         <Paper
@@ -522,7 +525,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
         <p>{product.product_id}</p>
       )) ürünleri filtere ve samecateogry products a gönder*/}
       <ToastContainer position="top-right" autoClose={3000} />
-      {/*<SameCategoryProducts filteredProducts={filteredProducts}/>*/} {/*bi calısıp bi calısmıyo orpsu cocugu */}
+      <ItemsOfTheWeek originalProducts={originalProducts}/>
       <MostSaled originalProducts={originalProducts}/>
     </Container>
   );

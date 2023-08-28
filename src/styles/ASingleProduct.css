@@ -9,9 +9,7 @@
 .thumbnail-gallery {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+  gap: 30px;
 }
 
 .thumbnail-image {
@@ -172,3 +170,14 @@
   }
 }
 
+
+
+.css-19r6kue-MuiContainer-root {
+  /* width: 100%; */
+  /* margin-left: auto; */ /* Remove or comment out this line */
+  box-sizing: border-box;
+  margin-right: auto;
+  display: block;
+  padding-left: 16px;
+  padding-right: 16px;
+}

@@ -102,7 +102,7 @@ export default function Dashboard() {
 
   return (
     <ThemeProvider theme={defaultTheme} >
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex'}}>
         <CssBaseline />
         
         <Drawer variant="permanent" open={open}>
@@ -170,9 +170,9 @@ export default function Dashboard() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             
             
-            <Grid container spacing={3}>
+            <div style={{display:'block'}}>
               
-              <Grid item xs={12} md={8} lg={9}>
+              {/*<Grid item xs={12} md={8} lg={9}>
                 <Paper
                   sx={{
                     p: 2,
@@ -183,7 +183,7 @@ export default function Dashboard() {
                 >
                   <Chart />
                 </Paper>
-              </Grid>
+                </Grid>*/}
               
               <Grid item xs={12} md={4} lg={3}>
                 <Paper
@@ -192,6 +192,8 @@ export default function Dashboard() {
                     display: 'flex',
                     flexDirection: 'column',
                     height: 240,
+                    width:'300px',
+                    marginBottom:'30px'
                   }}
                 >
                   <Deposits />
@@ -203,7 +205,7 @@ export default function Dashboard() {
                   <Orders />
                 </Paper>
               </Grid>
-            </Grid>
+            </div>
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>

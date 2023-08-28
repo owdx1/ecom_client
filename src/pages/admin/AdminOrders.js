@@ -128,7 +128,7 @@ const AdminOrders = () => {
       <>
           
 
-          <TableContainer component={Paper} style={{width:'1400px' , margin: '20px auto'}}>
+          <TableContainer component={Paper} style={{ margin: '20px auto'}}>
           <div style={{ margin: '10px' }}>
             <NavLink to='/admin/denemeDashboard'>
               <Button variant="contained" color="primary">

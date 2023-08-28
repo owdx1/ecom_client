@@ -9,7 +9,7 @@ import AddAProduct from './pages/admin/AddAProduct';
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register';
 import { useState, useEffect } from 'react';
-
+import ScrollUpButton from './utils/ScrollUpButton';
 import Profile from './pages/profile/Profile';
 import Cart from './pages/profile/Cart';
 import ASingleProduct from './pages/shop/ASingleProduct';
@@ -146,7 +146,7 @@ import AdminOrderDetails from './pages/admin/AdminOrderDetails';
 
           <Route path='/preview' element={<Preview/>}></Route>
         </Routes>
-
+        <ScrollUpButton/>
         <Footer/>
 
       </>

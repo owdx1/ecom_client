@@ -251,7 +251,7 @@ const Shop = () => {
           Tüm ürünler
         </IconButton>
       </div>
-      <Container maxWidth="md" component="main">
+      <Container maxWidth="md" component="main" id='all-products'>
         <Grid container spacing={5} alignItems="flex-end">
           {filteredProducts.map((product , index) => {
             let url1 = '';
@@ -323,7 +323,7 @@ const Shop = () => {
                   >
                     
                     <Typography variant="h6" color="text.secondary">
-                      <span style={{ color: 'crimson', textDecoration: 'line-through' }}>{`529.99`}</span>
+                      <span style={{ color: 'crimson', textDecoration: 'line-through' }}>{(product.discount !== null ? product.discount : `529.99`)}</span>
                     </Typography>
                     <Typography component="h2" variant="h5" color="text.primary">
                       {product.price} TL

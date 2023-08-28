@@ -22,7 +22,7 @@ const ItemsOfTheWeek = ({ originalProducts }) => {
   const displayedProducts = itemsOfTheWeek.slice(0, 6);
 
   return (
-    <div>
+    <div id='week-products'>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', marginTop:'50px'}}>
         <IconButton style={{ margin: 0 }}>Haftanın Ürünleri</IconButton>
         

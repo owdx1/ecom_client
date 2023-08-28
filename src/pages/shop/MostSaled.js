@@ -19,7 +19,7 @@ const MostSaled = ({ originalProducts }) => {
   const displayedProducts = isMostSaled.slice(0, 6);
 
   return (
-    <div>
+    <div id='best-sellers'>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', marginTop: '50px' }}>
         <IconButton style={{ margin: 0 }}>Çok Satan Ürünler</IconButton>
         

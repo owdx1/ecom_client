@@ -7,8 +7,8 @@ const styles = {
   tableContainer: {
     marginTop: '20px',
     padding: '10px',
-    width:'1200px',
-    margin:'0 auto'
+    
+    margin:'30px auto'
   },
   tableHeader: {
     display: 'flex',

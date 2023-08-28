@@ -105,7 +105,7 @@ export default function Review({ getNumberOfProductsInCart }) {
               <ListItemText primary={product.product_name} secondary={product.description}/>
               <Typography>{product.color}</Typography>
               <ListItemText primary={`Miktar: ${product.orderquantity}`} />
-              <ListItemText variant="body2" style={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', padding: '4px 8px', borderRadius: '4px' , color:'white'}}>Beden: {product.size}</ListItemText>
+              <ListItemText variant="body2" style={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', padding: '4px 8px', borderRadius: '4px' , color:'white' , width:'92px'}}>Beden: {product.size}</ListItemText>
               
             </div>
           </ListItem>

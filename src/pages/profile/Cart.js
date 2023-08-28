@@ -153,13 +153,23 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {dataDisplay.map((product) =>{
+                      {dataDisplay && dataDisplay.map((product) =>{
                         const photoUrls =  product.photoUrls;
-                        const url = photoUrls[0].url;
+                        let singleObject = photoUrls[0];
+                        console.log('single object' , singleObject);
+                        if(singleObject === undefined){
+                          singleObject = {
+                            url:'https://i.ibb.co/tbRJ8N9/id-15.jpg',
+                            name:'current-name'
+                          }
+                        } 
                         
-                        if(url === undefined){
-                          url = 'https://i.ibb.co/tbRJ8N9/id-15.jpg'
-                        }
+                        let url = singleObject.url;
+                        console.log('current url', url);
+                                
+                        
+                        
+                        
                         
                       return (
                         <TableRow key={product.product_id}>
