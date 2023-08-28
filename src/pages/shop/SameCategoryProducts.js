@@ -15,13 +15,23 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import {Container} from '@mui/material';
 
-const SameCategoryProducts = ({filteredProducts}) => {
+const categories = {
+  1:'takim',
+  2:'tek-ust',
+  3:'tek-alt',
+  4:'tesettur',
+  5:'bone',
+  6:'terlik'
+};
+
+
+const SameCategoryProducts = ({originalProducts , category_id, product_id}) => {
     
-    const [display, setDisplay] = useState([]);
-    useEffect(() =>{
-      console.log('BANA GELEN FİLTERED PRODUCTS' , filteredProducts);
-      setDisplay(filteredProducts);
-    },[])
+    console.log('BANA GELEN FİLTERED PRODUCTS' , originalProducts);
+    const filteredProducts = originalProducts.filter((item) => (item.category_id === category_id) && (item.product_id !== product_id));
+    const displayedProducts = filteredProducts.slice(0, 6);
+
+    
     
 
   return (
@@ -31,7 +41,7 @@ const SameCategoryProducts = ({filteredProducts}) => {
         
           <Link
             component={Link}
-            to="#"
+            to={`/search?category=${categories[category_id]}`}
             style={{ textDecoration: 'none' }}
           >
             <IconButton aria-label="Tümünü Gör">Tümünü Gör &nbsp;
@@ -42,7 +52,7 @@ const SameCategoryProducts = ({filteredProducts}) => {
       </div>
       <Container maxWidth="md" component="main">
         <Grid container spacing={5} alignItems="flex-end">
-          {display.map((product , index) => (
+          {displayedProducts.map((product , index) => (
             
             <Grid
               item
@@ -51,7 +61,7 @@ const SameCategoryProducts = ({filteredProducts}) => {
               sm={product.title === 'Enterprise' ? 12 : 6}
               md={4}
             >
-              <Link href={`/shop/products/${product.product_id}`} alt="1" state={{ product }}>
+               <Link to={`/shop/products/${product.product_id}`}  state={{ product , originalProducts}}>
               <Card>
                 {/*{product.isproductoftheweek && (
                     <Badge

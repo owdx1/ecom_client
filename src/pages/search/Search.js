@@ -50,8 +50,6 @@ const Search = () => {
     scrollToTop();
   }, []);
 
-  
-
   const [originalProducts, setOriginalProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

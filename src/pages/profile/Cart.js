@@ -11,6 +11,7 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
   const [dataDisplay, setDataDisplay] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [backEndMessage, setBackEndMessage] = useState('');
+  const [currentWarn , setCurrentWarn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -65,6 +66,21 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
     }
   };
 
+  useEffect(() =>{
+    const warn = dataDisplay.filter((product) => product.orderquantity > product.quantity)
+    if(warn.length > 0){
+      setCurrentWarn(true);
+    } else {
+      setCurrentWarn(false);
+    }
+  }, [dataDisplay])
+
+
+
+
+
+
+
   useEffect(() => {
     if (backEndMessage !== '') toast.warn(backEndMessage);
   }, [backEndMessage]);
@@ -86,7 +102,6 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
       if (response.status !== 200) {
         throw new Error(backEndMessage || 'Failed to register');
       } else {
-        // Update the dataDisplay state after successful deletion
         getNumberOfProductsInCart(accessToken)
         setDataDisplay(prevDataDisplay => prevDataDisplay.filter(product => product.product_id !== productId || product.feature_id !== featureId));
         localStorage.setItem('accessToken', data.accessToken);
@@ -232,23 +247,50 @@ const Cart = ({ onLogout, getNumberOfProductsInCart }) => {
                 <div className="total-price">
                   <Typography variant="h4">Toplam Fiyat: {totalPrice} TL</Typography>
                 </div>
-                <NavLink to='/profile/address-form' state={{ customer, dataDisplay, totalPrice }}>
-                <Button
-                  style={{
-                    marginLeft: '35px',
-                    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-                    borderRadius: '10px',
-                    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-                    color: 'white',
-                    transition: 'background 0.3s ease-in-out, transform 0.2s ease',
-                    border: 'none',
-                    width:'200px'
-                  }}
-                  
-                >
-                    Ödemeye geç
+
+                {currentWarn ? (<div>
+                  <p style={{marginBottom:'20px'}}>Ürünlerin birinde stokta olandan fazla adet girildi, ilerlemek için kontrol ediniz.</p>
+                  <Button
+                    className='next-button'
+                    style={{
+                      marginLeft: '35px',
+                      background: 'lightgray',
+                      borderRadius: '10px',
+                      boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                      color: 'white',
+                      transition: 'background 0.3s ease-in-out, transform 0.2s ease',
+                      border: 'none',
+                      width:'200px'
+                    }}
+                    disabled={true}
+                    
+                  >
+                      Ödemeye geç
+                  </Button>
+                </div>) : (<div>
+                  <NavLink to='/profile/address-form' state={{ customer, dataDisplay, totalPrice }}>
+                  <Button
+                    style={{
+                      marginLeft: '35px',
+                      background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                      borderRadius: '10px',
+                      boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                      color: 'white',
+                      transition: 'background 0.3s ease-in-out, transform 0.2s ease',
+                      border: 'none',
+                      width:'200px'
+                    }}
+                    
+                  >
+                      Ödemeye geç
                   </Button>
                 </NavLink>
+                </div>)}
+
+                
+
+
+                
               </Grid>
             </Grid>
           </div>

@@ -106,7 +106,7 @@ const AdminProductDetails = () => {
       const adminToken = localStorage.getItem('adminToken')
       const response = await fetch(`http://localhost:5000/admin/update-product/${product_id}` , {
       method:'PUT',
-      body: JSON.stringify({color , size , quantity }),
+      body: JSON.stringify({color , size , quantity}),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${adminToken}`

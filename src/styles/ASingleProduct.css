@@ -181,3 +181,8 @@
   padding-left: 16px;
   padding-right: 16px;
 }
+
+.size-button[disabled] {
+  background-color: lightgray
+ 
+}

@@ -10,7 +10,8 @@ import MostSaled from './MostSaled';
 import {Paper} from '@mui/material';
 import {Rating} from '@mui/material';
 import ItemsOfTheWeek from './ItemsOfTheWeek';
-import SameCategoryProducts from './SameCategoryProducts'
+import SameCategoryProducts from './SameCategoryProducts';
+import { ArrowBack } from '@mui/icons-material';
 
 const colors = {
   'beyaz':'#fff', 'acik_mavi':'#add8e6', 'parlament_mavisi':'#0437F2', 'turkuaz':'#30d5c8', 'duman_grisi':'#636969', 'gri':'#ccc', 'lacivert':'"#000080',
@@ -62,7 +63,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const [currentFeatureId, setCurrentFeatureId] = useState(0);
   const [currentProduct , setCurrentProduct] = useState({});
   const [originalProducts, setOriginalProducts] = useState([])
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  //const [filteredProducts, setFilteredProducts] = useState([]);
   const [availableSizes, setAvailableSizes] = useState([]);
   const accessToken = localStorage.getItem('accessToken');
   const [quantity, setQuantity] = useState(1);
@@ -76,6 +77,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
   const [totalAmount, setTotalAmount] = useState(quantity * currentProduct.price);
   const [selectedColor , setSelectedColor] = useState('');
   const [currentUniqueColors, setCurrentUniqueColors] = useState([]);
+  const [selectedSizeQuantity , setSelectedSizeQuantity] = useState(0);
 
   const location = useLocation();
   const scrollToTop = () => {
@@ -87,6 +89,8 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
     setCurrentProduct(product);
     console.log('suanki productabi', product);
   }, []);
+
+  // most-saled , same-category ya da product-oftheweek'ten bir ürüne tıklandığı zaman refresh atılmadan aynı sayfada yeni ürünü yansıtma işlemi
   useEffect(() => {
     const {product} = location.state || {};
     setCurrentProduct(product);
@@ -94,6 +98,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
     scrollToTop();
   }, [location.state]);
 
+  // tüm ürünleri fetch etme işlemi
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -102,10 +107,9 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           const { data } = await response.json();
           setOriginalProducts(data);
           
-          const filteredTempProducts = data.filter((product) => product.category_id === currentProduct.category_id);
-
-          setFilteredProducts(filteredTempProducts);
-          console.log('FİLTRELENMİŞ ÜRÜN' , filteredTempProducts);
+          //const filteredTempProducts = data.filter((product) => product.category_id === currentProduct.category_id);
+          //setFilteredProducts(filteredTempProducts);
+          //console.log('FİLTRELENMİŞ ÜRÜN' , filteredTempProducts);
           
         } else {
           throw new Error('An error occurred while fetching the products');
@@ -154,7 +158,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
             
             handleColorClick(initialColor);
             setAvailableSizes(sizesForInitialColor);
-            handleSizeButtonClick(sizesForInitialColor[0].size, sizesForInitialColor[0].feature_id);
+            //handleSizeButtonClick(sizesForInitialColor[0].size, sizesForInitialColor[0].feature_id);
           }
           
           
@@ -233,14 +237,24 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
       setErrorM('Please select a size before adding to cart');
       return;
     }
+    if (selectedColor === '') {
+      setErrorM('Please select a color before adding to cart');
+      return;
+    }
     if (!isLoggedIn) {
       toast.warn('Ürünü sepete eklemek için giriş yapın')
       return; 
+    }
+    if(quantity > selectedSizeQuantity) {
+      toast.warn('Bu bedene ait yeterli stok bulunamadi , lütfen daha az miktarda adet giriniz.');
+      return;
     }
 
     const size = selectedSize;
     const product_id = currentProduct.product_id;
     console.log('suanki feaute id' , currentFeatureId);
+    console.log('suanki color ' , selectedColor);
+    console.log('suanki size ' , selectedSize);
     const category = currentProduct.category_id;
 
 
@@ -288,33 +302,33 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
     setSelectedImage(imageURL);
   };
 
-  const handleSizeButtonClick = (size , feature_id) => {
+  const handleSizeButtonClick = (size , feature_id, selectedSizeQuantity) => {
     if (selectedSize === size) {
       setSelectedSize('');
       setCurrentFeatureId(0);
+      setSelectedSizeQuantity(0);
     } else {
       setSelectedSize(size);
       setCurrentFeatureId(feature_id)
+      setSelectedSizeQuantity(selectedSizeQuantity)
     }
   };
 
 
   const handleColorClick = (color) => {
-    console.log('icine girdim mi?????????????????????????????????????');
+    
     if (selectedColor === color) {
-      console.log('deneme 11111111111111111111111111111111111111111111111111111111');
       setSelectedColor('');
       setAvailableSizes([]);
       setSlides([]); 
     } else {
       setSlides([]); 
-      console.log('deneme 22222222222222222222222222222222222222222222');
+      
       setSelectedColor(color);
       const tempSlides = [];
       const sizesForSelectedColor = transformedDataTwo.filter((product) => product.color === color)
-      console.log('bundan sonrakine giriyor musun');
+      
       if(sizesForSelectedColor.length > 0){
-        console.log('buraya?????????????????????');
         const selectedPhotoUrls = sizesForSelectedColor[0].photoUrls;
         console.log('suanki secilen photoUrlleri');
         selectedPhotoUrls.map((photoUrl) =>{
@@ -328,9 +342,6 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
           console.log('suanki temp slides' , tempSlides);
         }
         else{console.log('tempSlides da length yok');}
-
-        
-
 
       }
       setAvailableSizes(sizesForSelectedColor);
@@ -346,7 +357,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
 
   return (
     <Container maxWidth="xl" style={{margin:'30px auto' , padding:'0px'}}>
-      {/*<Box mt={2}>
+      <Box mt={2}>
         <Button
           variant="outlined"
           startIcon={<ArrowBack />}
@@ -363,11 +374,12 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
         >
           Anasayfa
         </Button>
-        </Box>*/}
-      <Grid container spacing={3} style={{display:'flex-wrap' , flexWrap:'wrap'}}>
+        </Box>
+      <Grid container spacing={3} style={{display:'flex-wrap' , flexWrap:'wrap' , margin:'30px'}}>
         <Grid item xs={12} md={4}>
           <div className="thumbnail-gallery">
-            {slides.map((slide, index) => (
+            {slides.map((slide, index) => {
+            return (
               <img
                 key={index}
                 src={slide}
@@ -378,9 +390,12 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                 onClick={() => handleThumbnailClick(slide)}
                 style={{width:'200px' , height:'300px' , objectFit:'contain'}}
               />
-            ))}
+            )})}
           </div>
-          {slides.length === 0 && <p>uzunluk yok amun oğly</p>}
+          <div>
+            {slides.length === 0 && <p>slides length'de uzunluk yok</p>}
+              
+          </div>
         </Grid>
         <Grid item xs={12} md={8} style={{display:'flex', flexWrap:'wrap', gap:'50px'}}>
           <div className="image-slider-container">
@@ -397,46 +412,77 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
                   </Typography>
                 </div>
                 <Typography variant="h6" gutterBottom style={{color:'gray'}}>
-                  RENK
+                  RENK SEÇENEKLERİ
                 </Typography> 
                 <div className='color-container' style={{marginBottom:'20px'}}>
-                  {currentUniqueColors.map((color) =>(
+                  {currentUniqueColors.map((color) => {
+                    let url = '';
+                    const sameColorArray = transformedDataTwo.filter((item) => item.color === color);
+                    const sameColorObject = sameColorArray[0];
+                    const sameColorPhotoUrlsArray = sameColorObject.photoUrls;
+                    const firstOfTheArray = sameColorPhotoUrlsArray[0];
+                    if(firstOfTheArray === undefined){
+                      url = 'https://i.ibb.co/tbRJ8N9/id-15.jpg'
+                    } else {
+                      url = firstOfTheArray.url;
+                    }
+
+                    
+                    
+                    return (
                       <Button
                       className={`color-button ${
                         selectedColor === color ? 'active' : ''
                       }`}
                       style={{
                         backgroundColor: colors[color],
-                        width: '30px',
-                        height: '30px',
+                        
                         borderRadius: '20%',
-                        marginLeft: '4px',
-                        boxShadow: selectedColor === color ? '2px 2px black' : 'none', 
+                        marginLeft: '16px',
+                        boxShadow: selectedColor === color ? '2px 2px 10px black' : 'none', 
+                        marginTop:'10px',
+                        border:'solid 1px gray'
                       }}
                       onClick={() => handleColorClick(color)}
                     >
+                      <img src={url} style={{width:'80px' , borderRadius:'20px'}}></img>
                     
                     </Button>
-                    ))}
+                    )})}
                   </div>
                   
                 
                 {/*<Typography variant="body1" gutterBottom>
                   Desen: {currentProduct.fabric}
                   </Typography>*/}
+                  
                 <div className="sizes-container">
                   {
                     availableSizes.map((data, index) => (
-                      <Button
-                        key={index}
-                        variant="outlined"
-                        className={`size-button ${
-                          selectedSize === data.size ? 'active' : ''
-                        }`}
-                        onClick={() => handleSizeButtonClick(data.size, data.feature_id)}
-                      >
-                        {data.size}
-                      </Button>
+                      <div style={{display:'block'}}>
+                        <Button
+                          key={index}
+                          variant="outlined"
+                          className={`size-button ${
+                            selectedSize === data.size ? 'active' : ''
+                          }`}
+                          onClick={() => {
+                            if (data.quantity === 0) {
+                              
+                              setSelectedSize('');
+                            } else {
+                              
+                              handleSizeButtonClick(data.size, data.feature_id, data.quantity);
+                            }
+                          }}
+                          disabled={data.quantity === 0}
+                        >
+                          {data.size}
+                        </Button>
+                        <Typography variant='h6' style={{color:'gray'}}>{(data.quantity <= 3 && data.quantity !== 0) && <p> // son {data.quantity} ürün!</p>}</Typography>
+                      
+                      </div>
+                      
                     ))
                   }
                 </div>
@@ -531,7 +577,7 @@ const ASingleProduct = ({ isLoggedIn , getNumberOfProductsInCart }) => {
         <p>{product.product_id}</p>
       )) ürünleri filtere ve samecateogry products a gönder*/}
       <ToastContainer position="top-right" autoClose={3000} />
-      <SameCategoryProducts filteredProducts={filteredProducts}/>
+      <SameCategoryProducts originalProducts={originalProducts} category_id={currentProduct.category_id} product_id={currentProduct.product_id}/>
       <ItemsOfTheWeek originalProducts={originalProducts}/>
       <MostSaled originalProducts={originalProducts}/>
     </Container>

@@ -153,4 +153,6 @@ button:hover {
   }
 }
 
-
+.next-button[disabled]{
+  background-color: lightgray;
+}
